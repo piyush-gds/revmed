@@ -1,10 +1,10 @@
 {
   "mappings": [
-    "/content/piyush-eds-site/:/",
-    "/content/piyush-eds-site/configuration:/.helix/config.json",
-    "/content/piyush-eds-site/metadata:/metadata.json"
+    "/content/piyush-revmed-site/:/",
+    "/content/piyush-revmed-site/configuration:/.helix/config.json",
+    "/content/piyush-revmed-site/metadata:/metadata.json"
   ],
   "includes": [
-    "/content/piyush-eds-site/"
+    "/content/piyush-revmed-site/"
   ]
 }
