@@ -1,10 +1,10 @@
 {
   "mappings": [
-    "/content/aem-boilerplate/:/",
-    "/content/aem-boilerplate/configuration:/.helix/config.json",
-    "/content/aem-boilerplate/metadata:/metadata.json"
+    "/content/piyush-eds-site/:/",
+    "/content/piyush-eds-site/configuration:/.helix/config.json",
+    "/content/piyush-eds-site/metadata:/metadata.json"
   ],
   "includes": [
-    "/content/aem-boilerplate/"
+    "/content/piyush-eds-site/"
   ]
 }
