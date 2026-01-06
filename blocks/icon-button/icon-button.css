@@ -1,5 +1,5 @@
 .anchor-menu__link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 3.5rem;
@@ -9,15 +9,20 @@
     text-decoration: none;
     max-width: 22.1875rem;
     cursor: pointer;
+    color: inherit;
+}
+
+.anchor-menu__text {
+    font-size: 14px;
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
 .anchor-menu__icon {
     width: 1.5rem;
     height: 1.5rem;
-}
-
-.anchor-menu__icon img {
-    vertical-align: middle;
+    fill: currentColor;
+    flex-shrink: 0;
 }
 
 .anchor-menu__text {
@@ -27,20 +32,14 @@
     line-height: 1.125rem;
 }
 
-.bg-yellow {
+.anchor-menu__link.bg-yellow {
     background-color: #ffb718;
     border: 0.8px solid #ffb718;
+    color: #000;
 }
 
-.bg-yellow .anchor-menu__text {
-    color: #253958;
-}
-
-.bg-red {
+.anchor-menu__link.bg-red {
     background-color: #c1443b;
     border: 0.8px solid #c1443b;
-}
-
-.bg-red .anchor-menu__text {
     color: #fff;
 }
