@@ -244,22 +244,6 @@
       },
       {
         "component": "select",
-        "name": "imagePosition",
-        "label": "Choose Image Position",
-        "valueType": "string",
-        "options": [
-          {
-            "name": "Left",
-            "value": "rtli"
-          },
-          {
-            "name": "Right",
-            "value": "ltri"
-          }
-        ]
-      },
-      {
-        "component": "select",
         "name": "backgroundColor",
         "label": "Choose Background Color",
         "valueType": "string",
