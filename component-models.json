@@ -241,6 +241,38 @@
         "name": "linkText",
         "label": "Link Text",
         "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "imagePosition",
+        "label": "Choose Image Position",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Left",
+            "value": "rtli"
+          },
+          {
+            "name": "Right",
+            "value": "ltri"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "backgroundColor",
+        "label": "Choose Background Color",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Yellow",
+            "value": "#FFB718"
+          },
+          {
+            "name": "Red",
+            "value": "#C1443B"
+          }
+        ]
       }
     ]
   }
