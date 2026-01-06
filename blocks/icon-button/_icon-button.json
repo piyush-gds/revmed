@@ -60,8 +60,8 @@
           "label": "Choose Background Color",
           "valueType": "string",
           "options": [
-            { "name": "Yellow", "value": "#FFB718" },
-            { "name": "Red", "value": "#C1443B" }
+            { "name": "Yellow", "value": "yellow" },
+            { "name": "Red", "value": "red" }
           ]
         }
       ]

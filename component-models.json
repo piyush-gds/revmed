@@ -266,11 +266,11 @@
         "options": [
           {
             "name": "Yellow",
-            "value": "#FFB718"
+            "value": "yellow"
           },
           {
             "name": "Red",
-            "value": "#C1443B"
+            "value": "red"
           }
         ]
       }
