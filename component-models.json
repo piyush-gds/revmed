@@ -214,5 +214,26 @@
         "valueType": "string"
       }
     ]
+  },
+  {
+    "id": "icon-button",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image"
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "name": "linkText",
+        "label": "Link Text",
+        "valueType": "string"
+      }
+    ]
   }
 ]
