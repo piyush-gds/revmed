@@ -28,19 +28,3 @@ export default function decorate(block) {
 
   block.replaceChildren(anchor);
 }
-
-/*
-<a
-  class="anchor-menu__link text"
-  target="_self"
-  data-icon="watch"
-  href="#video-series"
-  data-once="analytic-tags-processed anchorMenu"
-  data-analytics-link='{"name":"Watch the series","position":"body","group":"body","href":"https://www.agitationinalz.com/#video-series"}'
->
-  <svg class="anchor-menu__icon">
-    <use xlink:href="/sites/g/files/qhldwo11956/themes/site/themes/custom/agitation_in_alzheimer/dist/icons.svg#watch"></use>
-  </svg>
-  <span class="anchor-menu__text">Watch the series</span>
-</a>;
-*/
