@@ -173,21 +173,6 @@
           }
         },
         {
-          "title": "Series Icon Button",
-          "id": "series-icon-button",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Series Icon Button",
-                  "model": "series-icon-button"
-                }
-              }
-            }
-          }
-        },
-        {
           "title": "Icon Button",
           "id": "icon-button",
           "plugins": {
