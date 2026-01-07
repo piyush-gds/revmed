@@ -174,21 +174,6 @@
           }
         },
         {
-          "title": "Icon Button Grid Item",
-          "id": "icon-button-grid-item",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Icon Button Grid Item",
-                  "model": "icon-button"
-                }
-              }
-            }
-          }
-        },
-        {
           "title": "Icon Button",
           "id": "icon-button",
           "plugins": {
