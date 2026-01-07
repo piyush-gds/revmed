@@ -14,13 +14,28 @@
           }
         }
       }
+    },
+    {
+      "title": "Icon Button Series Item",
+      "id": "icon-button-series-item",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Icon Button Series Item",
+              "model": "icon-button"
+            }
+          }
+        }
+      }
     }
   ],
   "models": [],
   "filters": [
     {
       "id": "Icon Button Series",
-      "components": ["icon-button"]
+      "components": ["icon-button-series-item"]
     }
   ]
 }
