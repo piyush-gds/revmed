@@ -4,7 +4,7 @@ export default async function decorate(block) {
   block.innerHTML = '';
 
   const ul = document.createElement('ul');
-  ul.classList.add('icon-button-series');
+  ul.classList.add('icon-button-grid');
 
   for (const row of rows) {
     const [iconCol, linkCol, colorCol] = row.children;

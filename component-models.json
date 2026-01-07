@@ -216,7 +216,7 @@
     ]
   },
   {
-    "id": "series-icon-button",
+    "id": "icon-button-grid-item",
     "fields": [
       {
         "component": "reference",
