@@ -8,7 +8,7 @@
     align-items: center;
 }
 
-.icon-button-series__item {
+.icon-button-grid__item {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,11 +20,11 @@
     cursor: pointer;
 }
 
-.icon-button-series__icon {
+.icon-button-grid__icon {
     width: 2.3125rem;
 }
 
-.icon-button-series__link {
+.icon-button-grid__link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -39,7 +39,7 @@
     border: 0.8px solid #ffb718;
 }
 
-.bg-yellow .icon-button-series__link {
+.bg-yellow .icon-button-grid__link {
     color: #253958;
 }
 
@@ -48,6 +48,6 @@
     border: 0.8px solid #c1443b;
 }
 
-.bg-red .icon-button-series__link {
+.bg-red .icon-button-grid__link {
     color: #fff;
 }

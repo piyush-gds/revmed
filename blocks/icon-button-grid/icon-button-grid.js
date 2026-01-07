@@ -18,17 +18,17 @@ export default async function decorate(block) {
 
     /* li */
     const li = document.createElement('li');
-    li.classList.add('icon-button-series__item');
+    li.classList.add('icon-button-grid__item');
     li.classList.add('bg-' + color.toLowerCase());
 
     const a = document.createElement('a');
     a.href = link.href;
     a.title = link.title || link.textContent;
-    a.classList.add('icon-button-series__link');
+    a.classList.add('icon-button-grid__link');
 
     const textSpan = document.createElement('span');
     textSpan.textContent = link.textContent;
-    textSpan.classList.add('icon-button-series__text');
+    textSpan.classList.add('icon-button-grid__text');
     a.append(textSpan);
 
     const img = picture.querySelector('img');
@@ -44,7 +44,7 @@ export default async function decorate(block) {
         if (svg) {
           svg.setAttribute('fill', 'currentColor');
           svg.setAttribute('aria-hidden', 'true');
-          svg.classList.add('icon-button-series__icon');
+          svg.classList.add('icon-button-grid__icon');
           a.append(svg);
         }
       } catch (e) {
