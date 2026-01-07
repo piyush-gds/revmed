@@ -44,7 +44,7 @@
   {
     "id": "icon-button-grid",
     "components": [
-      "icon-button"
+      "icon-button-grid-item"
     ]
   }
 ]

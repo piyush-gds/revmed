@@ -216,8 +216,49 @@
     ]
   },
   {
-    "id": "icon-button-grid",
-    "fields": []
+    "id": "icon-button-grid-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt",
+        "value": ""
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "name": "linkText",
+        "label": "Link Text",
+        "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "backgroundColor",
+        "label": "Choose Background Color",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Yellow",
+            "value": "yellow"
+          },
+          {
+            "name": "Red",
+            "value": "red"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "icon-button",
