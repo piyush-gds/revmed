@@ -158,15 +158,15 @@
           }
         },
         {
-          "title": "icon-button-series",
-          "id": "icon-button-series",
+          "title": "Icon Button Series",
+          "id": "Icon Button Series",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
-                  "name": "icon-button-series",
-                  "filter": "icon-button-series"
+                  "name": "Icon Button Series",
+                  "filter": "Icon Button Series"
                 }
               }
             }
