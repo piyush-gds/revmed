@@ -54,7 +54,9 @@
         "hero",
         "cards",
         "columns",
-        "fragment"
+        "fragment",
+        "icon-button",
+        "icon-button-grid"
       ]
     }
   ]
