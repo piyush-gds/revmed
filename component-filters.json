@@ -15,7 +15,9 @@
       "hero",
       "cards",
       "columns",
-      "fragment"
+      "fragment",
+      "icon-button",
+      "Icon Button Series"
     ]
   },
   {
@@ -42,7 +44,7 @@
   {
     "id": "Icon Button Series",
     "components": [
-      "icon-button-series-item"
+      "icon-button"
     ]
   }
 ]
