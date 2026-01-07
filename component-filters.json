@@ -16,8 +16,7 @@
       "cards",
       "columns",
       "fragment",
-      "icon-button",
-      "icon-button-grid"
+      "icon-button"
     ]
   },
   {
@@ -39,12 +38,6 @@
       "image",
       "button",
       "title"
-    ]
-  },
-  {
-    "id": "icon-button-grid",
-    "components": [
-      "icon-button"
     ]
   }
 ]
