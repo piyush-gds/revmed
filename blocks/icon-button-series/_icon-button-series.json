@@ -14,13 +14,68 @@
           }
         }
       }
+    },
+    {
+      "title": "Series Icon Button",
+      "id": "series-icon-button",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Series Icon Button",
+              "model": "series-icon-button"
+            }
+          }
+        }
+      }
     }
   ],
-  "models": [],
+  "models": [
+    {
+      "id": "series-icon-button",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Alt",
+          "value": ""
+        },
+        {
+          "component": "aem-content",
+          "name": "link",
+          "label": "Link"
+        },
+        {
+          "component": "text",
+          "name": "linkText",
+          "label": "Link Text",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "backgroundColor",
+          "label": "Choose Background Color",
+          "valueType": "string",
+          "options": [
+            { "name": "Yellow", "value": "yellow" },
+            { "name": "Red", "value": "red" }
+          ]
+        }
+      ]
+    }
+  ],
   "filters": [
     {
       "id": "Icon Button Series",
-      "components": ["icon-button"]
+      "components": ["series-icon-button"]
     }
   ]
 }
