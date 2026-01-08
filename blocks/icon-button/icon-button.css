@@ -56,6 +56,7 @@
 .button-grid {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     margin: 0;
     padding: 1.5rem 0;
