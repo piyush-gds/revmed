@@ -54,7 +54,8 @@
     {
       "id": "helpful-resources",
       "components": [
-        "helpful-resources-item"
+        "helpful-resources-item",
+        "icon-button"
       ]
     }
   ]
