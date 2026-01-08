@@ -261,6 +261,12 @@
             "value": "red"
           }
         ]
+      },
+      {
+        "component": "text",
+        "name": "iconName",
+        "label": "Icon Name",
+        "valueType": "string"
       }
     ]
   }

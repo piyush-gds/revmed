@@ -5,6 +5,7 @@ export default async function decorate(block) {
   const bgColor = block.children[2].querySelector("p")?.textContent?.trim();
   const paragraphText = paragraph ? paragraph.textContent.trim() : "";
   const href = link ? link.getAttribute("href") : "#";
+  const watch = 'watch';
 
   const anchor = document.createElement("a");
   const span = document.createElement("span");
@@ -15,30 +16,22 @@ export default async function decorate(block) {
   span.classList.add("anchor-menu__text");
   span.textContent = paragraphText;
 
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const XLINK_NS = "http://www.w3.org/1999/xlink";
+
+  const svg = document.createElementNS(SVG_NS, "svg");
+  const use = document.createElementNS(SVG_NS, "use");
+
+  svg.classList.add("anchor-menu__icon");
+  use.setAttributeNS(
+    XLINK_NS,
+    "xlink:href",
+    `/media_1bcade0d7d7dabf7952e66a3335f1a800b1043e43.svg?#${watch}`
+  );
+  
+  svg.append(use);
   anchor.append(span);
-
-  const img = picture?.querySelector("img");
-
-  if (img?.src) {
-    try {
-      const resp = await fetch(img.src);
-      const svgText = await resp.text();
-
-      const temp = document.createElement("div");
-      temp.innerHTML = svgText;
-
-      const svg = temp.querySelector("svg");
-      if (svg) {
-        svg.classList.add("anchor-menu__icon");
-        svg.setAttribute("fill", "currentColor");
-        svg.setAttribute("aria-hidden", "true");
-
-        anchor.append(svg);
-      }
-    } catch (err) {
-      console.warn("SVG fetch failed", err);
-    }
-  }
+  anchor.append(svg);
 
   anchor.classList.remove("bg-yellow", "bg-red");
 

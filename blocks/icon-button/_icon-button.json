@@ -53,6 +53,12 @@
             { "name": "Yellow", "value": "yellow" },
             { "name": "Red", "value": "red" }
           ]
+        },
+        {
+          "component": "text",
+          "name": "iconName",
+          "label": "Icon Name",
+          "valueType": "string"
         }
       ]
     }

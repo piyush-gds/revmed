@@ -46,6 +46,19 @@
     fill: #fff;
 }
 
+.anchor-menu__link.bg-yellow:hover {
+    color: #000;
+    background-color: #ffc23b;
+    border-color: #ffbe2f;
+    text-decoration: none;
+}
+
+.anchor-menu__link.bg-red:hover {
+    color: #c1443b;
+    background-color: #fff;
+    text-decoration: none;
+}
+
 /* Button Grid */
 
 .button-grid {
@@ -105,9 +118,9 @@
     color: #ffb718;
 }
 
-.button-grid .bg-red .anchor-menu__icon {
+/* .button-grid .bg-red .anchor-menu__icon {
     color: #c1443b;
-}
+} */
 
 .button-grid .bg-yellow svg path {
     fill: unset;
