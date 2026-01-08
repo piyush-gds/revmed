@@ -24,7 +24,8 @@
             "resourceType": "core/franklin/components/block/v1/block/item",
             "template": {
               "name": "Helpful Resources Item",
-              "model": "helpful-resources-item"
+              "model": "helpful-resources-item",
+              "filter": "helpful-resources-item"
             }
           }
         }
