@@ -198,8 +198,14 @@
     "fields": [
       {
         "component": "text",
-        "name": "linkText",
-        "label": "Link Text",
+        "name": "titleText",
+        "label": "Title Text",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "subTitleText",
+        "label": "Sub Title Text",
         "valueType": "string"
       }
     ]
