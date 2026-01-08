@@ -204,8 +204,8 @@
       },
       {
         "component": "text",
-        "name": "descriptionText",
-        "label": "Description Text",
+        "name": "subTitleText",
+        "label": "Sub Title Text",
         "valueType": "string"
       }
     ]

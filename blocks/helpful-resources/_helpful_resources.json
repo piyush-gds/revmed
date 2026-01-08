@@ -43,8 +43,8 @@
         },
         {
           "component": "text",
-          "name": "descriptionText",
-          "label": "Description Text",
+          "name": "subTitleText",
+          "label": "Sub Title Text",
           "valueType": "string"
         }
       ]
@@ -54,12 +54,7 @@
     {
       "id": "helpful-resources",
       "components": [
-        "helpful-resources-item"
-      ]
-    },
-    {
-      "id": "helpful-resources-item",
-      "components": [
+        "helpful-resources-item",
         "icon-button"
       ]
     }
