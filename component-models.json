@@ -194,6 +194,17 @@
     ]
   },
   {
+    "id": "helpful-resources-item",
+    "fields": [
+      {
+        "component": "text",
+        "name": "linkText",
+        "label": "Link Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "hero",
     "fields": [
       {

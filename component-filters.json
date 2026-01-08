@@ -16,7 +16,8 @@
       "cards",
       "columns",
       "fragment",
-      "icon-button"
+      "icon-button",
+      "helpful-resources"
     ]
   },
   {
@@ -39,6 +40,12 @@
       "button",
       "title",
       "icon-button"
+    ]
+  },
+  {
+    "id": "helpful-resources",
+    "components": [
+      "helpful-resources-item"
     ]
   }
 ]
