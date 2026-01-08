@@ -3,9 +3,9 @@ export default async function decorate(block) {
   const paragraph = block.children[1].querySelector("p");
   const link = block.children[1].querySelector("a");
   const bgColor = block.children[2].querySelector("p")?.textContent?.trim();
+  const iconName = block.children[3].querySelector("p")?.textContent?.trim();
   const paragraphText = paragraph ? paragraph.textContent.trim() : "";
   const href = link ? link.getAttribute("href") : "#";
-  const watch = 'watch';
 
   const anchor = document.createElement("a");
   const span = document.createElement("span");
@@ -26,9 +26,9 @@ export default async function decorate(block) {
   use.setAttributeNS(
     XLINK_NS,
     "xlink:href",
-    `/media_1bcade0d7d7dabf7952e66a3335f1a800b1043e43.svg?#${watch}`
+    `/media_1bcade0d7d7dabf7952e66a3335f1a800b1043e43.svg?#${iconName}`
   );
-  
+
   svg.append(use);
   anchor.append(span);
   anchor.append(svg);
