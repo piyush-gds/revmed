@@ -12,23 +12,16 @@
     color: inherit;
 }
 
-.anchor-menu__text {
-    font-size: 14px;
-    line-height: 1.2;
-    white-space: nowrap;
-}
-
 .anchor-menu__icon {
     width: 1.5rem;
     height: 1.5rem;
-    fill: currentColor;
     flex-shrink: 0;
     margin: 0.375rem;
 }
 
 .anchor-menu__text {
     font-family: Assistant, Arial, sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
     line-height: 1.125rem;
 }
@@ -44,6 +37,16 @@
     border: 0.8px solid #c1443b;
     color: #fff;
 }
+
+.bg-yellow svg path {
+    fill: #253958;
+}
+
+.bg-red svg path {
+    fill: #fff;
+}
+
+/* Button Grid */
 
 .button-grid {
     display: flex;
@@ -77,7 +80,6 @@
     width: 35px;
     height: 35px;
     margin: 0 0 0 0.625rem;
-    fill: currentcolor;
 }
 
 .button-grid .anchor-menu__text {
@@ -99,3 +101,24 @@
     color: #fff;
 }
 
+.button-grid .bg-yellow .anchor-menu__icon {
+    color: #ffb718;
+}
+
+.button-grid .bg-red .anchor-menu__icon {
+    color: #c1443b;
+}
+
+.button-grid .bg-yellow svg path {
+    fill: unset;
+}
+
+.button-grid .bg-red svg path {
+    fill: unset;
+}
+
+.button-grid .anchor-menu__link:hover {
+    text-decoration: none;
+    background: #fff;
+    color: #c1443b;
+}
