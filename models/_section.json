@@ -37,6 +37,10 @@
             {
               "name": "Button Grid",
               "value": "button-grid"
+            },
+            {
+              "name": "Helpful Resources",
+              "value": "helpful-resources"
             }
           ]
         }
