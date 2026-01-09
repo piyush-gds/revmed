@@ -194,7 +194,7 @@
     ]
   },
   {
-    "id": "helpful-resources-item",
+    "id": "helpful-resources",
     "fields": [
       {
         "component": "text",
