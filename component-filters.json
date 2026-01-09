@@ -17,7 +17,8 @@
       "columns",
       "fragment",
       "icon-button",
-      "helpful-resources"
+      "helpful-resources",
+      "video-player"
     ]
   },
   {
@@ -46,6 +47,12 @@
     "id": "helpful-resources",
     "components": [
       "icon-button"
+    ]
+  },
+  {
+    "id": "video-player",
+    "components": [
+      "video-player-item"
     ]
   }
 ]
