@@ -51,7 +51,8 @@
         "image",
         "button",
         "title",
-        "icon-button"
+        "icon-button",
+        "poc-button"
       ]
     }
   ]

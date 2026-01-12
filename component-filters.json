@@ -26,8 +26,7 @@
   {
     "id": "cards",
     "components": [
-      "card",
-      "poc-btn-item"
+      "card"
     ]
   },
   {
@@ -44,8 +43,7 @@
       "button",
       "title",
       "icon-button",
-      "poc-button",
-      "poc-btn-item"
+      "poc-button"
     ]
   },
   {
