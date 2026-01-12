@@ -40,7 +40,9 @@
     {
       "id": "helpful-resources",
       "components": [
-        "icon-button"
+        "icon-button",
+        "poc-btn-item",
+        "poc-button-items"
       ]
     }
   ]
