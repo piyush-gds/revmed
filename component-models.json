@@ -302,7 +302,7 @@
     ]
   },
   {
-    "id": "poc-button",
+    "id": "poc-button-item",
     "fields": [
       {
         "component": "text",

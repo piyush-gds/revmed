@@ -9,7 +9,22 @@
             "resourceType": "core/franklin/components/block/v1/block",
             "template": {
               "name": "POC Button",
-              "model": "poc-button"
+              "filter": "poc-button"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "POC Button Item",
+      "id": "poc-button-item",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "POC Button Item",
+              "model": "poc-button-item"
             }
           }
         }
@@ -18,7 +33,7 @@
   ],
   "models": [
     {
-      "id": "poc-button",
+      "id": "poc-button-item",
       "fields": [
         {
           "component": "text",
@@ -35,5 +50,12 @@
       ]
     }
   ],
-  "filters": []
+  "filters": [
+    {
+      "id": "poc-button",
+      "components": [
+        "poc-button-item"
+      ]
+    }
+  ]
 }
