@@ -54,8 +54,7 @@
     {
       "id": "poc-button",
       "components": [
-        "poc-btn-item",
-        "poc-button-items"
+        "poc-btn-item"
       ]
     }
   ]
