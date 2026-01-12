@@ -52,8 +52,7 @@
         "button",
         "title",
         "icon-button",
-        "poc-button",
-        "poc-btn-item"
+        "poc-button"
       ]
     }
   ]
