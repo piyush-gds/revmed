@@ -1,11 +1,11 @@
 export default async function decorate(block) {
-  const paragraph = block.children[1].querySelector("p");
-  const link = block.children[1].querySelector("a");
-  const bgColor = block.children[2].querySelector("p")?.textContent?.trim();
-  const iconName = block.children[3]
+  const paragraph = block.children[0].querySelector("p");
+  const link = block.children[0].querySelector("a");
+  const bgColor = block.children[1].querySelector("p")?.textContent?.trim();
+  const iconName = block.children[2]
     .querySelectorAll("p")[1]
     ?.textContent?.trim();
-  const iconPath = block.children[3]
+  const iconPath = block.children[2]
     .querySelector("picture img")
     ?.getAttribute("src");
   const paragraphText = paragraph ? paragraph.textContent.trim() : "";
