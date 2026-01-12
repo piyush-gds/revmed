@@ -285,6 +285,23 @@
     ]
   },
   {
+    "id": "poc-button",
+    "fields": [
+      {
+        "component": "text",
+        "name": "firstInput",
+        "label": "First Input",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "secondInput",
+        "label": "Second Input",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "video-player-item",
     "fields": [
       {

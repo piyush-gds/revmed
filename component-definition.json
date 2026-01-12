@@ -189,6 +189,21 @@
           }
         },
         {
+          "title": "POC Button",
+          "id": "poc-button",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "POC Button",
+                  "model": "poc-button"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Video Player",
           "id": "video-player",
           "plugins": {
