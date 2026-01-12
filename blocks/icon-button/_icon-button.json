@@ -57,7 +57,8 @@
         {
           "component": "aem-content",
           "name": "svg_path",
-          "label": "Svg Path"
+          "label": "Svg Path",
+          "valueType": "string"
         },
         {
           "component": "text",
