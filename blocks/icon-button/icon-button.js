@@ -1,10 +1,13 @@
 export default async function decorate(block) {
-  const picture = block.children[0].querySelector("picture");
   const paragraph = block.children[1].querySelector("p");
   const link = block.children[1].querySelector("a");
   const bgColor = block.children[2].querySelector("p")?.textContent?.trim();
-  const iconName = block.children[3].querySelector("p")?.textContent?.trim();
-  const iconPath = block.children[3].querySelector("picture img")?.getAttribute("src");
+  const iconName = block.children[3]
+    .querySelectorAll("p")[1]
+    ?.textContent?.trim();
+  const iconPath = block.children[3]
+    .querySelector("picture img")
+    ?.getAttribute("src");
   const paragraphText = paragraph ? paragraph.textContent.trim() : "";
   const href = link ? link.getAttribute("href") : "#";
 
@@ -23,12 +26,10 @@ export default async function decorate(block) {
   const svg = document.createElementNS(SVG_NS, "svg");
   const use = document.createElementNS(SVG_NS, "use");
 
-  svg.classList.add("anchor-menu__icon");
-  use.setAttributeNS(
-    XLINK_NS,
-    "xlink:href",
-    `${iconPath}?#${iconName}`
-  );
+  if (iconPath && iconName) {
+    svg.classList.add("anchor-menu__icon");
+    use.setAttributeNS(XLINK_NS, "xlink:href", `${iconPath}?#${iconName}`);
+  }
 
   svg.append(use);
   anchor.append(span);
