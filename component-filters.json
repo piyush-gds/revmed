@@ -53,6 +53,13 @@
     ]
   },
   {
+    "id": "hero",
+    "components": [
+      "poc-btn-item",
+      "poc-button-items"
+    ]
+  },
+  {
     "id": "poc-button",
     "components": [
       "poc-btn-item",

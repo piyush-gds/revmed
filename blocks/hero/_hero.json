@@ -44,5 +44,13 @@
       ]
     }
   ],
-  "filters": []
+  "filters": [
+     {
+      "id": "hero",
+      "components": [
+        "poc-btn-item",
+        "poc-button-items"
+      ]
+    }
+  ]
 }
