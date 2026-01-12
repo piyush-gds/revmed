@@ -55,9 +55,14 @@
           ]
         },
         {
+          "component": "aem-content",
+          "name": "svg_path",
+          "label": "Svg Path"
+        },
+        {
           "component": "text",
-          "name": "iconName",
-          "label": "Icon Name",
+          "name": "svg_text",
+          "label": "Svg Icon Name",
           "valueType": "string"
         }
       ]
