@@ -1,0 +1,39 @@
+{
+  "definitions": [
+    {
+      "title": "POC Button Item",
+      "id": "poc-button-items",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "POC Button Item",
+              "model": "poc-button-items"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "poc-button-items",
+      "fields": [
+        {
+          "component": "text",
+          "name": "firstInput",
+          "label": "First Input",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "secondInput",
+          "label": "Second Input",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
