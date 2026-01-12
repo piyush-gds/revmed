@@ -204,7 +204,7 @@
           }
         },
         {
-          "title": "POC Button",
+          "title": "POC Button Block",
           "id": "poc-button",
           "plugins": {
             "xwalk": {
@@ -219,7 +219,7 @@
           }
         },
         {
-          "title": "POC Button Item",
+          "title": "POC Button Block Item",
           "id": "poc-btn-item",
           "plugins": {
             "xwalk": {
