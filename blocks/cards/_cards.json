@@ -56,7 +56,9 @@
     {
       "id": "cards",
       "components": [
-        "card"
+        "card",
+        "poc-button-items",
+        "poc-btn-item"
       ]
     }
   ]
