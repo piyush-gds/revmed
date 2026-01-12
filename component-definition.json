@@ -220,14 +220,14 @@
         },
         {
           "title": "POC Button Item",
-          "id": "poc-button-item",
+          "id": "poc-btn-item",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block/item",
                 "template": {
                   "name": "POC Button Item",
-                  "model": "poc-button-item"
+                  "model": "poc-btn-item"
                 }
               }
             }
