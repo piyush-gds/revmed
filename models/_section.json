@@ -61,7 +61,8 @@
         "fragment",
         "icon-button",
         "helpful-resources",
-        "video-player"
+        "video-player",
+        "poc-button"
       ]
     }
   ]
