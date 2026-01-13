@@ -50,6 +50,7 @@
           "name": "text",
           "value": "",
           "label": "Text",
+          "description": "Enter the text to display",
           "valueType": "string"
         }
       ]
