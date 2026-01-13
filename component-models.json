@@ -346,21 +346,6 @@
         "multi": false
       },
       {
-        "component": "text",
-        "valueType": "string",
-        "name": "imageAlt",
-        "label": "Alt",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "videoUrl",
-        "label": "Video URL",
-        "description": "Vimeo URL for video variation",
-        "value": ""
-      },
-      {
         "component": "richtext",
         "name": "text",
         "value": "",
