@@ -34,14 +34,13 @@
               "name": "Video",
               "value": "video"
             }
-          ],
-          "value": "image"
+          ]
         },
         {
           "component": "reference",
           "valueType": "string",
-          "name": "image",
-          "label": "Image",
+          "name": "assetPicker",
+          "label": "Asset Picker",
           "multi": false
         },
         {
