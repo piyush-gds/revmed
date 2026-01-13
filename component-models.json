@@ -335,7 +335,8 @@
             "name": "Video",
             "value": "video"
           }
-        ]
+        ],
+        "value": "image"
       },
       {
         "component": "reference",
