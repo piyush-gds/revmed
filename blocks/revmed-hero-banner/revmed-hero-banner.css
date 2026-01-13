@@ -1,71 +1,48 @@
-.revmed-hero-banner-container .revmed-hero-banner-wrapper {
-  max-width: unset;
-  padding: 0;
-}
-
 .revmed-hero-banner {
+  grid-template-rows: subgrid;
+  grid-template-columns: subgrid;
+  display: grid;
+  grid-row: span 3 / span 3;
+  grid-column: 1 / -1;
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  grid-column: full-bleed-start / full-bleed-end;
+  max-width: 100%;
 }
 
-.revmed-hero-banner h1 {
-  max-width: 1200px;
+.revmed-hero-banner .hero-image {
+  position: relative;
+  width: 100%;
+  height: 24rem;
+  overflow: hidden;
+  background-color: var(--primary);
+}
+
+.revmed-hero-banner .hero-image img {
+  position: absolute;
+  inset: 0;
   margin-left: auto;
   margin-right: auto;
-  color: var(--background-color);
-}
-
-/* Image variation */
-.revmed-hero-banner.image picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
-}
-
-.revmed-hero-banner.image img {
-  object-fit: cover;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: 50% 33%;
 }
 
-/* Video variation */
-.revmed-hero-banner.video .video-embed {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+.revmed-hero-banner .hero-text {
+  margin-top: 2rem;
+  text-align: center;
 }
 
-.revmed-hero-banner.video .video-embed iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100vw;
-  height: 100vh;
-  transform: translate(-50%, -50%);
-  border: 0;
-}
-
-@media (width >= 900px) {
-  .revmed-hero-banner {
-    padding: 40px 32px;
+@media (width >= 96rem) {
+  .revmed-hero-banner .hero-image {
+    height: 40rem;
   }
 }
 
-/* Maintain aspect ratio for video on smaller screens */
-@media (max-aspect-ratio: 16/9) {
-  .revmed-hero-banner.video .video-embed iframe {
-    height: 56.25vw;
-  }
-}
-
-@media (min-aspect-ratio: 16/9) {
-  .revmed-hero-banner.video .video-embed iframe {
-    width: 177.78vh;
-  }
+.revmed-hero-banner .hero-text p {
+  font-family: 'familyFKDisplayALT', "FKDisplayALT Fallback";
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 52px;
+  margin-top: 3rem;
 }
