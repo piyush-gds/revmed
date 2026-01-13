@@ -1,0 +1,71 @@
+.revmed-hero-banner-container .revmed-hero-banner-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.revmed-hero-banner {
+  position: relative;
+  padding: 40px 24px;
+  min-height: 300px;
+}
+
+.revmed-hero-banner h1 {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--background-color);
+}
+
+/* Image variation */
+.revmed-hero-banner.image picture {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.revmed-hero-banner.image img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Video variation */
+.revmed-hero-banner.video .video-embed {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.revmed-hero-banner.video .video-embed iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%);
+  border: 0;
+}
+
+@media (width >= 900px) {
+  .revmed-hero-banner {
+    padding: 40px 32px;
+  }
+}
+
+/* Maintain aspect ratio for video on smaller screens */
+@media (max-aspect-ratio: 16/9) {
+  .revmed-hero-banner.video .video-embed iframe {
+    height: 56.25vw;
+  }
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .revmed-hero-banner.video .video-embed iframe {
+    width: 177.78vh;
+  }
+}

@@ -71,6 +71,10 @@
     ]
   },
   {
+    "id": "revmed-hero-banner",
+    "components": []
+  },
+  {
     "id": "video-player",
     "components": [
       "video-player-item"
