@@ -1,4 +1,49 @@
 export default function decorate(block) {
+  const VIDEO_EXTENSIONS = [
+    ".mp4",
+    ".webm",
+    ".ogg",
+    ".ogv",
+    ".mov",
+    ".avi",
+    ".wmv",
+    ".flv",
+    ".mkv",
+    ".m4v",
+    ".3gp",
+    ".3g2",
+    ".mpg",
+    ".mpeg",
+    ".m2v",
+    ".m4p",
+    ".divx",
+    ".xvid",
+    ".vob",
+    ".ts",
+    ".mts",
+    ".m2ts",
+  ];
+
+  const IMAGE_EXTENSIONS = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".webp",
+    ".svg",
+    ".bmp",
+    ".ico",
+    ".tiff",
+    ".tif",
+    ".apng",
+    ".avif",
+    ".jfif",
+    ".pjpeg",
+    ".pjp",
+    ".heic",
+    ".heif",
+  ];
+
   const rows = Array.from(block.children);
 
   const variation =
@@ -25,15 +70,23 @@ export default function decorate(block) {
       "https://revmedclinicaltrials.com/videos/hero-video.webm" ||
       "https://www.w3schools.com/html/mov_bbb.mp4";
 
-    if (videoSrc) {
+    // Check if the file is a video type
+    const isVideo =
+      videoSrc &&
+      VIDEO_EXTENSIONS.some((ext) => videoSrc.toLowerCase().endsWith(ext));
+
+    if (videoSrc && isVideo) {
       video.src = videoSrc;
       video.controls = false;
       video.autoplay = true;
       video.loop = true;
       video.muted = true;
+      videoContainer.appendChild(video);
+    } else {
+      console.error(
+        "Invalid video file. Please upload a video file (.mp4, .webm, .ogg, .mov, etc.)"
+      );
     }
-
-    videoContainer.appendChild(video);
 
     if (text) {
       const textContainer = document.createElement("div");
@@ -52,8 +105,21 @@ export default function decorate(block) {
     imageContainer.className = "hero-image-container";
 
     const img = assetPicked?.querySelector("img") || assetPicked;
-    if (img) {
-      imageContainer.appendChild(img);
+
+    // Check if the element is actually an image
+    if (img && img.tagName === "IMG") {
+      const imgSrc = img.src || "";
+      const isImage = IMAGE_EXTENSIONS.some((ext) =>
+        imgSrc.toLowerCase().includes(ext)
+      );
+
+      if (isImage) {
+        imageContainer.appendChild(img);
+      } else {
+        console.error(
+          "Invalid image file. Please upload an image file (.jpg, .png, .gif, .webp, .svg, etc.)"
+        );
+      }
     }
 
     if (text) {
