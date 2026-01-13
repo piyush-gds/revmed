@@ -7,7 +7,7 @@ export default function decorate(block) {
 
   let textContent = null;
   rows.forEach((row) => {
-    const paragraph = row.querySelector("p");
+    const paragraph = row.querySelector("h1");
     if (paragraph && paragraph.textContent.trim()) {
       textContent = paragraph;
     }
