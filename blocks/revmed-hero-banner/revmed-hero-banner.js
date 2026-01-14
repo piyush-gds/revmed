@@ -64,11 +64,11 @@ export default function decorate(block) {
     videoContainer.className = "hero-video-container";
 
     const video = document.createElement("video");
-    // const videoSrc = rows[1]?.querySelector('a')?.href;
+    const videoSrc = rows[1]?.querySelector('a')?.href;
     // test video
-    const videoSrc =
-      "https://revmedclinicaltrials.com/videos/hero-video.webm" ||
-      "https://www.w3schools.com/html/mov_bbb.mp4";
+    // const videoSrc =
+    //   "https://revmedclinicaltrials.com/videos/hero-video.webm" ||
+    //   "https://www.w3schools.com/html/mov_bbb.mp4";
 
     // Check if the file is a video type
     const isVideo =
@@ -99,6 +99,7 @@ export default function decorate(block) {
     block.appendChild(videoWrapper);
   } else if (variation === "image") {
     const imageWrapper = document.createElement("div");
+    const textContainer = document.createElement("div");
     imageWrapper.className = "hero-image-wrapper";
 
     const imageContainer = document.createElement("div");
@@ -123,13 +124,12 @@ export default function decorate(block) {
     }
 
     if (text) {
-      const textContainer = document.createElement("div");
       textContainer.className = "hero-text-container";
       textContainer.innerHTML = text;
-      imageContainer.appendChild(textContainer);
     }
 
     imageWrapper.appendChild(imageContainer);
+    imageWrapper.appendChild(textContainer);
     block.appendChild(imageWrapper);
   }
 }
