@@ -325,7 +325,6 @@
         "component": "select",
         "name": "variation",
         "label": "Variation",
-        "description": "Choose whether to display an image or video in the hero banner",
         "valueType": "string",
         "options": [
           {
@@ -343,7 +342,6 @@
         "valueType": "string",
         "name": "assetPicker",
         "label": "Asset Picker",
-        "description": "Upload an image or video based on the variation selected.\nAllowed image formats: .jpg, .jpeg, .png, .gif, .webp, .svg, .bmp, .ico, .tiff, .tif, .apng, .avif, .jfif, .pjpeg, .pjp, .heic, .heif.\nAllowed video formats: .mp4, .webm, .ogg, .ogv, .mov, .avi, .wmv, .flv, .mkv, .m4v, .3gp, .3g2, .mpg, .mpeg, .m2v, .m4p, .divx, .xvid, .vob, .ts, .mts, .m2ts",
         "multi": false
       },
       {
@@ -351,7 +349,6 @@
         "name": "text",
         "value": "",
         "label": "Text",
-        "description": "Enter the text to display",
         "valueType": "string"
       }
     ]
