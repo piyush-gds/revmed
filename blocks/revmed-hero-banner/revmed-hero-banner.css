@@ -1,3 +1,13 @@
+  :root {
+    --spacing: 0.25rem;
+    --text-sm: 0.875rem;
+    --text-sm--line-height: calc(1.25 / 0.875);
+    --font-weight-medium: 500;
+    --color-gray-700: oklch(0.373 0.034 259.733);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --default-transition-duration: 0.15s;
+  }
+  
 /* Normal weight */
 @font-face {
     font-family: "FKDisplayALT";
@@ -58,6 +68,22 @@
     position: relative;
     width: 100%;
     height: 34.5rem;
+    inset: 0;
+}
+
+.revmed-hero-banner .hero-video-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(
+        to bottom in oklab,
+        color-mix(in oklab, #000 50%, transparent),
+        color-mix(in oklab, #000 20%, transparent)
+    );
+    z-index: 1;
 }
 
 .revmed-hero-banner .hero-video-container video {
@@ -76,6 +102,55 @@
     transform: translate(-50%, -50%);
     text-align: center;
     color: #fff;
+    z-index: 2;
+}
+
+.hero-scroll-button {
+  margin-top: calc(var(--spacing) * 8);
+  display: inline-flex;
+  aspect-ratio: 1;
+  height: min-content;
+  width: min-content;
+  animation: bounce 1s infinite;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--spacing) * 2);
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: calc(var(--spacing) * 2);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  color: var(--color-gray-700);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  outline-style: none;
+  transition-property: color, box-shadow;
+  transition-timing-function: var(--ease-in-out);
+  transition-duration: var(--default-transition-duration);
+  padding-inline: calc(var(--spacing) * 3);
+}
+
+.hero-scroll-button:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.hero-scroll-button .hero-scroll-button-icon {
+  width: 3rem;
+  height: 3rem;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
 }
 
 @media (width >= 96rem) {
@@ -83,3 +158,12 @@
         height: 40rem;
     }
 }
+
+@media (width <=835px) {
+  .revmed-hero-banner .hero-video-wrapper .hero-video-container .hero-text-container {
+    left: 0%;
+    transform: translate(0%, -50%);
+    text-align: start;
+  }
+}
+
