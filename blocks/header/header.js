@@ -63,6 +63,23 @@ function toggleAllNavSections(sections, expanded = false) {
 }
 
 /**
+ * Handles mouseenter event for nav items on desktop
+ * @param {Element} navSection The nav section being hovered
+ * @param {Element} navSections The container of all nav sections
+ */
+function handleNavHover(navSection, navSections) {
+  if (isDesktop.matches) {
+    // Only open dropdown if it exists (authored in Universal Editor)
+    const hasDropdown = navSection.querySelector('ul');
+    if (hasDropdown) {
+      // Expand this section
+      toggleAllNavSections(navSections);
+      navSection.setAttribute('aria-expanded', 'true');
+    }
+  }
+}
+
+/**
  * Handles mouseleave event for nav items on desktop
  * Delayed close to allow moving into dropdown
  * @param {Element} navSection The nav section mouse left from
@@ -168,11 +185,7 @@ export default async function decorate(block) {
       // Add hover listeners for desktop
       navSection.addEventListener('mouseenter', () => {
         cancelNavClose(navSection);
-        // Only open dropdown if it exists (authored in Universal Editor)
-        if (isDesktop.matches && navSection.querySelector('ul')) {
-          toggleAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', 'true');
-        }
+        handleNavHover(navSection, navSections);
       });
       
       navSection.addEventListener('mouseleave', (e) => {
