@@ -36,7 +36,7 @@ export default async function decorate(block) {
   anchor.append(svg);
 
   anchor.classList.remove("bg-yellow", "bg-red");
-  anchor.id = 'what-is-ras';
+  anchor.id = 'rason-inhibitor-clinical-trial-program';
 
   if (bgColor === "yellow") {
     anchor.classList.add("bg-yellow");
