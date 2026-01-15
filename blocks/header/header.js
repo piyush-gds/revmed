@@ -63,34 +63,6 @@ function toggleAllNavSections(sections, expanded = false) {
 }
 
 /**
- * Handles mouseleave event for nav items on desktop
- * Delayed close to allow moving into dropdown
- * @param {Element} navSection The nav section mouse left from
- */
-function handleNavLeave(navSection) {
-  if (isDesktop.matches) {
-    // Use a timeout to allow mouse to move into dropdown
-    const closeTimeout = setTimeout(() => {
-      navSection.setAttribute('aria-expanded', 'false');
-    }, 1000);
-    
-    // Store timeout ID on the element
-    navSection.dataset.closeTimeout = closeTimeout;
-  }
-}
-
-/**
- * Cancels the close timeout when mouse enters nav section or dropdown
- * @param {Element} navSection The nav section being hovered
- */
-function cancelNavClose(navSection) {
-  if (navSection.dataset.closeTimeout) {
-    clearTimeout(navSection.dataset.closeTimeout);
-    delete navSection.dataset.closeTimeout;
-  }
-}
-
-/**
  * Toggles the entire nav
  * @param {Element} nav The container element
  * @param {Element} navSections The nav sections within the container element
@@ -163,26 +135,7 @@ export default async function decorate(block) {
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      // if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-      
-      // Add hover listeners for desktop
-      navSection.addEventListener('mouseenter', () => {
-        cancelNavClose(navSection);
-        // Only open dropdown if it exists (authored in Universal Editor)
-        if (isDesktop.matches && navSection.querySelector('ul')) {
-          toggleAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', 'true');
-        }
-      });
-      
-      navSection.addEventListener('mouseleave', (e) => {
-        // Only close if not moving to the dropdown
-        const dropdown = navSection.querySelector('ul');
-        if (!dropdown || !dropdown.contains(e.relatedTarget)) {
-          handleNavLeave(navSection);
-        }
-      });
-      
+      if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
       navSection.addEventListener('click', () => {
         if (isDesktop.matches) {
           const expanded = navSection.getAttribute('aria-expanded') === 'true';
@@ -211,3 +164,4 @@ export default async function decorate(block) {
   navWrapper.append(nav);
   block.append(navWrapper);
 }
+ 
