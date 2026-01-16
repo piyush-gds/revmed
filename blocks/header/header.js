@@ -162,8 +162,17 @@ export default async function decorate(block) {
 
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
-    navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
+    const navItems = navSections.querySelectorAll(':scope .default-content-wrapper > ul > li');
+    
+    navItems.forEach((navSection, index) => {
       // if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
+      
+      // Add separator after each nav item except the last one (for mobile)
+      if (index < navItems.length - 1) {
+        const separator = document.createElement('div');
+        separator.className = 'link-separator';
+        navSection.after(separator);
+      }
       
       // Add hover listeners for desktop
       navSection.addEventListener('mouseenter', () => {

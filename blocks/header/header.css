@@ -10,8 +10,8 @@ header nav {
   box-sizing: border-box;
   display: grid;
   grid-template:
-    'hamburger brand tools' var(--nav-height)
-    'sections sections sections' 1fr / auto 1fr auto;
+    'brand hamburger' var(--nav-height)
+    'sections sections' 1fr / 1fr auto;
   align-items: center;
   gap: 0 24px;
   margin: auto;
@@ -23,9 +23,8 @@ header nav {
 
 header nav[aria-expanded='true'] {
   grid-template:
-    'hamburger brand' var(--nav-height)
-    'sections sections' 1fr
-    'tools tools' var(--nav-height) / auto 1fr;
+    'brand hamburger' var(--nav-height)
+    'sections sections' 1fr / 1fr auto;
   overflow-y: auto;
   min-height: 100dvh;
 }
@@ -178,13 +177,25 @@ header nav .nav-sections ul > li {
 
 header nav .nav-sections ul > li > ul {
   margin-top: 0;
+  display: none;
 }
 
 header nav .nav-sections ul > li > ul > li {
   font-weight: 400;
 }
 
+.link-separator {
+  height: calc(var(--spacing) * 0.5);
+  width: 100%;
+  background-color: #13d377;
+  opacity: 0.7;
+}
+
 @media (width >= 900px) {
+  .link-separator {
+    display: none;
+  }
+
   header nav .nav-sections {
     display: block;
     visibility: visible;
