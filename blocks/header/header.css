@@ -37,6 +37,9 @@ header nav[aria-expanded='true'] {
     gap: 0 32px;
     max-width: 1264px;
     padding: 0 32px;
+    background: #fff;
+    margin-top: 1.75rem;
+    border-radius: 1rem;
   }
 
   header nav[aria-expanded='true'] {
@@ -152,7 +155,7 @@ header nav .nav-brand img {
 /* sections */
 header nav .nav-sections {
   grid-area: sections;
-  flex: 1 1 auto;
+  /* flex: 1 1 auto; */
   display: none;
   visibility: hidden;
 }
