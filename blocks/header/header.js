@@ -170,7 +170,12 @@ export default async function decorate(block) {
         cancelNavClose(navSection);
         // Only open dropdown if it exists (authored in Universal Editor)
         if (isDesktop.matches && navSection.querySelector('ul')) {
-          toggleAllNavSections(navSections);
+          // Close other expanded sections
+          navSections.querySelectorAll(':scope .default-content-wrapper > ul > li[aria-expanded="true"]').forEach((openSection) => {
+            if (openSection !== navSection) {
+              openSection.setAttribute('aria-expanded', 'false');
+            }
+          });
           navSection.setAttribute('aria-expanded', 'true');
         }
       });

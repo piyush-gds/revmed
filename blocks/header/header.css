@@ -230,38 +230,64 @@ header nav .nav-sections ul > li > ul > li {
   header nav .nav-sections .default-content-wrapper > ul > li {
     flex: 0 1 auto;
     position: relative;
+    transition-property: all;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.3s;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li:hover {
+    color: unset;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul {
-    display: none;
-    position: relative;
+    display: flex;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 64px);
+    max-width: 1264px;
+    top: calc(var(--nav-height) + 1.75rem);
+    padding: 24px 32px;
+    background-color: #0e4343;
+    color: white;
+    white-space: initial;
+    margin: 0 auto;
+    gap: 24px;
+    justify-content: center;
+    border-radius: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out 0.15s, transform 0.3s ease-in-out 0.15s, visibility 0s 0.45s;
+    box-sizing: border-box;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
-    display: block;
-    position: absolute;
-    left: -24px;
-    width: 200px;
-    top: 150%;
-    padding: 16px;
-    background-color: var(--light-color);
-    white-space: initial;
-  }
-
-  header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 16px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid var(--light-color);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0s;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
-    padding: 8px 0;
+    padding: 8px 16px;
+    flex: 0 0 auto;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li > ul > li:hover {
+    background-color: #1a6b6b;
+    border-radius: 0.5rem;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li > ul > li a {
+    text-decoration: none;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li > ul > li:hover a {
+    text-decoration: none;
   }
 }
 
