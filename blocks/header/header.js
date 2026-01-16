@@ -220,8 +220,52 @@ export default async function decorate(block) {
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
 
+  // Extract nav-tools from nav to place it outside
+  const navTools = nav.querySelector('.nav-tools');
+  
+  // Decorate nav-tools with custom button structure
+  if (navTools) {
+    // Get the existing picture/img element
+    const picture = navTools.querySelector('picture');
+    const img = navTools.querySelector('img');
+    const iconSrc = img ? img.src : '';
+    
+    // Get button text from link or paragraph
+    const link = navTools.querySelector('a');
+    const buttonText = link ? link.textContent.trim() : navTools.textContent.trim();
+    const buttonHref = link ? link.href : '#';
+    
+    // Clear existing content
+    navTools.textContent = '';
+    
+    // Create button structure
+    const buttonDiv = document.createElement('a');
+    buttonDiv.href = buttonHref;
+    buttonDiv.setAttribute('data-slot', 'button');
+    buttonDiv.className = 'nav-tools-button';
+    
+    // Create icon element
+    if (iconSrc) {
+      const icon = document.createElement('img');
+      icon.src = iconSrc;
+      icon.alt = '';
+      icon.className = 'nav-tools-icon';
+      buttonDiv.appendChild(icon);
+    }
+    
+    // Create text span
+    const textSpan = document.createElement('span');
+    textSpan.textContent = buttonText;
+    buttonDiv.appendChild(textSpan);
+    
+    navTools.appendChild(buttonDiv);
+  }
+
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
+  if (navTools) {
+    navWrapper.append(navTools);
+  }
   block.append(navWrapper);
 }
