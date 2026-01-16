@@ -1,8 +1,12 @@
 /* header and nav layout */
+.header-wrapper {
+  position: fixed;
+    z-index: 30;
+    margin-top: 1.75rem;
+}
+
 header .nav-wrapper {
-  background-color: var(--background-color);
   width: 100%;
-  z-index: 2;
   position: fixed;
 }
 
@@ -16,9 +20,12 @@ header nav {
   gap: 0 24px;
   margin: auto;
   max-width: 1248px;
-  height: var(--nav-height);
+  height: 4rem;
   padding: 0 24px;
   font-family: var(--body-font-family);
+  background: #fff;
+  border-radius: 1rem;
+
 }
 
 header nav[aria-expanded='true'] {
@@ -36,14 +43,17 @@ header nav[aria-expanded='true'] {
     gap: 0 32px;
     max-width: 1264px;
     padding: 0 32px;
-    background: #fff;
-    margin-top: 1.75rem;
-    border-radius: 1rem;
   }
 
   header nav[aria-expanded='true'] {
     min-height: 0;
     overflow: visible;
+  }
+}
+
+@media (width <= 1280px) {
+  header nav {
+    margin: 0 0.5rem;
   }
 }
 
