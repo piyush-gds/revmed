@@ -325,7 +325,6 @@ header nav .nav-tools {
   display: flex;
   align-items: center;
   justify-content: end;
-  margin-right: 0.5rem;
 }
 
 .nav-tools a {
