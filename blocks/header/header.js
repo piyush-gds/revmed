@@ -274,6 +274,10 @@ export default async function decorate(block) {
     navItems.forEach((navSection, index) => {
       // if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
       
+      // Remove title attributes to prevent tooltips on hover
+      const links = navSection.querySelectorAll('a');
+      links.forEach(link => link.removeAttribute('title'));
+      
       // Add separator after each nav item except the last one (for mobile)
       if (index < navItems.length - 1) {
         const separator = document.createElement('div');
