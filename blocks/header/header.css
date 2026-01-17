@@ -65,6 +65,11 @@ header nav p {
 
 header nav a:any-link {
   color: currentcolor;
+  text-decoration: none;
+}
+
+header .nav-wrapper a {
+  text-decoration: none;
 }
 
 /* hamburger */
@@ -265,7 +270,7 @@ header nav .nav-sections ul > li > ul > li {
     display: flex;
     position: fixed;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(-10%);
     width: calc(100% - 64px);
     max-width: 1264px;
     top: calc(var(--nav-height) + 1.75rem);
@@ -282,13 +287,14 @@ header nav .nav-sections ul > li > ul > li {
     pointer-events: none;
     transition: opacity 0.3s ease-in-out 0.15s, transform 0.3s ease-in-out 0.15s, visibility 0s 0.45s;
     box-sizing: border-box;
+    /* z-index: -1; */
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(-10%);
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0s;
   }
 

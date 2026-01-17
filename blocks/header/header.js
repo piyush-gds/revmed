@@ -255,6 +255,20 @@ export default async function decorate(block) {
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     const navItems = navSections.querySelectorAll(':scope .default-content-wrapper > ul > li');
+    const firstNavItemWithDropdown = Array.from(navItems).find(item => item.querySelector('ul'));
+    
+    // Show first item's dropdown when hovering anywhere on nav
+    nav.addEventListener('mouseenter', () => {
+      if (isDesktop.matches && firstNavItemWithDropdown) {
+        firstNavItemWithDropdown.setAttribute('aria-expanded', 'true');
+      }
+    });
+    
+    nav.addEventListener('mouseleave', () => {
+      if (isDesktop.matches) {
+        toggleAllNavSections(navSections, false);
+      }
+    });
     
     navItems.forEach((navSection, index) => {
       // if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
@@ -266,10 +280,8 @@ export default async function decorate(block) {
         navSection.after(separator);
       }
       
-      // Add hover listeners for desktop
+      // Add hover listeners for desktop - switch dropdown when hovering specific nav items
       navSection.addEventListener('mouseenter', () => {
-        cancelNavClose(navSection);
-        
         if (isDesktop.matches) {
           // Close all other expanded sections first
           navSections.querySelectorAll(':scope .default-content-wrapper > ul > li[aria-expanded="true"]').forEach((openSection) => {
@@ -278,21 +290,12 @@ export default async function decorate(block) {
             }
           });
           
-          // Only open dropdown if this item has sub-links
+          // If this item has sub-links, show its dropdown; otherwise keep first item's dropdown
           if (navSection.querySelector('ul')) {
             navSection.setAttribute('aria-expanded', 'true');
-          } else {
-            // If no sub-links, ensure this item is also closed
-            navSection.setAttribute('aria-expanded', 'false');
+          } else if (firstNavItemWithDropdown) {
+            firstNavItemWithDropdown.setAttribute('aria-expanded', 'true');
           }
-        }
-      });
-      
-      navSection.addEventListener('mouseleave', (e) => {
-        // Only close if not moving to the dropdown
-        const dropdown = navSection.querySelector('ul');
-        if (!dropdown || !dropdown.contains(e.relatedTarget)) {
-          handleNavLeave(navSection);
         }
       });
       
