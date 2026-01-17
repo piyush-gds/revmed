@@ -91,6 +91,62 @@ function cancelNavClose(navSection) {
 }
 
 /**
+ * Creates a mobile dialog menu matching the live site structure
+ * @param {Element} navSections The nav sections element
+ * @returns {Element} The dialog element
+ */
+function createMobileDialog(navSections) {
+  const dialog = document.createElement('div');
+  dialog.setAttribute('role', 'dialog');
+  dialog.setAttribute('aria-label', 'Navigation Menu');
+  dialog.setAttribute('data-state', 'closed');
+  dialog.setAttribute('data-slot', 'dialog-content');
+  dialog.className = 'mobile-nav-dialog';
+  dialog.setAttribute('tabindex', '-1');
+  
+  const dialogInner = document.createElement('div');
+  dialogInner.className = 'mobile-nav-content';
+  
+  // Clone nav items
+  const navItems = navSections.querySelectorAll(':scope .default-content-wrapper > ul > li');
+  navItems.forEach((item, index) => {
+    const link = item.querySelector('a');
+    if (link) {
+      const wrapper = document.createElement('a');
+      wrapper.className = 'mobile-nav-item-wrapper';
+      wrapper.href = link.href;
+      
+      const button = document.createElement('button');
+      button.setAttribute('data-slot', 'button');
+      button.className = 'mobile-nav-button';
+      
+      const textDiv = document.createElement('div');
+      textDiv.className = 'mobile-nav-text';
+      textDiv.textContent = link.textContent;
+      
+      const iconDiv = document.createElement('div');
+      iconDiv.className = 'mobile-nav-icon';
+      iconDiv.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12,3 L21,8.5 L21,15.5 L12,21 L3,15.5 L3,8.5 Z"></path></svg>';
+      
+      button.appendChild(textDiv);
+      button.appendChild(iconDiv);
+      wrapper.appendChild(button);
+      dialogInner.appendChild(wrapper);
+      
+      // Add separator except after last item
+      if (index < navItems.length - 1) {
+        const separator = document.createElement('div');
+        separator.className = 'mobile-nav-separator';
+        dialogInner.appendChild(separator);
+      }
+    }
+  });
+  
+  dialog.appendChild(dialogInner);
+  return dialog;
+}
+
+/**
  * Toggles the entire nav
  * @param {Element} nav The container element
  * @param {Element} navSections The nav sections within the container element
@@ -99,7 +155,43 @@ function cancelNavClose(navSection) {
 function toggleMenu(nav, navSections, forceExpanded = null) {
   const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
   const button = nav.querySelector('.nav-hamburger button');
-  document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
+  
+  // Mobile dialog behavior
+  if (!isDesktop.matches) {
+    let dialog = document.querySelector('.mobile-nav-dialog');
+    
+    if (!expanded) {
+      // Opening menu - create dialog
+      if (!dialog) {
+        dialog = createMobileDialog(navSections);
+        document.body.appendChild(dialog);
+      }
+      
+      // Trigger animation
+      requestAnimationFrame(() => {
+        dialog.setAttribute('data-state', 'open');
+      });
+      
+      document.body.style.overflowY = 'hidden';
+      
+      // Close on click outside or escape
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) {
+          toggleMenu(nav, navSections, true);
+        }
+      });
+    } else {
+      // Closing menu
+      if (dialog) {
+        dialog.setAttribute('data-state', 'closed');
+        setTimeout(() => {
+          dialog.remove();
+        }, 200);
+      }
+      document.body.style.overflowY = '';
+    }
+  }
+  
   nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
   button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
@@ -177,15 +269,22 @@ export default async function decorate(block) {
       // Add hover listeners for desktop
       navSection.addEventListener('mouseenter', () => {
         cancelNavClose(navSection);
-        // Only open dropdown if it exists (authored in Universal Editor)
-        if (isDesktop.matches && navSection.querySelector('ul')) {
-          // Close other expanded sections
+        
+        if (isDesktop.matches) {
+          // Close all other expanded sections first
           navSections.querySelectorAll(':scope .default-content-wrapper > ul > li[aria-expanded="true"]').forEach((openSection) => {
             if (openSection !== navSection) {
               openSection.setAttribute('aria-expanded', 'false');
             }
           });
-          navSection.setAttribute('aria-expanded', 'true');
+          
+          // Only open dropdown if this item has sub-links
+          if (navSection.querySelector('ul')) {
+            navSection.setAttribute('aria-expanded', 'true');
+          } else {
+            // If no sub-links, ensure this item is also closed
+            navSection.setAttribute('aria-expanded', 'false');
+          }
         }
       });
       
