@@ -256,10 +256,11 @@ export default async function decorate(block) {
   if (navSections) {
     const navItems = navSections.querySelectorAll(':scope .default-content-wrapper > ul > li');
     const firstNavItemWithDropdown = Array.from(navItems).find(item => item.querySelector('ul'));
+    const hasAnyDropdowns = Array.from(navItems).some(item => item.querySelector('ul'));
     
-    // Show first item's dropdown when hovering anywhere on nav
+    // Show first item's dropdown when hovering anywhere on nav (only if dropdowns exist)
     nav.addEventListener('mouseenter', () => {
-      if (isDesktop.matches && firstNavItemWithDropdown) {
+      if (isDesktop.matches && hasAnyDropdowns && firstNavItemWithDropdown) {
         firstNavItemWithDropdown.setAttribute('aria-expanded', 'true');
       }
     });
@@ -283,18 +284,16 @@ export default async function decorate(block) {
       // Add hover listeners for desktop - switch dropdown when hovering specific nav items
       navSection.addEventListener('mouseenter', () => {
         if (isDesktop.matches) {
-          // Close all other expanded sections first
+          const hasSublinks = navSection.querySelector('ul');
+          
+          // Close all expanded sections
           navSections.querySelectorAll(':scope .default-content-wrapper > ul > li[aria-expanded="true"]').forEach((openSection) => {
-            if (openSection !== navSection) {
-              openSection.setAttribute('aria-expanded', 'false');
-            }
+            openSection.setAttribute('aria-expanded', 'false');
           });
           
-          // If this item has sub-links, show its dropdown; otherwise keep first item's dropdown
-          if (navSection.querySelector('ul')) {
+          // Only show dropdown if this item has sub-links
+          if (hasSublinks) {
             navSection.setAttribute('aria-expanded', 'true');
-          } else if (firstNavItemWithDropdown) {
-            firstNavItemWithDropdown.setAttribute('aria-expanded', 'true');
           }
         }
       });
