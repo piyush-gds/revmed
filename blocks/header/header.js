@@ -258,8 +258,15 @@ export default async function decorate(block) {
     const firstNavItemWithDropdown = Array.from(navItems).find(item => item.querySelector('ul'));
     const hasAnyDropdowns = Array.from(navItems).some(item => item.querySelector('ul'));
     
+    let navCloseTimeout = null;
+    
     // Show first item's dropdown when hovering anywhere on nav (only if dropdowns exist)
     nav.addEventListener('mouseenter', () => {
+      if (navCloseTimeout) {
+        clearTimeout(navCloseTimeout);
+        navCloseTimeout = null;
+      }
+      
       if (isDesktop.matches && hasAnyDropdowns && firstNavItemWithDropdown) {
         firstNavItemWithDropdown.setAttribute('aria-expanded', 'true');
       }
@@ -267,7 +274,10 @@ export default async function decorate(block) {
     
     nav.addEventListener('mouseleave', () => {
       if (isDesktop.matches) {
-        toggleAllNavSections(navSections, false);
+        navCloseTimeout = setTimeout(() => {
+          toggleAllNavSections(navSections, false);
+          navCloseTimeout = null;
+        }, 1000);
       }
     });
     
@@ -288,6 +298,11 @@ export default async function decorate(block) {
       // Add hover listeners for desktop - switch dropdown when hovering specific nav items
       navSection.addEventListener('mouseenter', () => {
         if (isDesktop.matches) {
+          if (navCloseTimeout) {
+            clearTimeout(navCloseTimeout);
+            navCloseTimeout = null;
+          }
+          
           const hasSublinks = navSection.querySelector('ul');
           
           // Close all expanded sections

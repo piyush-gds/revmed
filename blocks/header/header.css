@@ -14,8 +14,7 @@ header nav {
   box-sizing: border-box;
   display: grid;
   grid-template:
-    'brand tools hamburger' var(--nav-height)
-    'sections sections sections' 1fr / 1fr auto auto;
+    'brand hamburger' var(--nav-height) / 1fr auto;
   align-items: center;
   gap: 0 24px;
   margin: auto;
@@ -30,11 +29,10 @@ header nav {
 
 header nav[aria-expanded='true'] {
   grid-template:
-    'brand hamburger' var(--nav-height)
-    'sections sections' 1fr
-    'tools tools' var(--nav-height) / 1fr auto;
-  overflow-y: auto;
-  min-height: 100dvh;
+    'brand hamburger' var(--nav-height) / 1fr auto;
+  overflow-y: visible;
+  min-height: auto;
+  height: 4rem;
 }
 
 @media (width >= 900px) {
@@ -175,12 +173,6 @@ header nav .nav-sections {
   visibility: hidden;
 }
 
-header nav[aria-expanded='true'] .nav-sections {
-  display: block;
-  visibility: visible;
-  align-self: start;
-}
-
 header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
@@ -212,14 +204,11 @@ header nav .nav-sections ul > li > ul > li {
     display: none;
   }
 
-  header nav .nav-sections {
+  header nav .nav-sections,
+  header nav[aria-expanded='true'] .nav-sections {
     display: block;
     visibility: visible;
     white-space: nowrap;
-  }
-
-  header nav[aria-expanded='true'] .nav-sections {
-    align-self: unset;
   }
 
   header nav .nav-sections .nav-drop {
@@ -257,9 +246,6 @@ header nav .nav-sections ul > li > ul > li {
   header nav .nav-sections .default-content-wrapper > ul > li {
     flex: 0 1 auto;
     position: relative;
-    transition-property: all;
-    transition-timing-function: ease-in-out;
-    transition-duration: 0.3s;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li:hover {
@@ -285,7 +271,7 @@ header nav .nav-sections ul > li > ul > li {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.3s ease-in-out 0.15s, transform 0.3s ease-in-out 0.15s, visibility 0s 0.45s;
+    transition: none;
     box-sizing: border-box;
     /* z-index: -1; */
   }
@@ -295,7 +281,7 @@ header nav .nav-sections ul > li > ul > li {
     visibility: visible;
     pointer-events: auto;
     transform: translateX(-50%) translateY(-10%);
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0s;
+    transition: none;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
@@ -322,15 +308,22 @@ header nav .nav-sections ul > li > ul > li {
 /* tools */
 header nav .nav-tools {
   grid-area: tools;
+  display: none;
 }
 
 .nav-tools {
   max-width: 1248px;
   margin: auto;
   margin-top: 1rem;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: end;
+}
+
+@media (width >= 900px) {
+  .nav-tools {
+    display: flex;
+  }
 }
 
 .nav-tools a {
@@ -375,7 +368,7 @@ header nav .nav-tools {
 .mobile-nav-dialog {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: 29;
   display: grid;
   gap: 1rem;
   border: none;
@@ -489,21 +482,26 @@ header nav .nav-tools {
 
 @media (width <= 900px) {
   .header-wrapper .nav-wrapper #nav[aria-expanded='true'] {
-    background-color: #0e4343;
+    background-color: #fff;
     gap: 0;
+    border-radius: 1rem;
+  }
+
+  .header-wrapper .nav-wrapper #nav[aria-expanded='true'] .nav-sections {
+    display: none;
+    visibility: hidden;
+  }
+
+  .header-wrapper .nav-wrapper #nav[aria-expanded='true'] .nav-tools {
+    display: none;
   }
 
   .header-wrapper .nav-wrapper .nav-hamburger button {
-    background: #fff;
+    background: transparent;
     height: 4rem;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
   }
 
   .header-wrapper .nav-wrapper .nav-brand {
-    background: #fff;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
     height: 4rem;
     display: flex;
     align-items: center;
