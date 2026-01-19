@@ -315,15 +315,9 @@ header nav .nav-tools {
   max-width: 1248px;
   margin: auto;
   margin-top: 1rem;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: end;
-}
-
-@media (width >= 900px) {
-  .nav-tools {
-    display: flex;
-  }
 }
 
 .nav-tools a {
