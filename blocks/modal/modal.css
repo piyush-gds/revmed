@@ -1,0 +1,142 @@
+body.modal-open {
+    overflow: hidden;
+}
+
+.modal dialog::backdrop {
+    background-color: rgb(19 19 19 / 75%);
+}
+
+.modal dialog {
+    overscroll-behavior: none;
+    overflow-y: hidden;
+    width: calc(100vw - 48px);
+    max-width: 900px;
+    max-height: calc(100dvh - (2 * var(--header-height)));
+    padding: 0;
+    border: 1px solid var(--dark-color);
+}
+
+.modal dialog .modal-content {
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: none;
+    width: 100%;
+    max-height: calc(100dvh - (2 * var(--header-height)) - 48px);
+    padding: 24px;
+    padding-top: 0;
+    margin-top: 44px;
+}
+
+@media (width >=900px) {
+    .modal dialog {
+        width: calc(100vw - 64px);
+    }
+
+    .modal dialog .modal-content {
+        max-height: calc(100dvh - (2 * var(--header-height)) - 64px);
+        padding: 32px;
+        padding-top: 0;
+    }
+}
+
+.modal .close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    background-color: transparent;
+    color: var(--text-color);
+    line-height: 0;
+}
+
+.modal .close-button .icon.icon-close {
+    content: '';
+    width: 24px;
+    height: 24px;
+}
+
+.modal .close-button .icon.icon-close::before,
+.modal .close-button .icon.icon-close::after {
+    content: '';
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 24px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentcolor;
+}
+
+.modal .close-button .icon.icon-close::after {
+    transform: translate(-50%, -50%) rotate(-45deg)
+}
+
+.modal dialog .section {
+    padding: 0;
+}
+
+.modal .modal-content .columns-container .columns img {
+    width: unset;
+}
+
+.modal .modal-content .columns-container .columns>div {
+    display: flex;
+    margin: 0 0 24px;
+    padding: 0;
+}
+
+.modal .modal-content .columns-container .columns>div>div {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    column-gap: 12px;
+    align-items: flex-start;
+}
+
+.modal .modal-content .columns-container .columns>div>div p:nth-child(1) {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    grid-row: 1 / 3;
+}
+
+.modal .modal-content .columns-container .columns>div>div p:nth-child(1) picture img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-top: 0.25rem;
+    color: #059669;
+    filter: invert(32%) sepia(93%) saturate(1000%) hue-rotate(155deg) brightness(92%) contrast(101%);
+}
+
+.modal .modal-content .columns-container .columns>div>div p:nth-child(2) {
+    margin: 0 0 4px 0;
+    padding: 0;
+    color: #0e4343;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+.modal .modal-content .columns-container .columns>div>div p:nth-child(3) {
+    margin: 0;
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 400;
+    text-decoration: underline;
+    color: #059669;
+}
+
+.modal .modal-content .columns-container .columns>div>div p:nth-child(3) a {
+    all: unset;
+    cursor: pointer;
+    text-decoration: underline;
+    color: #059669;
+}
