@@ -1,8 +1,10 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { openModal } from '../modal/modal.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
+const MODAL_FRAGMENT_PATH = '/index/contact-us';
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
@@ -388,4 +390,12 @@ export default async function decorate(block) {
     navWrapper.append(navTools);
   }
   block.append(navWrapper);
+
+  const contactUsButton = document.querySelector('.nav-tools a');
+  if (contactUsButton) {
+    contactUsButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+      openModal(MODAL_FRAGMENT_PATH);
+    });
+  }
 }
