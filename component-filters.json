@@ -16,11 +16,6 @@
       "cards",
       "columns",
       "fragment",
-      "icon-button",
-      "helpful-resources",
-      "video-player",
-      "poc-button",
-      "poc-button-items",
       "revmed-hero-banner"
     ]
   },
@@ -42,24 +37,13 @@
       "text",
       "image",
       "button",
-      "title",
-      "icon-button",
-      "poc-button",
-      "poc-button-items",
-      "poc-btn-item"
+      "title"
     ]
   },
   {
     "id": "helpful-resources",
     "components": [
       "icon-button",
-      "poc-btn-item",
-      "poc-button-items"
-    ]
-  },
-  {
-    "id": "hero",
-    "components": [
       "poc-btn-item",
       "poc-button-items"
     ]

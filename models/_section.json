@@ -35,14 +35,26 @@
               "value": "highlight"
             },
             {
-              "name": "Button Grid",
-              "value": "button-grid"
+              "name": "Dark Background Round",
+              "value": "dark-green"
             },
             {
-              "name": "Helpful Resources",
-              "value": "helpful-resources"
+              "name": "Light Background Square",
+              "value": "light-green"
             }
           ]
+        },
+        {
+          "component": "reference",
+          "name": "bg-image",
+          "label": "Background Image",
+          "description": "Background image for only footer section"
+        },
+        {
+          "component": "text",
+          "name": "identifier",
+          "label": "ID",
+          "description": "A unique identifier for this section to be used for in-page links"
         }
       ]
     }
@@ -59,11 +71,6 @@
         "cards",
         "columns",
         "fragment",
-        "icon-button",
-        "helpful-resources",
-        "video-player",
-        "poc-button",
-        "poc-button-items",
         "revmed-hero-banner"
       ]
     }

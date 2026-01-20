@@ -436,7 +436,7 @@ function decorateButtons(element) {
       const twoup = a.parentElement.parentElement;
       if (!a.querySelector('img')) {
         if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
-          a.className = 'button'; // default
+          a.className = 'revmed'; // revmed
           up.classList.add('button-container');
         }
         if (
@@ -531,6 +531,12 @@ function decorateSections(main) {
           section.dataset[toCamelCase(key)] = meta[key];
         }
       });
+
+      const identifier = section.dataset.identifier;
+      if(identifier){
+        section.id = identifier;
+      }
+
       sectionMeta.parentNode.remove();
     }
   });

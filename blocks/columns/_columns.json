@@ -50,11 +50,7 @@
         "text",
         "image",
         "button",
-        "title",
-        "icon-button",
-        "poc-button",
-        "poc-button-items",
-        "poc-btn-item"
+        "title"
       ]
     }
   ]

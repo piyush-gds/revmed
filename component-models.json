@@ -104,8 +104,8 @@
         "label": "Type",
         "options": [
           {
-            "name": "default",
-            "value": ""
+            "name": "revmed",
+            "value": "revmed"
           },
           {
             "name": "primary",
@@ -116,6 +116,12 @@
             "value": "secondary"
           }
         ]
+      },
+      {
+        "component": "text",
+        "name": "identifier",
+        "label": "ID",
+        "description": "A unique identifier for this button"
       }
     ]
   },
@@ -138,14 +144,26 @@
             "value": "highlight"
           },
           {
-            "name": "Button Grid",
-            "value": "button-grid"
+            "name": "Dark Background Round",
+            "value": "dark-green"
           },
           {
-            "name": "Helpful Resources",
-            "value": "helpful-resources"
+            "name": "Light Background Square",
+            "value": "light-green"
           }
         ]
+      },
+      {
+        "component": "reference",
+        "name": "bg-image",
+        "label": "Background Image",
+        "description": "Background image for only footer section"
+      },
+      {
+        "component": "text",
+        "name": "identifier",
+        "label": "ID",
+        "description": "A unique identifier for this section to be used for in-page links"
       }
     ]
   },

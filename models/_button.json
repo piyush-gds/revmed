@@ -40,8 +40,8 @@
           "label": "Type",
           "options": [
             {
-              "name": "default",
-              "value": ""
+              "name": "revmed",
+              "value": "revmed"
             },
             {
               "name": "primary",
@@ -52,6 +52,12 @@
               "value": "secondary"
             }
           ]
+        },
+        {
+          "component": "text",
+          "name": "identifier",
+          "label": "ID",
+          "description": "A unique identifier for this button"
         }
       ]
     }
