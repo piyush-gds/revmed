@@ -340,6 +340,10 @@ header nav .nav-tools {
   color: #0e4343;
 }
 
+.nav-tools a img {
+  width: 16px;
+  height: 16px;
+}
 
 .nav-tools ul {
   list-style: none;

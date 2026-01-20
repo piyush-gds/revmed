@@ -10,10 +10,11 @@ body.modal-open {
     overscroll-behavior: none;
     overflow-y: hidden;
     width: calc(100vw - 48px);
-    max-width: 900px;
+    max-width: 30rem;
     max-height: calc(100dvh - (2 * var(--header-height)));
     padding: 0;
-    border: 1px solid var(--dark-color);
+    border: 1px solid #059669;
+    border-radius: 10px;
 }
 
 .modal dialog .modal-content {
