@@ -57,10 +57,10 @@
           "description": "A unique identifier for this section to be used for in-page links"
         },
         {
-          "component": "text",
-          "name": "checkbox",
-          "label": "Expand/Collapse",
-          "description": "Expand/Collapse section content"
+          "component": "boolean",
+          "name": "expandable",
+          "label": "Expandable",
+          "valueType": "boolean"
         }
       ]
     }
