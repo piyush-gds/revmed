@@ -6,6 +6,32 @@ import { openModal } from '../modal/modal.js';
 const isDesktop = window.matchMedia('(min-width: 900px)');
 const MODAL_FRAGMENT_PATH = '/index/contact-us';
 
+/**
+ * Sets active state on nav items based on current URL
+ * @param {Element} navSections The nav sections element
+ */
+function setActiveNavItem(navSections) {
+  const currentPath = window.location.pathname.toLowerCase();
+  const navItems = navSections.querySelectorAll(':scope .default-content-wrapper > ul > li');
+  
+  navItems.forEach((navItem) => {
+    const link = navItem.querySelector('a');
+    if (link) {
+      const linkPath = new URL(link.href, window.location.origin).pathname.toLowerCase();
+      
+      // Check if current path matches the nav link or starts with it (for nested pages)
+      const isActive = currentPath === linkPath || 
+        (linkPath !== '/' && currentPath.startsWith(linkPath));
+      
+      if (isActive) {
+        navItem.classList.add('nav-item-active');
+      } else {
+        navItem.classList.remove('nav-item-active');
+      }
+    }
+  });
+}
+
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
     const nav = document.getElementById('nav');
@@ -282,6 +308,9 @@ export default async function decorate(block) {
         }, 1000);
       }
     });
+    
+    // Set active nav item based on current page
+    setActiveNavItem(navSections);
     
     navItems.forEach((navSection, index) => {
       // if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');

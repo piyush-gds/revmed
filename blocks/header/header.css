@@ -239,6 +239,7 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
+    align-items: center;
     gap: 24px;
     margin: 0;
   }
@@ -251,10 +252,28 @@ header nav .nav-sections ul > li > ul > li {
   header nav .nav-sections .default-content-wrapper > ul > li > p > a {
     all: unset;
     cursor: pointer;
+    line-height: 28px;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li:hover {
-    color: unset;
+    color: #0e4343;
+  }
+
+  /* Active nav item styling */
+  header nav .nav-sections .default-content-wrapper > ul > li.nav-item-active {
+    background-color: #059669;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li.nav-item-active,
+  header nav .nav-sections .default-content-wrapper > ul > li.nav-item-active a {
+    color: #fff;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li.nav-item-active:hover {
+    background-color: #059669;
+    color: #fff;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul {
