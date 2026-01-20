@@ -58,7 +58,8 @@
         },
         {
           "component": "checkbox-group",
-          "name": "expandCollapse",
+          "name": "checkbox",
+          "valueType": "string[]",
           "label": "Expand/Collapse",
           "description": "Expand/Collapse section content",
           "options": [
