@@ -536,6 +536,9 @@ function decorateSections(main) {
       if(identifier){
         section.id = identifier;
       }
+      if (section.dataset.expandable) {
+        addExpandButton(section);
+      }
 
       sectionMeta.parentNode.remove();
     }
@@ -713,6 +716,14 @@ async function loadSections(element) {
       sampleRUM.enhance();
     }
   }
+}
+
+function addExpandButton(section) {
+  const button = document.createElement('button');
+  button.className = 'expand-button';
+  button.id = 'expand-all-button';
+  button.textContent = 'Expand All';
+  section.prepend(button);
 }
 
 init();
