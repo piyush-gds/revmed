@@ -325,3 +325,43 @@ main .section.light-green {
     padding: 0 32px;
   }
 }
+
+[data-expandable="true"] .columns-wrapper .columns.collapse {
+    max-height: 30rem;
+    mask-image: linear-gradient(black, transparent);
+    overflow-y: hidden;
+}
+
+[data-expandable="true"] .default-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #0E4343;
+}
+
+[data-expandable="true"] .default-content-wrapper button {
+  display: inline-flex;
+  height: 36px;
+  min-width: 9rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 3.40282e+38px;
+  background-color: #1e6b5c;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  font-size: 1rem;
+  line-height: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #fff;
+}
+
+[data-expandable="true"] .default-content-wrapper * {
+  margin-bottom: 2.5rem;
+}
+
+[data-expandable="true"] .columns-wrapper {
+    color: #0E4343;
+}

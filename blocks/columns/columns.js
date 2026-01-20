@@ -2,6 +2,12 @@ export default function decorate(block) {
   const cols = [...block.firstElementChild.children];
   block.classList.add(`columns-${cols.length}-cols`);
 
+  // Check if parent section has data-expandable="true"
+  const section = block.closest('.section');
+  if (section && section.dataset.expandable === 'true') {
+    block.classList.add('collapse');
+  }
+
   // setup image columns
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {

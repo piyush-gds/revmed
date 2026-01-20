@@ -722,8 +722,32 @@ function addExpandButton(section) {
   const button = document.createElement('button');
   button.className = 'expand-button';
   button.id = 'expand-all-button';
-  button.textContent = 'Expand All';
-  section.prepend(button);
+  button.textContent = '+ Expand All';
+  
+  // Toggle between Expand All and Collapse All on click
+  button.addEventListener('click', () => {
+    const isExpanded = button.textContent === '+ Expand All';
+    const columnsElements = section.querySelectorAll('.columns-wrapper .columns');
+    
+    if (isExpanded) {
+      button.textContent = '- Collapse All';
+      button.className = 'collapse-button';
+      button.id = 'collapse-all-button';
+      columnsElements.forEach((col) => col.classList.remove('collapse'));
+    } else {
+      button.textContent = '+ Expand All';
+      button.className = 'expand-button';
+      button.id = 'expand-all-button';
+      columnsElements.forEach((col) => col.classList.add('collapse'));
+    }
+  });
+  
+  const defaultContentWrapper = section.querySelector('.default-content-wrapper');
+  if (defaultContentWrapper) {
+    defaultContentWrapper.appendChild(button);
+  } else {
+    section.prepend(button);
+  }
 }
 
 init();
