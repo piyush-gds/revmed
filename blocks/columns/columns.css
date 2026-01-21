@@ -31,3 +31,50 @@
     order: unset;
   }
 }
+
+/* Accordion styles for expandable columns */
+[data-accordion="true"] .columns > div {
+  display: block;
+  border-bottom: 1px solid #ccc;
+}
+
+[data-accordion="true"] .columns > div:first-child {
+  border-top: 1px solid #ccc;
+}
+
+[data-accordion="true"] .columns .accordion-item {
+  width: 100%;
+}
+
+[data-accordion="true"] .columns .accordion-item-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  cursor: pointer;
+  font-weight: bold;
+  list-style: none;
+}
+
+[data-accordion="true"] .columns .accordion-item-label::-webkit-details-marker {
+  display: none;
+}
+
+[data-accordion="true"] .columns .accordion-item-label::after {
+  content: '+';
+  font-size: 24px;
+  font-weight: normal;
+  transition: transform 0.3s ease;
+}
+
+[data-accordion="true"] .columns .accordion-item[open] .accordion-item-label::after {
+  content: '−';
+}
+
+[data-accordion="true"] .columns .accordion-item-body {
+  padding: 0 0 16px;
+}
+
+[data-accordion="true"] .columns .accordion-item-body p {
+  margin: 0;
+}

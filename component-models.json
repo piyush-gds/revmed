@@ -170,6 +170,12 @@
         "name": "expandable",
         "label": "Expandable",
         "valueType": "boolean"
+      },
+      {
+        "component": "boolean",
+        "name": "accordion",
+        "label": "isAccordion",
+        "valueType": "boolean"
       }
     ]
   },
