@@ -186,6 +186,11 @@ function initCustomControls(wrapper, video) {
     timeDuration.textContent = formatTime(video.duration);
   });
 
+  // Set duration immediately if already loaded
+  if (video.duration && !Number.isNaN(video.duration)) {
+    timeDuration.textContent = formatTime(video.duration);
+  }
+
   video.addEventListener('timeupdate', () => {
     const percent = (video.currentTime / video.duration) * 100;
     progressFilled.style.width = `${percent}%`;
