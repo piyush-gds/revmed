@@ -287,5 +287,40 @@
         "valueType": "string"
       }
     ]
+  },
+  {
+    "id": "video",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "videoUrl",
+        "label": "Video URL",
+        "description": "Enter video URL"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "poster",
+        "label": "Poster Image",
+        "multi": false,
+        "description": "Optional placeholder image shown before video plays"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "posterAlt",
+        "label": "Poster Alt Text",
+        "value": ""
+      },
+      {
+        "component": "boolean",
+        "valueType": "boolean",
+        "name": "autoplay",
+        "label": "Autoplay",
+        "value": false,
+        "description": "Auto-play video when visible (muted)"
+      }
+    ]
   }
 ]
