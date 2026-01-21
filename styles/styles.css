@@ -333,12 +333,15 @@ main .section.light-green {
 }
 
 [data-expandable="true"] .default-content-wrapper {
-  display: flex;
-  justify-content: space-between;
+  position: relative;
   border-bottom: 1px solid #0E4343;
+  padding-right: 10rem; /* Reserve space for button */
 }
 
 [data-expandable="true"] .default-content-wrapper button {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: inline-flex;
   height: 36px;
   min-width: 9rem;
@@ -356,9 +359,14 @@ main .section.light-green {
   font-weight: 500;
   white-space: nowrap;
   color: #fff;
+  margin: 0;
 }
 
-[data-expandable="true"] .default-content-wrapper * {
+[data-expandable="true"] .default-content-wrapper > *:not(button) {
+  margin-bottom: 0.5rem;
+}
+
+[data-expandable="true"] .default-content-wrapper > *:last-of-type:not(button) {
   margin-bottom: 2.5rem;
 }
 
