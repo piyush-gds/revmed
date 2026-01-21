@@ -32,14 +32,40 @@
   }
 }
 
-/* Accordion styles for expandable columns */
-[data-accordion="true"] .columns > div {
-  display: block;
-  border-bottom: 1px solid #ccc;
+/* Accordion styles for columns */
+
+[data-accordion="true"] .columns-wrapper {
+  margin-top: 3rem;
 }
 
-[data-accordion="true"] .columns > div:first-child {
-  border-top: 1px solid #ccc;
+[data-accordion="true"] .columns {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+[data-accordion="true"] .columns > div {
+  display: flex;
+  width: 100%;
+  flex: 1;
+  min-height: 5rem !important;
+  gap: calc(var(--spacing) * 4);
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-block: 1rem;
+  background-color: #fff;
+  border-radius: 4px;
+  margin-bottom: 0.7rem;
+  box-shadow: 0 1px 3px rgba(0 0 0 / 10%);
+  cursor: pointer;
+  text-align: left;
+  color: var(--foreground);
+  font-size: var(--text-xl);
+  line-height: var(--tw-leading, var(--text-xl--line-height));
+  font-weight: var(--font-weight-medium);
+  transition-property: all;
+  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
 }
 
 [data-accordion="true"] .columns .accordion-item {
@@ -50,10 +76,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0;
+  padding: 20px 24px;
   cursor: pointer;
   font-weight: bold;
   list-style: none;
+  color: #006b6b;
 }
 
 [data-accordion="true"] .columns .accordion-item-label::-webkit-details-marker {
@@ -61,20 +88,27 @@
 }
 
 [data-accordion="true"] .columns .accordion-item-label::after {
-  content: '+';
-  font-size: 24px;
-  font-weight: normal;
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+  transform: rotate(45deg);
   transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 16px;
 }
 
 [data-accordion="true"] .columns .accordion-item[open] .accordion-item-label::after {
-  content: '−';
+  transform: rotate(-135deg);
 }
 
 [data-accordion="true"] .columns .accordion-item-body {
-  padding: 0 0 16px;
+  padding: 0 24px 20px;
 }
 
 [data-accordion="true"] .columns .accordion-item-body p {
   margin: 0;
+  line-height: 1.6;
 }

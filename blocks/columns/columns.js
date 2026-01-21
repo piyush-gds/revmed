@@ -8,28 +8,24 @@ export default function decorate(block) {
     block.classList.add('collapse');
   }
 
-  // If section has data-expandable="true", transform children into accordion items
-  if (section && section.dataset.accordion === 'true') {
+  if (section && section.dataset.accordion === "true") {
     [...block.children].forEach((row) => {
       const innerWrapper = row.children[0];
       if (innerWrapper && innerWrapper.children.length >= 2) {
-        // decorate accordion item label
         const label = innerWrapper.children[0];
-        const summary = document.createElement('summary');
-        summary.className = 'accordion-item-label';
+        const summary = document.createElement("summary");
+        summary.className = "accordion-item-label";
         summary.append(...label.childNodes);
 
-        // decorate accordion item body
         const body = innerWrapper.children[1];
-        body.className = 'accordion-item-body';
+        body.className = "accordion-item-body";
 
-        // decorate accordion item
-        const details = document.createElement('details');
-        details.className = 'accordion-item';
+        const details = document.createElement("details");
+        details.className = "accordion-item";
+        details.open = true;
         details.append(summary, body);
 
-        // replace inner wrapper content with details
-        innerWrapper.innerHTML = '';
+        innerWrapper.innerHTML = "";
         innerWrapper.append(details);
       }
     });
