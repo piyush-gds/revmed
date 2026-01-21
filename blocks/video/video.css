@@ -14,8 +14,203 @@
   justify-content: center;
 }
 
-.video video {
+/* Video wrapper */
+.video .video-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  background: #000;
+}
+
+.video .video-wrapper video {
+  display: block;
+  width: 100%;
   max-width: 100%;
+}
+
+/* Hide native controls */
+.video video::-webkit-media-controls {
+  display: none !important;
+}
+
+.video video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+/* Custom Controls Container */
+.video .custom-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 576px;
+  border-radius: 16px;
+  background: rgba(17, 17, 17, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.video .video-wrapper:hover .custom-controls,
+.video .video-wrapper:focus-within .custom-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Progress Bar Row */
+.video .controls-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.video .time-display {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  min-width: 36px;
+  text-align: center;
+}
+
+.video .progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  cursor: pointer;
+  position: relative;
+}
+
+.video .progress-filled {
+  height: 100%;
+  background: #fff;
+  border-radius: 9999px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* Controls Row */
+.video .controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.video .controls-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.video .controls-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Control Buttons Base */
+.video .control-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.video .control-btn:hover {
+  background: rgba(17, 17, 17, 0.82);
+}
+
+.video .control-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.video .control-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+/* Volume Controls */
+.video .volume-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.video .volume-slider-container {
+  width: 96px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  cursor: pointer;
+  position: relative;
+}
+
+.video .volume-slider-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 9999px;
+  width: 100%;
+  transition: width 0.1s;
+}
+
+/* Speed Buttons */
+.video .speed-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.video .speed-btn:hover {
+  background: rgba(17, 17, 17, 0.82);
+}
+
+.video .speed-btn.active {
+  background: rgba(17, 17, 17, 0.82);
+}
+
+.video .speed-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
 }
 
 .video .video-placeholder {
