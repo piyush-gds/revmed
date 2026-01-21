@@ -228,23 +228,6 @@
     ]
   },
   {
-    "id": "helpful-resources",
-    "fields": [
-      {
-        "component": "text",
-        "name": "titleText",
-        "label": "Title Text",
-        "valueType": "string"
-      },
-      {
-        "component": "text",
-        "name": "subTitleText",
-        "label": "Sub Title Text",
-        "valueType": "string"
-      }
-    ]
-  },
-  {
     "id": "hero",
     "fields": [
       {
@@ -266,84 +249,6 @@
         "name": "text",
         "value": "",
         "label": "Text",
-        "valueType": "string"
-      }
-    ]
-  },
-  {
-    "id": "icon-button",
-    "fields": [
-      {
-        "component": "aem-content",
-        "name": "link",
-        "label": "Link"
-      },
-      {
-        "component": "text",
-        "name": "linkText",
-        "label": "Link Text",
-        "valueType": "string"
-      },
-      {
-        "component": "select",
-        "name": "backgroundColor",
-        "label": "Choose Background Color",
-        "valueType": "string",
-        "options": [
-          {
-            "name": "Yellow",
-            "value": "yellow"
-          },
-          {
-            "name": "Red",
-            "value": "red"
-          }
-        ]
-      },
-      {
-        "component": "aem-content",
-        "name": "svg_path",
-        "label": "Svg Path",
-        "valueType": "string"
-      },
-      {
-        "component": "text",
-        "name": "svg_text",
-        "label": "Svg Icon Name",
-        "valueType": "string"
-      }
-    ]
-  },
-  {
-    "id": "poc-button-items",
-    "fields": [
-      {
-        "component": "text",
-        "name": "firstInput",
-        "label": "First Input",
-        "valueType": "string"
-      },
-      {
-        "component": "text",
-        "name": "secondInput",
-        "label": "Second Input",
-        "valueType": "string"
-      }
-    ]
-  },
-  {
-    "id": "poc-btn-item",
-    "fields": [
-      {
-        "component": "text",
-        "name": "firstInput",
-        "label": "First Input",
-        "valueType": "string"
-      },
-      {
-        "component": "text",
-        "name": "secondInput",
-        "label": "Second Input",
         "valueType": "string"
       }
     ]
@@ -379,30 +284,6 @@
         "name": "text",
         "value": "",
         "label": "Text",
-        "valueType": "string"
-      }
-    ]
-  },
-  {
-    "id": "video-player-item",
-    "fields": [
-      {
-        "component": "reference",
-        "valueType": "string",
-        "name": "image",
-        "label": "Image"
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "imageAlt",
-        "label": "Alt",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "name": "videoUrl",
-        "label": "Video URL",
         "valueType": "string"
       }
     ]
