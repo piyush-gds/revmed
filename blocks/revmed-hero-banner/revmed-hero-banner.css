@@ -53,8 +53,9 @@
 }
 
 .revmed-hero-banner .hero-image-wrapper .hero-text-container * {
-    padding: 0 5rem;
-    color: #fff;
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin: auto;
     font-family: "FKDisplayALT", "FKDisplayALT Fallback";
     font-size: 2.5rem;
     font-weight: 400;
@@ -101,7 +102,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: #fff;
     z-index: 2;
 }
 

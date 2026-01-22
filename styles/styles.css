@@ -147,10 +147,6 @@ pre {
   white-space: pre;
 }
 
-main > div {
-  margin: 40px 16px;
-}
-
 input,
 textarea,
 select,
@@ -233,8 +229,8 @@ main img {
 }
 
 /* sections */
-main > .section {
-  margin: 40px 0;
+main > .section:first-child{
+  padding: 6.5rem 0;
 }
 
 main > .section > div {
@@ -242,11 +238,6 @@ main > .section > div {
   margin: auto;
   padding: 0 24px;
 }
-
-main > .section:first-of-type {
-  margin-top: 0;
-}
-
 
 a.revmed {
   text-decoration: none;
@@ -315,21 +306,18 @@ main .section.dark-green {
 main .section.light-green {
   background-color: #d3eae5;
   color: var(--dark-green); 
-  padding-block: 8px;
 }
 
 /* Green style */
 main .section.green {
   background-color: #059669;
   color: var(--dark-green); 
-  padding-block: 8px;
 }
 
 /* Light Grey style */
 main .section.light-grey {
   background-color: #f5f8f9;
   color: var(--dark-green); 
-  padding-block: 8px;
 }
 
 main .section.top-left-round {
