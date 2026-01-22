@@ -535,6 +535,13 @@ function decorateSections(main) {
             .map((style) => toClassName(style.trim()));
           borderstyles.forEach((style) => section.classList.add(style));
         }
+        else if(key === 'paddingstyle'){
+          const paddingstyles = meta.paddingstyle
+            .split(',')
+            .filter((style) => style)
+            .map((style) => toClassName(style.trim()));
+          paddingstyles.forEach((style) => section.classList.add(style));
+        }
         else {
           section.dataset[toCamelCase(key)] = meta[key];
         }

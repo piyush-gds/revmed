@@ -185,6 +185,21 @@
         ]
       },
       {
+        "component": "select",
+        "name": "paddingStyle",
+        "label": "Padding Style",
+        "options": [
+          {
+            "name": "Small Padding",
+            "value": "padding-sm"
+          },
+          {
+            "name": "Large Padding",
+            "value": "padding-lg"
+          }
+        ]
+      },
+      {
         "component": "reference",
         "name": "bg-image",
         "label": "Background Image",

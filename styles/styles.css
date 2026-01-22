@@ -229,12 +229,9 @@ main img {
 }
 
 /* sections */
-main .section {
-  padding: 6.5rem 0;
-}
-
 main .section.revmed-hero-banner-container {
-  padding-top: 0 0 3rem;
+  padding-top: 0;
+  padding-bottom: 3rem;
 }
 
 main > .section > div {
@@ -302,8 +299,7 @@ main .section.highlight {
 /* Dark Green style */
 main .section.dark-green {
   background-color: var(--dark-green);
-  color:#ffffff;
-  padding-block: 8px;
+  color:#fff;
 }
 
 /* Light Green style */
@@ -342,6 +338,14 @@ main .section.bottom-left-round {
 main .section.bottom-right-round {
   border-bottom-right-radius: 2rem;
   padding-bottom: 3rem;
+}
+
+main .section.padding-sm {
+  padding: 3rem 0;
+}
+
+main .section.padding-lg {
+  padding: 6.5rem 0;
 }
 
 @media (width >= 900px) {
