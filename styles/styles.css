@@ -332,6 +332,22 @@ main .section.light-grey {
   padding-block: 8px;
 }
 
+main .section.top-left-round {
+  border-top-left-radius: 3rem;
+}
+
+main .section.top-right-round {
+  border-top-right-radius: 3rem;
+}
+
+main .section.bottom-left-round {
+  border-bottom-left-radius: 3rem;
+}
+
+main .section.bottom-right-round {
+  border-bottom-right-radius: 3rem;
+}
+
 @media (width >= 900px) {
   main > .section > div {
     padding: 0 32px;
