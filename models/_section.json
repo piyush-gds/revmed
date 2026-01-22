@@ -84,7 +84,8 @@
         "columns",
         "fragment",
         "revmed-hero-banner",
-        "video"
+        "video",
+        "separator"
       ]
     }
   ]
