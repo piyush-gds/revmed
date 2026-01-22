@@ -333,19 +333,23 @@ main .section.light-grey {
 }
 
 main .section.top-left-round {
-  border-top-left-radius: 3rem;
+  border-top-left-radius: 2rem;
+  padding-top: 3rem;
 }
 
 main .section.top-right-round {
-  border-top-right-radius: 3rem;
+  border-top-right-radius: 2rem;
+  padding-top: 3rem;
 }
 
 main .section.bottom-left-round {
-  border-bottom-left-radius: 3rem;
+  border-bottom-left-radius: 2rem;
+  padding-bottom: 3rem;
 }
 
 main .section.bottom-right-round {
-  border-bottom-right-radius: 3rem;
+  border-bottom-right-radius: 2rem;
+  padding-bottom: 3rem;
 }
 
 @media (width >= 900px) {
