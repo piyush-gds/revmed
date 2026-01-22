@@ -1,0 +1,15 @@
+.cards .cards-accent-bar {
+    position: relative;
+    height: 0.35rem;
+    background-color: #d1dbd1;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    width: 8rem;
+}
+
+.cards .cards-accent-fill {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    background-color: #0e4343;
+}

@@ -296,6 +296,10 @@
     ]
   },
   {
+    "id": "separator",
+    "fields": []
+  },
+  {
     "id": "video",
     "fields": [
       {
