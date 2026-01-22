@@ -144,12 +144,43 @@
             "value": "highlight"
           },
           {
-            "name": "Dark Background Round",
+            "name": "Dark Green Background",
             "value": "dark-green"
           },
           {
-            "name": "Light Background Square",
+            "name": "Light Green Background",
             "value": "light-green"
+          },
+          {
+            "name": "Green Background",
+            "value": "green"
+          },
+          {
+            "name": "Light Grey Background",
+            "value": "light-grey"
+          }
+        ]
+      },
+      {
+        "component": "multiselect",
+        "name": "borderStyle",
+        "label": "Round Border Style",
+        "options": [
+          {
+            "name": "Top Left Corner",
+            "value": "top-left-round"
+          },
+          {
+            "name": "Top Right Corner",
+            "value": "top-right-round"
+          },
+          {
+            "name": "Bottom Left Corner",
+            "value": "bottom-left-round"
+          },
+          {
+            "name": "Bottom Right Corner",
+            "value": "bottom-right-round"
           }
         ]
       },

@@ -308,15 +308,27 @@ main .section.highlight {
 main .section.dark-green {
   background-color: var(--dark-green);
   color:#ffffff;
-  border-radius: 48px; /* rounded corners */
   padding-block: 8px;
 }
 
 /* Light Green style */
 main .section.light-green {
-  background-color: var(--light-grey);
+  background-color: #d3eae5;
   color: var(--dark-green); 
-  border-radius: 0; /* square corners */
+  padding-block: 8px;
+}
+
+/* Green style */
+main .section.green {
+  background-color: #059669;
+  color: var(--dark-green); 
+  padding-block: 8px;
+}
+
+/* Light Grey style */
+main .section.light-grey {
+  background-color: #f5f8f9;
+  color: var(--dark-green); 
   padding-block: 8px;
 }
 
