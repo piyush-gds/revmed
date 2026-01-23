@@ -358,8 +358,16 @@
         "label": "Spacing Size",
         "options": [
           {
+            "name": "Extra Small",
+            "value": "spacing-xs"
+          },
+          {
             "name": "Small",
             "value": "spacing-sm"
+          },
+          {
+            "name": "Medium",
+            "value": "spacing-md"
           },
           {
             "name": "Large",

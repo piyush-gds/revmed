@@ -2,10 +2,18 @@
   display: block;
 }
 
+.spacer.spacing-xs {
+  padding: 1rem;
+}
+
 .spacer.spacing-sm {
+  padding: 2rem;
+}
+
+.spacer.spacing-md {
   padding: 3rem;
 }
 
 .spacer.spacing-lg {
-  padding: 6.5rem;
+  padding: 4rem;
 }
