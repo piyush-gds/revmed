@@ -340,6 +340,20 @@ main .section.bottom-right-round {
   padding-bottom: 3rem;
 }
 
+/* Overlap above previous - section with rounded top appears above the previous section */
+main .section.overlap-above-previous {
+  position: relative;
+  margin-top: -3rem;
+  z-index: 2;
+}
+
+/* Overlap into previous - section overlaps into the previous section's rounded bottom */
+main .section.overlap-into-previous {
+  position: relative;
+  margin-top: -3rem;
+  z-index: 1;
+}
+
 main .section.padding-sm {
   padding: 3rem 0;
 }
