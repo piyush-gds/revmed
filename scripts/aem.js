@@ -555,15 +555,6 @@ function decorateSections(main) {
         addExpandButton(section);
       }
 
-      const prevSection = section.previousElementSibling;
-      if (prevSection) {
-        if (prevSection.classList.contains('bottom-left-round') || prevSection.classList.contains('bottom-right-round')) {
-          section.classList.add('overlap-into-previous');
-        } else if (section.classList.contains('top-left-round') || section.classList.contains('top-right-round')) {
-          section.classList.add('overlap-above-previous');
-        }
-      }
-
       sectionMeta.parentNode.remove();
     }
   });
