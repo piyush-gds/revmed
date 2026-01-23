@@ -1,0 +1,11 @@
+.spacer {
+  display: block;
+}
+
+.spacer.spacing-sm {
+  padding: 3rem;
+}
+
+.spacer.spacing-lg {
+  padding: 6.5rem;
+}

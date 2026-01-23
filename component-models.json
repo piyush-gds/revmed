@@ -350,6 +350,26 @@
     "fields": []
   },
   {
+    "id": "spacer",
+    "fields": [
+      {
+        "component": "select",
+        "name": "spacer",
+        "label": "Spacing Size",
+        "options": [
+          {
+            "name": "Small",
+            "value": "spacing-sm"
+          },
+          {
+            "name": "Large",
+            "value": "spacing-lg"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "video",
     "fields": [
       {
