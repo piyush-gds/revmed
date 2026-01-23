@@ -41,9 +41,6 @@ footer .columns div div:nth-child(2) {
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
   color: #fff;
-  position: relative;
-  margin-top: -3rem;
-  z-index: 1;
 }
 
 @media (width >=900px) {
@@ -53,7 +50,7 @@ footer .columns div div:nth-child(2) {
 }
 
 @media (width <=900px) {
-  footer .columns-wrapper .columns div {
+  .columns-wrapper .columns div {
     flex-direction: column;
     gap: 2rem;
     text-align: center;
