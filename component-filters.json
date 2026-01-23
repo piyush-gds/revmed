@@ -18,7 +18,7 @@
       "fragment",
       "revmed-hero-banner",
       "video",
-      "separators",
+      "separator",
       "spacer"
     ]
   },
@@ -41,18 +41,11 @@
       "image",
       "button",
       "title",
-      "separators",
-      "cards"
+      "separator"
     ]
   },
   {
     "id": "revmed-hero-banner",
     "components": []
-  },
-  {
-    "id": "separators",
-    "components": [
-      "separator"
-    ]
   }
 ]
