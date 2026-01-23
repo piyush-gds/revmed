@@ -47,5 +47,11 @@
   {
     "id": "revmed-hero-banner",
     "components": []
+  },
+  {
+    "id": "separators",
+    "components": [
+      "separator"
+    ]
   }
 ]
