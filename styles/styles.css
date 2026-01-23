@@ -132,6 +132,7 @@ pre,
 blockquote {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
+  word-wrap: break-word;
 }
 
 code,
