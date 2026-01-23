@@ -1,4 +1,4 @@
-.separator-wrapper .separator .separator-accent-bar {
+.separators-wrapper .separators .separator-accent-bar {
     position: relative;
     height: 0.35rem;
     background-color: #d1dbd1;
@@ -7,7 +7,7 @@
     width: 8rem;
 }
 
-.separator-wrapper .separator .separator-accent-fill {
+.separators-wrapper .separators .separator-accent-fill {
     position: absolute;
     height: 100%;
     width: 50%;
