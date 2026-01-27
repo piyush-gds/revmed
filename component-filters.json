@@ -19,13 +19,20 @@
       "revmed-hero-banner",
       "video",
       "separator",
-      "spacer"
+      "spacer",
+      "carousel"
     ]
   },
   {
     "id": "cards",
     "components": [
       "card"
+    ]
+  },
+  {
+    "id": "carousel",
+    "components": [
+      "slide"
     ]
   },
   {
