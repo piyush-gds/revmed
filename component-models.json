@@ -162,29 +162,6 @@
         ]
       },
       {
-        "component": "multiselect",
-        "name": "borderStyle",
-        "label": "Round Border Style",
-        "options": [
-          {
-            "name": "Top Left Corner",
-            "value": "top-left-round"
-          },
-          {
-            "name": "Top Right Corner",
-            "value": "top-right-round"
-          },
-          {
-            "name": "Bottom Left Corner",
-            "value": "bottom-left-round"
-          },
-          {
-            "name": "Bottom Right Corner",
-            "value": "bottom-right-round"
-          }
-        ]
-      },
-      {
         "component": "select",
         "name": "paddingStyle",
         "label": "Padding Style",
