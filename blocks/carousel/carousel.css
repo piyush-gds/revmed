@@ -1,251 +1,258 @@
-/* Carousel Container */
 .carousel {
   position: relative;
   width: 100%;
   margin: 0 auto;
-  padding: 60px 0;
+  padding: 40px 0;
   box-sizing: border-box;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: 9rem 1fr 9rem;
+  grid-template-rows: 1fr;
+  align-items: stretch;
+  gap: 12px;
 }
 
-/* Viewport clips overflow - 80% width centered */
+.carousel-nav-prev,
+.carousel-nav-next {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.carousel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #5a8a8a;
+  transition: color 0.3s ease;
+  height: 100%;
+  width: auto;
+}
+
+.carousel-btn:hover {
+  color: #fff;
+  background: transparent;
+}
+
+.carousel-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.carousel-btn svg {
+  width: 144px;
+  height: 144px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .carousel-viewport {
-  overflow: visible;
-  width: 80%;
-  margin: 0 auto;
+  overflow: hidden;
+  width: 100%;
 }
 
-/* Track holds all cards in a row */
 .carousel-track {
   display: flex;
+  margin-left: -16px;
   transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-/* Each card takes 50% of viewport (40% of container = 2 cards in 80%) */
 .carousel-card {
   flex: 0 0 50%;
-  min-width: 50%;
+  min-width: 0;
   box-sizing: border-box;
-  padding: 0 12px;
+  padding-left: 16px;
 }
 
-/* Card inner wrapper */
 .carousel-card .card-inner {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
-  padding: 32px;
-  height: 100%;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  border-radius: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.carousel-card:hover .card-inner {
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
-  transform: translateY(-4px);
-}
-
-/* Progress dots - styled like RevMed site */
 .card-progress {
   display: flex;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-right: 16px;
+  padding: 8px 0;
 }
 
 .card-progress .dot {
-  width: 12px;
-  height: 12px;
-  background: linear-gradient(135deg, #00a651 0%, #7ab800 100%);
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
+  background-color: #7fbf9b;
 }
 
-/* Title - matches RevMed green link style */
+.card-progress .dot.gray {
+  background-color: #d1d5db;
+}
+
 .card-title {
-  color: #00a651;
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0 0 16px;
-  line-height: 1.4;
+  color: #1a5a5a;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.2;
   text-decoration: none;
   display: block;
 }
 
 .card-title:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
-/* Description - matches RevMed body text */
 .card-description {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-description-text {
   color: #1a1a1a;
-  font-size: 15px;
-  line-height: 1.7;
-  margin: 0 0 24px;
+  font-size: 1rem;
+  line-height: 1.5;
   font-weight: 400;
+  margin: 0;
 }
 
 .card-description p {
   margin: 0;
 }
 
-/* Divider - gradient bar like RevMed */
 .card-divider {
-  height: 4px;
-  background: linear-gradient(90deg, #00a651 0%, #7ab800 50%, #c4d600 100%);
-  margin-bottom: 24px;
-  border-radius: 2px;
+  position: relative;
+  height: 6px;
+  width: 81px;
+  transform-origin: top left;
+  transform: rotate(180deg);
 }
 
-/* Fields - styled like RevMed's STATUS/PHASE/CONDITIONS */
+.card-divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 40.5px;
+  background-color: #000;
+  transform-origin: top left;
+  transform: rotate(180deg);
+}
+
+.card-divider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -40.5px;
+  height: 6px;
+  width: 40.5px;
+  background-color: #c7e0d1;
+  transform-origin: top left;
+  transform: rotate(180deg);
+}
+
 .card-field {
-  margin-bottom: 16px;
+  display: block;
 }
 
 .field-label {
   display: block;
-  font-size: 11px;
-  font-weight: 700;
-  color: #666;
+  font-size: 12px;
+  font-weight: 400;
+  color: #1a5a5a;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .field-value {
   display: block;
-  font-size: 15px;
+  font-size: 1rem;
   color: #1a1a1a;
-  font-weight: 500;
-  line-height: 1.5;
+  font-weight: 100;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
 }
 
-/* Link - matches RevMed CTA style */
+.card-field.medical-conditions .field-value {
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
 .card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: #00a651;
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  margin-top: 16px;
-  padding: 12px 0;
-  border-top: 1px solid #e5e5e5;
-  width: 100%;
+  display: none;
 }
 
-.card-link:hover {
-  color: #008c44;
-}
-
-.card-link .arrow {
-  font-size: 18px;
-  transition: transform 0.3s ease;
-}
-
-.card-link:hover .arrow {
-  transform: translateX(6px);
-}
-
-/* Navigation buttons - green background panels like RevMed */
-.carousel-nav {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-  display: flex;
-  justify-content: space-between;
-}
-
-.carousel-btn {
-  width: 10%;
-  height: 100%;
-  border: none;
-  border-radius: 0;
-  background: #00a651;
-  color: #fff;
-  font-size: 48px;
-  font-weight: 300;
-  cursor: pointer;
-  pointer-events: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s ease;
-}
-
-.carousel-btn:hover {
-  background: #008c44;
-}
-
-.carousel-btn:active {
-  background: #007a3d;
-}
-
-.carousel-prev {
-  border-radius: 0 16px 16px 0;
-}
-
-.carousel-next {
-  border-radius: 16px 0 0 16px;
-}
-
-/* Responsive */
 @media (max-width: 1200px) {
-  .carousel-viewport {
-    width: 85%;
+  .carousel {
+    grid-template-columns: 6rem 1fr 6rem;
+  }
+
+  .carousel-btn svg {
+    width: 96px;
+    height: 96px;
   }
 
   .carousel-card {
     flex: 0 0 50%;
-    min-width: 50%;
-  }
-
-  .carousel-btn {
-    width: 7.5%;
   }
 }
 
 @media (max-width: 768px) {
   .carousel {
-    padding: 40px 0;
+    grid-template-columns: 4rem 1fr 4rem;
+    padding: 30px 0;
+    gap: 8px;
   }
 
-  .carousel-viewport {
-    width: 70%;
+  .carousel-btn svg {
+    width: 64px;
+    height: 64px;
   }
 
   .carousel-card {
     flex: 0 0 100%;
-    min-width: 100%;
-    padding: 0 8px;
   }
 
   .carousel-card .card-inner {
-    padding: 24px;
+    padding: 16px;
   }
 
   .card-title {
-    font-size: 16px;
+    font-size: 1.25rem;
   }
 
-  .card-description {
-    font-size: 14px;
-  }
-
-  .carousel-btn {
-    width: 15%;
-    font-size: 32px;
+  .card-description-text {
+    font-size: 0.875rem;
   }
 }
 
 @media (max-width: 480px) {
-  .carousel-viewport {
-    width: 80%;
+  .carousel {
+    grid-template-columns: 3rem 1fr 3rem;
   }
 
-  .carousel-btn {
-    width: 10%;
-    font-size: 24px;
+  .carousel-btn svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  .card-title {
+    font-size: 1.125rem;
   }
 }

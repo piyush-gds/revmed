@@ -203,11 +203,11 @@ button:focus {
   cursor: pointer;
 }
 
-button:disabled,
+/* button:disabled,
 button:disabled:hover {
   background-color: var(--light-color);
   cursor: unset;
-}
+} */
 
 a.button.secondary,
 button.secondary {
