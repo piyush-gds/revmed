@@ -29,12 +29,6 @@
     ]
   },
   {
-    "id": "clinical-trials-carousel",
-    "components": [
-      "clinical-trial"
-    ]
-  },
-  {
     "id": "columns",
     "components": [
       "column"

@@ -233,46 +233,6 @@
     ]
   },
   {
-    "id": "clinical-trial",
-    "fields": [
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "title",
-        "label": "Trial Title",
-        "value": ""
-      },
-      {
-        "component": "richtext",
-        "valueType": "string",
-        "name": "description",
-        "label": "Description",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "status",
-        "label": "Status",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "phase",
-        "label": "Phase",
-        "value": ""
-      },
-      {
-        "component": "text",
-        "valueType": "string",
-        "name": "medicalConditions",
-        "label": "Medical Conditions",
-        "value": ""
-      }
-    ]
-  },
-  {
     "id": "columns",
     "fields": [
       {
