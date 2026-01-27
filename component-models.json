@@ -353,6 +353,25 @@
     "id": "spacer",
     "fields": [
       {
+        "component": "select",
+        "name": "paddingStyle",
+        "label": "Padding Style",
+        "options": [
+          {
+            "name": "None",
+            "value": ""
+          },
+          {
+            "name": "Small Padding",
+            "value": "padding-sm"
+          },
+          {
+            "name": "Large Padding",
+            "value": "padding-lg"
+          }
+        ]
+      },
+      {
         "component": "multiselect",
         "name": "style",
         "label": "Style",
