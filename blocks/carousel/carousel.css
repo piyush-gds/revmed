@@ -35,9 +35,14 @@
   width: auto;
 }
 
-.carousel-btn:hover {
+.carousel-btn:hover,
+.carousel-btn:focus,
+.carousel-btn:active {
   color: #fff;
   background: transparent;
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
 }
 
 .carousel-btn:disabled {
