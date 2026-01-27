@@ -34,6 +34,10 @@ footer .columns div div:nth-child(2) {
   text-align: right;
 }
 
+.footer-wrapper {
+  margin-top: -3rem;
+}
+
 .footer-wrapper .footer.block {
   background-repeat: no-repeat;
   background-position: center center;
