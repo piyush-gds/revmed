@@ -354,20 +354,24 @@
     "fields": [
       {
         "component": "select",
-        "name": "paddingStyle",
-        "label": "Padding Style",
+        "name": "spacer",
+        "label": "Spacing Size",
         "options": [
           {
-            "name": "None",
-            "value": ""
+            "name": "Extra Small",
+            "value": "spacing-xs"
           },
           {
-            "name": "Small Padding",
-            "value": "padding-sm"
+            "name": "Small",
+            "value": "spacing-sm"
           },
           {
-            "name": "Large Padding",
-            "value": "padding-lg"
+            "name": "Medium",
+            "value": "spacing-md"
+          },
+          {
+            "name": "Large",
+            "value": "spacing-lg"
           }
         ]
       },

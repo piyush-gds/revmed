@@ -2,18 +2,46 @@
   display: block;
 }
 
-.spacer.spacing-xs {
+.spacer-wrapper.spacing-xs {
   padding: 1rem;
 }
 
-.spacer.spacing-sm {
+.spacer-wrapper.spacing-sm {
   padding: 2rem;
 }
 
-.spacer.spacing-md {
+.spacer-wrapper.spacing-md {
   padding: 3rem;
 }
 
-.spacer.spacing-lg {
-  padding: 4rem;
+.spacer-wrapper.spacing-lg {
+  padding: 6.5rem;
+}
+
+/* Dark Green style */
+main .spacer-wrapper.dark-green {
+  background-color: #0e4343;
+  color: #fff;
+}
+
+/* Light Green style */
+main .spacer-wrapper.light-green {
+  background-color: #d3eae5;
+  color: #0e4343;
+}
+
+/* Green style */
+main .spacer-wrapper.green {
+  background-color: #059669;
+  color: #0e4343;
+}
+
+/* Light Grey style */
+main .spacer-wrapper.light-grey {
+  background-color: #f5f8f9;
+  color: #0e4343;
+}
+
+main .spacer-wrapper.top-left-round {
+  border-top-left-radius: 2rem;
 }
