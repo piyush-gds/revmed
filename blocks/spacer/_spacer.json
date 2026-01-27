@@ -21,25 +21,48 @@
       "id": "spacer",
       "fields": [
         {
-          "component": "select",
-          "name": "spacer",
-          "label": "Spacing Size",
+          "component": "multiselect",
+          "name": "style",
+          "label": "Style",
           "options": [
             {
-              "name": "Extra Small",
-              "value": "spacing-xs"
+              "name": "Dark Green Background",
+              "value": "dark-green"
             },
             {
-              "name": "Small",
-              "value": "spacing-sm"
+              "name": "Light Green Background",
+              "value": "light-green"
             },
             {
-              "name": "Medium",
-              "value": "spacing-md"
+              "name": "Green Background",
+              "value": "green"
             },
             {
-              "name": "Large",
-              "value": "spacing-lg"
+              "name": "Light Grey Background",
+              "value": "light-grey"
+            }
+          ]
+        },
+        {
+          "component": "multiselect",
+          "name": "borderStyle",
+          "label": "Round Border Style",
+          "options": [
+            {
+              "name": "Top Left Corner",
+              "value": "top-left-round"
+            },
+            {
+              "name": "Top Right Corner",
+              "value": "top-right-round"
+            },
+            {
+              "name": "Bottom Left Corner",
+              "value": "bottom-left-round"
+            },
+            {
+              "name": "Bottom Right Corner",
+              "value": "bottom-right-round"
             }
           ]
         }
