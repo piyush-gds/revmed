@@ -160,6 +160,21 @@ export default function decorate(block) {
     updatePosition();
   });
 
+  // Intersection Observer: animate dots once when card comes into view
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target); // once: true - stop observing after first trigger
+        }
+      });
+    },
+    { threshold: 0.1 } // amount: 0.1 - trigger when 10% visible
+  );
+
+  cards.forEach((card) => observer.observe(card));
+
   updatePosition();
   updateButtons();
 }
