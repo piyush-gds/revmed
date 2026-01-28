@@ -166,7 +166,6 @@ a:any-link {
 }
 
 a:hover {
-  color: var(--link-hover-color);
   text-decoration: underline;
 }
 
