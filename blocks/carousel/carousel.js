@@ -17,11 +17,13 @@ function createCard(row) {
   const linkEl = cols[5]?.querySelector("a");
   const linkHref = linkEl?.href || "#";
 
-  const progressCount = parseInt(cols[6]?.textContent?.trim(), 10) || 3;
+  const progressPhase = parseInt(cols[6]?.textContent?.trim(), 10) || 1;
 
+  // Total dots is always 4, green dots based on progressPhase (1-4)
+  const greenDots = Math.min(Math.max(progressPhase, 1), 4);
   const dots = [];
   for (let i = 0; i < 4; i += 1) {
-    const isGreen = i < progressCount;
+    const isGreen = i < greenDots;
     dots.push(`<div class="dot${isGreen ? "" : " gray"}"></div>`);
   }
 
