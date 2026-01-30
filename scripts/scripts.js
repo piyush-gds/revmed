@@ -128,6 +128,30 @@ async function loadLazy(doc) {
   loadFonts();
 }
 
+function fetchCfData(event) {
+  event.preventDefault();
+  const button = event.currentTarget;
+  const reqId = button.textContent.trim();
+  fetch(`https://publish-p52710-e1559444.adobeaemcloud.com/graphql/execute.json/piyush-revmed-site/getrequirementIdData;reqId=${reqId}`)
+    .then((res) => res.json())
+    .then((data) => {
+      const items = data?.data?.requirementsPageModelList?.items || [];
+      if (items.length > 0) {
+        const item = items[0];
+        const div = document.createElement('div');
+        div.className = 'cf-data-result';
+        div.innerHTML = `
+          <p><strong>Path:</strong> ${item._path || ''}</p>
+          <p><strong>Requirement ID:</strong> ${item.requirementId || ''}</p>
+          <p><strong>Headline:</strong> ${item.headline || ''}</p>
+          <p><strong>Description:</strong> ${item.description?.plaintext || ''}</p>
+        `;
+        button.insertAdjacentElement('afterend', div);
+      }
+    })
+    .catch((err) => console.error(err));
+}
+
 /**
  * Loads everything that happens a lot later,
  * without impacting the user experience.
@@ -136,6 +160,10 @@ function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
+  const testButtons = document.querySelectorAll('a[title="Test Button"]');
+  testButtons.forEach((button) => {
+    button.addEventListener('click', fetchCfData);
+  });
 }
 
 async function loadPage() {
