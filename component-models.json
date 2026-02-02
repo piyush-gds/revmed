@@ -312,7 +312,7 @@
       },
       {
         "component": "aem-content",
-        "name": "reference",
+        "name": "reference1",
         "value": "",
         "label": "AEM Content Picker",
         "valueType": "string"
@@ -320,7 +320,7 @@
       {
         "component": "reference",
         "label": "Reference Picker",
-        "name": "reference",
+        "name": "reference2",
         "valueType": "string"
       }
     ]
