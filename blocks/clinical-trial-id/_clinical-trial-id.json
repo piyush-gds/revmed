@@ -28,17 +28,11 @@
           "description": "Enter the NCT identifier"
         },
         {
-          "component": "aem-content",
-          "name": "reference1",
-          "value": "",
-          "label": "AEM Content Picker",
-          "valueType": "string"
-        },
-        {
-          "component": "reference",
-          "label": "Reference Picker",
-          "name": "reference2",
-          "valueType": "string"
+          "component": "aem-content-fragment",
+          "name": "picker",
+          "label": "Content Fragment Picker",
+          "valueType": "string",
+          "variationName": "contentFragmentVariation"
         }
       ]
     }
