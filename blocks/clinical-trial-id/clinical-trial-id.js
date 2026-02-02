@@ -8,7 +8,7 @@ async function fetchTrialData(trialId) {
     return jsonData?.data?.requirementsPageModelList?.items?.[0] || null;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Failed to fetch trial data:', error);
+    console.error("Failed to fetch trial data:", error);
     return null;
   }
 }
@@ -19,7 +19,7 @@ function extractTrialId(block) {
   return match ? match[0] : null;
 }
 
-function createElement(tag, className = '', textContent = '') {
+function createElement(tag, className = "", textContent = "") {
   const element = document.createElement(tag);
   if (className) element.className = className;
   if (textContent) element.textContent = textContent;
@@ -125,45 +125,61 @@ const ICONS = {
 };
 
 function renderTrialContent(block, trialData, trialId) {
-  block.textContent = '';
+  block.textContent = "";
 
-  const content = createElement('div', 'clinical-trial-content');
+  const content = createElement("div", "clinical-trial-content");
 
   // ========== HERO SECTION ==========
-  const heroSection = createElement('div', 'trial-hero');
-  const heroInner = createElement('div', 'trial-hero-inner');
+  const heroSection = createElement("div", "trial-hero");
+  const heroInner = createElement("div", "trial-hero-inner");
 
   // Breadcrumb
-  const breadcrumb = createElement('nav', 'trial-breadcrumb');
-  const breadcrumbLink = createElement('a', 'trial-breadcrumb-link', trialData.clinicalTrialsLabel || 'Clinical Trials');
-  breadcrumbLink.href = '/clinical-trials';
-  const breadcrumbArrow = createElement('span', 'trial-breadcrumb-arrow', '›');
+  const breadcrumb = createElement("nav", "trial-breadcrumb");
+  const breadcrumbLink = createElement(
+    "a",
+    "trial-breadcrumb-link",
+    trialData.clinicalTrialsLabel,
+  );
+  breadcrumbLink.href = "/clinical-trials";
+  const breadcrumbArrow = createElement("span", "trial-breadcrumb-arrow", "›");
   breadcrumb.appendChild(breadcrumbLink);
   breadcrumb.appendChild(breadcrumbArrow);
   heroInner.appendChild(breadcrumb);
 
   // Headline
-  const headline = createElement('h1', 'trial-headline', trialData.headline || 'Clinical Trial');
+  const headline = createElement("h1", "trial-headline", trialData.headline);
   heroInner.appendChild(headline);
 
   // Content row with description and badges
-  const contentRow = createElement('div', 'trial-content-row');
+  const contentRow = createElement("div", "trial-content-row");
 
   // Description
   if (trialData.description?.plaintext) {
-    const descriptionWrapper = createElement('div', 'trial-description');
-    const descriptionText = createElement('p', '', trialData.description.plaintext);
+    const descriptionWrapper = createElement("div", "trial-description");
+    const descriptionText = createElement(
+      "p",
+      "",
+      trialData.description.plaintext,
+    );
     descriptionWrapper.appendChild(descriptionText);
     contentRow.appendChild(descriptionWrapper);
   }
 
   // Badges
-  const badges = createElement('div', 'trial-badges');
+  const badges = createElement("div", "trial-badges");
   if (trialData.phase) {
-    const phaseBadge = createElement('span', 'trial-badge trial-phase', trialData.phase);
+    const phaseBadge = createElement(
+      "span",
+      "trial-badge trial-phase",
+      trialData.phase,
+    );
     badges.appendChild(phaseBadge);
   }
-  const idBadge = createElement('span', 'trial-badge trial-id', trialData.requirementId || trialId);
+  const idBadge = createElement(
+    "span",
+    "trial-badge trial-id",
+    trialData.requirementId,
+  );
   badges.appendChild(idBadge);
   contentRow.appendChild(badges);
 
@@ -172,27 +188,31 @@ function renderTrialContent(block, trialData, trialId) {
   content.appendChild(heroSection);
 
   // ========== STUDY FOCUS & ELIGIBILITY CARDS ==========
-  const cardsSection = createElement('div', 'trial-cards-section');
-  const cardsSectionInner = createElement('div', 'trial-cards-section-inner');
-  const cardsGrid = createElement('div', 'trial-cards-grid');
+  const cardsSection = createElement("div", "trial-cards-section");
+  const cardsSectionInner = createElement("div", "trial-cards-section-inner");
+  const cardsGrid = createElement("div", "trial-cards-grid");
 
   // Study Focus Card
   if (trialData.studyFocusCard?.html) {
-    const studyCard = createElement('div', 'trial-card study-focus-card');
+    const studyCard = createElement("div", "trial-card study-focus-card");
 
-    const studyHeader = createElement('div', 'trial-card-header');
-    const studyTitle = createElement('h3', 'trial-card-title', trialData.studyFocusLabel || 'Study Focus');
+    const studyHeader = createElement("div", "trial-card-header");
+    const studyTitle = createElement(
+      "h3",
+      "trial-card-title",
+      trialData.studyFocusLabel,
+    );
     studyHeader.appendChild(studyTitle);
     studyCard.appendChild(studyHeader);
 
-    const studyDivider = createElement('div', 'trial-card-divider');
+    const studyDivider = createElement("div", "trial-card-divider");
     studyCard.appendChild(studyDivider);
 
-    const studyContent = createElement('div', 'trial-card-content');
+    const studyContent = createElement("div", "trial-card-content");
     studyContent.innerHTML = trialData.studyFocusCard.html;
     studyCard.appendChild(studyContent);
 
-    const studyIcon = createElement('div', 'trial-card-icon');
+    const studyIcon = createElement("div", "trial-card-icon");
     studyIcon.innerHTML = ICONS.studyFocus;
     studyCard.appendChild(studyIcon);
 
@@ -201,24 +221,32 @@ function renderTrialContent(block, trialData, trialId) {
 
   // Eligibility Card
   if (trialData.eligibilityCard?.html) {
-    const eligibilityCard = createElement('div', 'trial-card eligibility-card');
+    const eligibilityCard = createElement("div", "trial-card eligibility-card");
 
-    const eligibilityHeader = createElement('div', 'trial-card-header');
-    const eligibilityTitle = createElement('h3', 'trial-card-title', trialData.eligibilityLabel || 'Eligibility');
+    const eligibilityHeader = createElement("div", "trial-card-header");
+    const eligibilityTitle = createElement(
+      "h3",
+      "trial-card-title",
+      trialData.eligibilityLabel,
+    );
     eligibilityHeader.appendChild(eligibilityTitle);
     eligibilityCard.appendChild(eligibilityHeader);
 
-    const eligibilityDivider = createElement('div', 'trial-card-divider');
+    const eligibilityDivider = createElement("div", "trial-card-divider");
     eligibilityCard.appendChild(eligibilityDivider);
 
-    const eligibilityContent = createElement('div', 'trial-card-content');
+    const eligibilityContent = createElement("div", "trial-card-content");
     eligibilityContent.innerHTML = trialData.eligibilityCard.html;
     eligibilityCard.appendChild(eligibilityContent);
 
-    const eligibilityFootnote = createElement('p', 'trial-card-footnote', '*This is not a complete list of eligibility criteria; for more information, please go to ClinicalTrials.gov.');
+    const eligibilityFootnote = createElement(
+      "p",
+      "trial-card-footnote",
+      "*This is not a complete list of eligibility criteria; for more information, please go to ClinicalTrials.gov.",
+    );
     eligibilityCard.appendChild(eligibilityFootnote);
 
-    const eligibilityIcon = createElement('div', 'trial-card-icon');
+    const eligibilityIcon = createElement("div", "trial-card-icon");
     eligibilityIcon.innerHTML = ICONS.eligibility;
     eligibilityCard.appendChild(eligibilityIcon);
 
@@ -230,23 +258,35 @@ function renderTrialContent(block, trialData, trialId) {
   content.appendChild(cardsSection);
 
   // ========== PHASE & TIMELINES CARDS ==========
-  const infoSection = createElement('div', 'trial-info-section');
-  const infoSectionInner = createElement('div', 'trial-info-section-inner');
-  const infoGrid = createElement('div', 'trial-info-grid');
+  const infoSection = createElement("div", "trial-info-section");
+  const infoSectionInner = createElement("div", "trial-info-section-inner");
+  const infoGrid = createElement("div", "trial-info-grid");
 
   // Clinical Trial Phase Card
-  const phaseCard = createElement('div', 'trial-info-card phase-card');
+  const phaseCard = createElement("div", "trial-info-card phase-card");
 
-  const phaseHeader = createElement('h3', 'trial-info-card-title', trialData.clinicalTrialPhaseLabel || 'Clinical Trial Phase');
+  const phaseHeader = createElement(
+    "h3",
+    "trial-info-card-title",
+    trialData.clinicalTrialPhaseLabel,
+  );
   phaseCard.appendChild(phaseHeader);
 
-  const phaseIconWrapper = createElement('div', 'trial-info-card-icon');
+  const phaseIconWrapper = createElement("div", "trial-info-card-icon");
   phaseIconWrapper.innerHTML = ICONS.clinicalPhase;
   phaseCard.appendChild(phaseIconWrapper);
 
-  const phaseFooter = createElement('div', 'trial-info-card-footer');
-  const phaseLabel = createElement('span', 'trial-info-label', trialData.phaseLabel || 'Phase:');
-  const phaseValue = createElement('span', 'trial-info-value', trialData.phaseValue || '');
+  const phaseFooter = createElement("div", "trial-info-card-footer");
+  const phaseLabel = createElement(
+    "span",
+    "trial-info-label",
+    trialData.phaseLabel,
+  );
+  const phaseValue = createElement(
+    "span",
+    "trial-info-value",
+    trialData.phaseValue,
+  );
   phaseFooter.appendChild(phaseLabel);
   phaseFooter.appendChild(phaseValue);
   phaseCard.appendChild(phaseFooter);
@@ -254,18 +294,30 @@ function renderTrialContent(block, trialData, trialId) {
   infoGrid.appendChild(phaseCard);
 
   // Timelines Card
-  const timelinesCard = createElement('div', 'trial-info-card timelines-card');
+  const timelinesCard = createElement("div", "trial-info-card timelines-card");
 
-  const timelinesHeader = createElement('h3', 'trial-info-card-title', trialData.timelinesLabel || 'Timelines');
+  const timelinesHeader = createElement(
+    "h3",
+    "trial-info-card-title",
+    trialData.timelinesLabel,
+  );
   timelinesCard.appendChild(timelinesHeader);
 
-  const timelinesIconWrapper = createElement('div', 'trial-info-card-icon');
+  const timelinesIconWrapper = createElement("div", "trial-info-card-icon");
   timelinesIconWrapper.innerHTML = ICONS.timelines;
   timelinesCard.appendChild(timelinesIconWrapper);
 
-  const timelinesFooter = createElement('div', 'trial-info-card-footer');
-  const timelinesLabel = createElement('span', 'trial-info-label', trialData.studyDurationLabel || 'Study Duration:');
-  const timelinesValue = createElement('span', 'trial-info-value', trialData.studyDurationValue || '');
+  const timelinesFooter = createElement("div", "trial-info-card-footer");
+  const timelinesLabel = createElement(
+    "span",
+    "trial-info-label",
+    trialData.studyDurationLabel,
+  );
+  const timelinesValue = createElement(
+    "span",
+    "trial-info-value",
+    trialData.studyDurationValue,
+  );
   timelinesFooter.appendChild(timelinesLabel);
   timelinesFooter.appendChild(timelinesValue);
   timelinesCard.appendChild(timelinesFooter);
@@ -278,9 +330,12 @@ function renderTrialContent(block, trialData, trialId) {
 
   // ========== CONTACT SECTION ==========
   if (trialData.contactLabel?.html) {
-    const contactSection = createElement('div', 'trial-contact-section');
-    const contactSectionInner = createElement('div', 'trial-contact-section-inner');
-    const contactContent = createElement('div', 'trial-contact-content');
+    const contactSection = createElement("div", "trial-contact-section");
+    const contactSectionInner = createElement(
+      "div",
+      "trial-contact-section-inner",
+    );
+    const contactContent = createElement("div", "trial-contact-content");
     contactContent.innerHTML = trialData.contactLabel.html;
     contactSectionInner.appendChild(contactContent);
     contactSection.appendChild(contactSectionInner);
@@ -289,13 +344,20 @@ function renderTrialContent(block, trialData, trialId) {
 
   // ========== REFERENCE SECTION ==========
   if (trialData.referenceValue?.html) {
-    const referenceSection = createElement('div', 'trial-reference-section');
-    const referenceSectionInner = createElement('div', 'trial-reference-section-inner');
+    const referenceSection = createElement("div", "trial-reference-section");
+    const referenceSectionInner = createElement(
+      "div",
+      "trial-reference-section-inner",
+    );
 
-    const referenceTitle = createElement('h3', 'trial-reference-title', trialData.referenceLabel || 'Reference');
+    const referenceTitle = createElement(
+      "h3",
+      "trial-reference-title",
+      trialData.referenceLabel,
+    );
     referenceSectionInner.appendChild(referenceTitle);
 
-    const referenceContent = createElement('div', 'trial-reference-content');
+    const referenceContent = createElement("div", "trial-reference-content");
     referenceContent.innerHTML = trialData.referenceValue.html;
     referenceSectionInner.appendChild(referenceContent);
 
@@ -307,14 +369,18 @@ function renderTrialContent(block, trialData, trialId) {
 }
 
 function showLoading(block) {
-  block.textContent = '';
-  const loading = createElement('div', 'trial-loading', 'Loading clinical trial data...');
+  block.textContent = "";
+  const loading = createElement(
+    "div",
+    "trial-loading",
+    "Loading clinical trial data...",
+  );
   block.appendChild(loading);
 }
 
 function showError(block, message) {
-  block.textContent = '';
-  const error = createElement('p', 'trial-error', message);
+  block.textContent = "";
+  const error = createElement("p", "trial-error", message);
   block.appendChild(error);
 }
 
@@ -322,7 +388,10 @@ export default async function decorate(block) {
   const trialId = extractTrialId(block);
 
   if (!trialId) {
-    showError(block, 'No valid NCT ID provided. Please enter an NCT identifier (e.g., NCT12345678).');
+    showError(
+      block,
+      "No valid NCT ID provided. Please enter an NCT identifier (e.g., NCT12345678).",
+    );
     return;
   }
 
