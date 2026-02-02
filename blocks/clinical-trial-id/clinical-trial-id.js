@@ -27,29 +27,34 @@ function createElement(tag, className = '', textContent = '') {
 }
 
 const ICONS = {
-  studyFocus: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#1a9e8f" stroke-width="2">
-    <circle cx="50" cy="75" r="14"/>
-    <circle cx="32" cy="58" r="12"/>
-    <circle cx="68" cy="58" r="12"/>
-    <circle cx="50" cy="42" r="10"/>
-    <circle cx="28" cy="38" r="8"/>
-    <circle cx="72" cy="38" r="8"/>
-    <circle cx="40" cy="24" r="7"/>
-    <circle cx="60" cy="24" r="7"/>
-    <circle cx="50" cy="12" r="5"/>
+  studyFocus: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 120" fill="none" stroke="#1a9e8f" stroke-width="2.5">
+    <circle cx="70" cy="95" r="20"/>
+    <circle cx="38" cy="78" r="16"/>
+    <circle cx="102" cy="78" r="16"/>
+    <circle cx="55" cy="52" r="14"/>
+    <circle cx="85" cy="52" r="14"/>
+    <circle cx="28" cy="48" r="12"/>
+    <circle cx="112" cy="48" r="12"/>
+    <circle cx="70" cy="35" r="13"/>
+    <circle cx="45" cy="25" r="10"/>
+    <circle cx="95" cy="25" r="10"/>
+    <circle cx="70" cy="10" r="8"/>
   </svg>`,
-  eligibility: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 90" fill="none" stroke="#1a9e8f" stroke-width="2.5">
-    <circle cx="35" cy="18" r="10"/>
-    <path d="M22 35 L22 75 M48 35 L48 75"/>
-    <path d="M22 35 C22 28 48 28 48 35"/>
-    <circle cx="70" cy="18" r="10"/>
-    <path d="M57 35 L57 75 M83 35 L83 75"/>
-    <path d="M57 35 C57 28 83 28 83 35"/>
-    <circle cx="70" cy="60" r="10" fill="#1a9e8f" stroke="none"/>
-    <path d="M65 60 L68 64 L76 55" stroke="#fff" stroke-width="2.5" fill="none"/>
-    <circle cx="105" cy="18" r="10"/>
-    <path d="M92 35 L92 75 M118 35 L118 75"/>
-    <path d="M92 35 C92 28 118 28 118 35"/>
+  eligibility: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 100" fill="none" stroke="#1a9e8f" stroke-width="2.5">
+    <circle cx="35" cy="20" r="12"/>
+    <path d="M23 40 C23 32 47 32 47 40"/>
+    <line x1="23" y1="40" x2="23" y2="90"/>
+    <line x1="47" y1="40" x2="47" y2="90"/>
+    <circle cx="80" cy="20" r="12"/>
+    <path d="M68 40 C68 32 92 32 92 40"/>
+    <line x1="68" y1="40" x2="68" y2="90"/>
+    <line x1="92" y1="40" x2="92" y2="90"/>
+    <circle cx="80" cy="62" r="12" fill="#1a9e8f" stroke="none"/>
+    <path d="M74 62 L78 67 L87 56" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="125" cy="20" r="12"/>
+    <path d="M113 40 C113 32 137 32 137 40"/>
+    <line x1="113" y1="40" x2="113" y2="90"/>
+    <line x1="137" y1="40" x2="137" y2="90"/>
   </svg>`,
   clinicalPhase: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" fill="none" stroke="#1a9e8f" stroke-width="2">
     <circle cx="35" cy="25" r="12"/>
@@ -125,8 +130,13 @@ function renderTrialContent(block, trialData, trialId) {
   if (trialData.studyFocusCard?.html) {
     const studyCard = createElement('div', 'trial-card study-focus-card');
 
+    const studyHeader = createElement('div', 'trial-card-header');
     const studyTitle = createElement('h3', 'trial-card-title', trialData.studyFocusLabel || 'Study Focus');
-    studyCard.appendChild(studyTitle);
+    studyHeader.appendChild(studyTitle);
+    studyCard.appendChild(studyHeader);
+
+    const studyDivider = createElement('div', 'trial-card-divider');
+    studyCard.appendChild(studyDivider);
 
     const studyContent = createElement('div', 'trial-card-content');
     studyContent.innerHTML = trialData.studyFocusCard.html;
@@ -143,12 +153,20 @@ function renderTrialContent(block, trialData, trialId) {
   if (trialData.eligibilityCard?.html) {
     const eligibilityCard = createElement('div', 'trial-card eligibility-card');
 
+    const eligibilityHeader = createElement('div', 'trial-card-header');
     const eligibilityTitle = createElement('h3', 'trial-card-title', trialData.eligibilityLabel || 'Eligibility');
-    eligibilityCard.appendChild(eligibilityTitle);
+    eligibilityHeader.appendChild(eligibilityTitle);
+    eligibilityCard.appendChild(eligibilityHeader);
+
+    const eligibilityDivider = createElement('div', 'trial-card-divider');
+    eligibilityCard.appendChild(eligibilityDivider);
 
     const eligibilityContent = createElement('div', 'trial-card-content');
     eligibilityContent.innerHTML = trialData.eligibilityCard.html;
     eligibilityCard.appendChild(eligibilityContent);
+
+    const eligibilityFootnote = createElement('p', 'trial-card-footnote', '*This is not a complete list of eligibility criteria; for more information, please go to ClinicalTrials.gov.');
+    eligibilityCard.appendChild(eligibilityFootnote);
 
     const eligibilityIcon = createElement('div', 'trial-card-icon');
     eligibilityIcon.innerHTML = ICONS.eligibility;

@@ -125,30 +125,58 @@
 
 .trial-card {
   background-color: #fff;
-  border-left: 4px solid #1a9e8f;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   padding: 32px;
   display: flex;
   flex-direction: column;
-  min-height: 420px;
+  min-height: 480px;
+}
+
+.trial-card-header {
+  margin-bottom: 0;
 }
 
 .trial-card-title {
-  margin: 0 0 20px 0;
+  margin: 0;
   font-size: 1.375rem;
   font-weight: 600;
-  color: #1a6b66;
+  color: #1f2937;
+}
+
+.study-focus-card .trial-card-title {
+  color: #1f2937;
+}
+
+.eligibility-card .trial-card-title {
+  color: #c59a3f;
+}
+
+.trial-card-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 16px 0 20px 0;
+}
+
+.trial-card-footnote {
+  margin: 16px 0 0 0;
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1.5;
+  font-style: italic;
 }
 
 .trial-card-content {
   flex: 1;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   line-height: 1.7;
-  color: #333;
+  color: #4b5563;
 }
 
 .trial-card-content p {
   margin: 0 0 16px 0;
-  color: #555;
+  color: #4b5563;
+  font-size: 0.875rem;
 }
 
 .trial-card-content p:first-child {
@@ -156,18 +184,20 @@
 }
 
 .trial-card-content ul {
-  margin: 0;
-  padding-left: 20px;
+  margin: 16px 0 0 0;
+  padding-left: 24px;
   list-style: disc;
 }
 
 .trial-card-content li {
-  margin-bottom: 10px;
-  color: #333;
+  margin-bottom: 12px;
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
 .trial-card-content li::marker {
-  color: #1a9e8f;
+  color: #1a6b66;
 }
 
 .trial-card-content a {
@@ -176,20 +206,21 @@
 }
 
 .trial-card-content sup {
-  color: #1a6b66;
+  color: #c59a3f;
+  font-size: 0.7rem;
 }
 
 .trial-card-icon {
   margin-top: auto;
-  padding-top: 32px;
+  padding-top: 40px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
 }
 
 .trial-card-icon svg {
-  width: 120px;
-  height: 100px;
+  width: 140px;
+  height: 110px;
 }
 
 /* ===== PHASE & TIMELINES INFO CARDS ===== */
