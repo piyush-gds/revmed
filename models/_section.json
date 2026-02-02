@@ -105,7 +105,8 @@
         "video",
         "separator",
         "spacer",
-        "carousel"
+        "carousel",
+        "clinical-trial-id"
       ]
     }
   ]

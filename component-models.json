@@ -301,6 +301,17 @@
     ]
   },
   {
+    "id": "clinical-trial-id",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "clinicalTrialId",
+        "label": "Clinical Trial Id"
+      }
+    ]
+  },
+  {
     "id": "columns",
     "fields": [
       {
