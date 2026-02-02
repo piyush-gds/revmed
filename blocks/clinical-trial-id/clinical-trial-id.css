@@ -1,83 +1,419 @@
+/* ===== CLINICAL TRIAL ID BLOCK ===== */
 .clinical-trial-id {
   display: block;
-  padding: 24px;
+  width: 100%;
 }
 
 .clinical-trial-content {
+  width: 100%;
+}
+
+/* ===== HERO SECTION ===== */
+.trial-hero {
+  background-color: #1a6b66;
+  padding: 0;
+}
+
+.trial-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+/* Breadcrumb */
+.trial-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.trial-breadcrumb-link {
+  color: #d4a84b;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.trial-breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.trial-breadcrumb-arrow {
+  color: #d4a84b;
+  font-size: 0.75rem;
+}
+
+/* Headline */
+.trial-headline {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: #d4a84b;
+  margin: 0 0 24px 0;
+  line-height: 1.2;
+}
+
+/* Content Row */
+.trial-content-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+/* Description */
+.trial-description {
+  flex: 1;
+  max-width: 680px;
+}
+
+.trial-description p {
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Badges */
+.trial-badges {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.trial-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  min-height: 44px;
+}
+
+.trial-badge.trial-phase {
+  background-color: #2d4a47;
+  color: #fff;
+  border: none;
+}
+
+.trial-badge.trial-id {
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+/* ===== STUDY FOCUS & ELIGIBILITY CARDS ===== */
+.trial-cards-section {
+  background-color: #f5f5f5;
+  padding: 48px 24px;
+}
+
+.trial-cards-section-inner {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.trial-header {
-  margin-bottom: 24px;
-}
-
-.trial-headline {
-  font-size: 2rem;
-  margin-bottom: 12px;
-}
-
-.trial-badges {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.trial-badge {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 0.875rem;
-}
-
-.trial-badge.trial-phase {
-  background-color: #0066cc;
-  color: #fff;
-}
-
-.trial-badge.trial-id {
-  background-color: #333;
-  color: #fff;
-}
-
-.trial-description {
-  margin-bottom: 24px;
-  font-size: 1.125rem;
-  line-height: 1.6;
+.trial-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
 .trial-card {
-  background-color: #f5f5f5;
+  background-color: #fff;
+  border-left: 4px solid #1a9e8f;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+}
+
+.trial-card-title {
+  margin: 0 0 20px 0;
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: #1a6b66;
+}
+
+.trial-card-content {
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.trial-card-content p {
+  margin: 0 0 16px 0;
+  color: #555;
+}
+
+.trial-card-content p:first-child {
+  margin-bottom: 16px;
+}
+
+.trial-card-content ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.trial-card-content li {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.trial-card-content li::marker {
+  color: #1a9e8f;
+}
+
+.trial-card-content a {
+  color: #1a6b66;
+  text-decoration: underline;
+}
+
+.trial-card-content sup {
+  color: #1a6b66;
+}
+
+.trial-card-icon {
+  margin-top: auto;
+  padding-top: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.trial-card-icon svg {
+  width: 120px;
+  height: 100px;
+}
+
+/* ===== PHASE & TIMELINES INFO CARDS ===== */
+.trial-info-section {
+  background-color: #fff;
+  padding: 48px 24px;
+}
+
+.trial-info-section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trial-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.trial-info-card {
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
   padding: 24px;
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
 }
 
-.trial-card h3 {
-  margin-top: 0;
-  margin-bottom: 16px;
+.trial-info-card-title {
+  margin: 0 0 24px 0;
   font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a6b66;
 }
 
-.trial-card .card-content {
+.trial-info-card-icon {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f7f6;
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.trial-info-card-icon svg {
+  width: 100px;
+  height: 80px;
+}
+
+.trial-info-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trial-info-label {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 400;
+}
+
+.trial-info-value {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* ===== CONTACT SECTION ===== */
+.trial-contact-section {
+  background-color: #fff;
+  padding: 0 24px 48px;
+}
+
+.trial-contact-section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trial-contact-content {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.trial-contact-content p {
+  margin: 0 0 16px 0;
+}
+
+.trial-contact-content p:last-child {
+  margin-bottom: 0;
+}
+
+.trial-contact-content a {
+  color: #1a6b66;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* ===== REFERENCE SECTION ===== */
+.trial-reference-section {
+  background-color: #f5f5f5;
+  padding: 48px 24px;
+}
+
+.trial-reference-section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trial-reference-title {
+  margin: 0 0 16px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.trial-reference-content {
+  font-size: 0.85rem;
   line-height: 1.6;
-}
-
-.trial-meta {
-  margin-top: 24px;
   color: #666;
 }
 
+.trial-reference-content p {
+  margin: 0;
+}
+
+.trial-reference-content a {
+  color: #1a6b66;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+/* ===== LOADING & ERROR ===== */
 .trial-loading {
   text-align: center;
-  padding: 48px;
-  color: #666;
+  padding: 64px 24px;
+  color: #1a6b66;
+  font-size: 1.125rem;
+  background-color: #f0f7f6;
 }
 
 .trial-error {
   color: #cc0000;
-  padding: 16px;
+  padding: 24px;
   background-color: #fff0f0;
-  border-radius: 4px;
+  border-radius: 8px;
+  margin: 24px;
+  text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .trial-hero-inner {
+    padding: 32px 20px 48px;
+  }
+
+  .trial-headline {
+    font-size: 1.75rem;
+  }
+
+  .trial-content-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .trial-badges {
+    flex-wrap: wrap;
+  }
+
+  .trial-cards-section,
+  .trial-info-section,
+  .trial-contact-section,
+  .trial-reference-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .trial-cards-grid,
+  .trial-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trial-card {
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .trial-info-card {
+    min-height: auto;
+  }
+
+  .trial-card-icon svg {
+    width: 100px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .trial-hero-inner {
+    padding: 24px 16px 40px;
+  }
+
+  .trial-headline {
+    font-size: 1.5rem;
+  }
+
+  .trial-badge {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    min-height: 38px;
+  }
+
+  .trial-card {
+    padding: 20px;
+  }
+
+  .trial-card-title {
+    font-size: 1.25rem;
+  }
+
+  .trial-info-card {
+    padding: 20px;
+  }
 }
