@@ -21,10 +21,11 @@
       "id": "clinical-trial-id",
       "fields": [
         {
-          "component": "reference",
+          "component": "text",
           "valueType": "string",
           "name": "clinicalTrialId",
-          "label": "Clinical Trial Id"
+          "label": "Clinical Trial ID",
+          "description": "Enter the NCT identifier"
         }
       ]
     }

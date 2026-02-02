@@ -1,0 +1,83 @@
+.clinical-trial-id {
+  display: block;
+  padding: 24px;
+}
+
+.clinical-trial-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trial-header {
+  margin-bottom: 24px;
+}
+
+.trial-headline {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.trial-badges {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.trial-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.trial-badge.trial-phase {
+  background-color: #0066cc;
+  color: #fff;
+}
+
+.trial-badge.trial-id {
+  background-color: #333;
+  color: #fff;
+}
+
+.trial-description {
+  margin-bottom: 24px;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.trial-card {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.trial-card h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1.25rem;
+}
+
+.trial-card .card-content {
+  line-height: 1.6;
+}
+
+.trial-meta {
+  margin-top: 24px;
+  color: #666;
+}
+
+.trial-loading {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+}
+
+.trial-error {
+  color: #cc0000;
+  padding: 16px;
+  background-color: #fff0f0;
+  border-radius: 4px;
+}
