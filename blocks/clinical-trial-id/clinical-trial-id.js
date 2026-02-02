@@ -138,7 +138,7 @@ function renderTrialContent(block, trialData, trialId) {
   const breadcrumbLink = createElement(
     "a",
     "trial-breadcrumb-link",
-    trialData.clinicalTrialsLabel,
+    trialData.cfReference?.clinicalTrialsLabel,
   );
   breadcrumbLink.href = "/clinical-trials";
   const breadcrumbArrow = createElement("span", "trial-breadcrumb-arrow", "›");
@@ -200,7 +200,7 @@ function renderTrialContent(block, trialData, trialId) {
     const studyTitle = createElement(
       "h3",
       "trial-card-title",
-      trialData.studyFocusLabel,
+      trialData.cfReference?.studyFocusLabel,
     );
     studyHeader.appendChild(studyTitle);
     studyCard.appendChild(studyHeader);
@@ -227,7 +227,7 @@ function renderTrialContent(block, trialData, trialId) {
     const eligibilityTitle = createElement(
       "h3",
       "trial-card-title",
-      trialData.eligibilityLabel,
+      trialData.cfReference?.eligibilityLabel,
     );
     eligibilityHeader.appendChild(eligibilityTitle);
     eligibilityCard.appendChild(eligibilityHeader);
@@ -268,7 +268,7 @@ function renderTrialContent(block, trialData, trialId) {
   const phaseHeader = createElement(
     "h3",
     "trial-info-card-title",
-    trialData.clinicalTrialPhaseLabel,
+    trialData.cfReference?.clinicalTrialPhaseLabel,
   );
   phaseCard.appendChild(phaseHeader);
 
@@ -280,7 +280,7 @@ function renderTrialContent(block, trialData, trialId) {
   const phaseLabel = createElement(
     "span",
     "trial-info-label",
-    trialData.phaseLabel,
+    trialData.cfReference?.phaseLabel,
   );
   const phaseValue = createElement(
     "span",
@@ -299,7 +299,7 @@ function renderTrialContent(block, trialData, trialId) {
   const timelinesHeader = createElement(
     "h3",
     "trial-info-card-title",
-    trialData.timelinesLabel,
+    trialData.cfReference?.timelinesLabel,
   );
   timelinesCard.appendChild(timelinesHeader);
 
@@ -311,7 +311,7 @@ function renderTrialContent(block, trialData, trialId) {
   const timelinesLabel = createElement(
     "span",
     "trial-info-label",
-    trialData.studyDurationLabel,
+    trialData.cfReference?.studyDurationLabel,
   );
   const timelinesValue = createElement(
     "span",
@@ -329,14 +329,14 @@ function renderTrialContent(block, trialData, trialId) {
   content.appendChild(infoSection);
 
   // ========== CONTACT SECTION ==========
-  if (trialData.contactLabel?.html) {
+  if (trialData.cfReference?.contactLabel?.html) {
     const contactSection = createElement("div", "trial-contact-section");
     const contactSectionInner = createElement(
       "div",
       "trial-contact-section-inner",
     );
     const contactContent = createElement("div", "trial-contact-content");
-    contactContent.innerHTML = trialData.contactLabel.html;
+    contactContent.innerHTML = trialData.cfReference.contactLabel.html;
     contactSectionInner.appendChild(contactContent);
     contactSection.appendChild(contactSectionInner);
     content.appendChild(contactSection);
@@ -353,7 +353,7 @@ function renderTrialContent(block, trialData, trialId) {
     const referenceTitle = createElement(
       "h3",
       "trial-reference-title",
-      trialData.referenceLabel,
+      trialData.cfReference?.referenceLabel,
     );
     referenceSectionInner.appendChild(referenceTitle);
 
