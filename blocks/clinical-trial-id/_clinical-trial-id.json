@@ -21,7 +21,7 @@
       "id": "clinical-trial-id",
       "fields": [
         {
-          "component": "aem-content",
+          "component": "reference",
           "valueType": "string",
           "name": "clinicalTrialId",
           "label": "Clinical Trial Id"
