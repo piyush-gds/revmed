@@ -1,4 +1,9 @@
 /* ===== CLINICAL TRIAL ID BLOCK ===== */
+.clinical-trial-id-wrapper {
+    max-width: unset !important;
+    padding: unset !important;
+}
+
 .clinical-trial-id {
   display: block;
   width: 100%;
@@ -10,190 +15,187 @@
 
 /* ===== HERO SECTION ===== */
 .trial-hero {
-  background-color: #1a6b66;
+  background-color: #1e6b5c;
   padding: 0;
 }
 
 .trial-hero-inner {
-  max-width: 1200px;
+  max-width: 1264px;
   margin: 0 auto;
-  padding: 48px 24px 64px;
+  padding: 64px 0 48px;
 }
 
 /* Breadcrumb */
 .trial-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 24px;
 }
 
 .trial-breadcrumb-link {
-  color: #d4a84b;
+  color: #fff;
   text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 400;
-}
-
-.trial-breadcrumb-link:hover {
-  text-decoration: underline;
 }
 
 .trial-breadcrumb-arrow {
-  color: #d4a84b;
-  font-size: 0.75rem;
+  color: #fff;
 }
 
 /* Headline */
 .trial-headline {
-  font-size: 2.25rem;
-  font-weight: 600;
-  color: #d4a84b;
-  margin: 0 0 24px 0;
-  line-height: 1.2;
+  font-size: 36px;
+  color: #fff;
+  margin-bottom: 40px;
+  line-height: 40px;
 }
 
 /* Content Row */
 .trial-content-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 32px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  row-gap: 8px;
+  column-gap: 32px;
 }
 
 /* Description */
-.trial-description {
-  flex: 1;
-  max-width: 680px;
-}
-
 .trial-description p {
   color: #fff;
-  font-size: 1rem;
-  line-height: 1.7;
-  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.55;
 }
 
 /* Badges */
 .trial-badges {
   display: flex;
-  gap: 12px;
-  flex-shrink: 0;
+  gap: 8px;
   align-items: center;
 }
 
 .trial-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 24px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  min-height: 44px;
+    display: inline-flex;
+    height: 48px;
+    width: fit-content;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
+    border-radius: 3.40282e+38px;
+    border-width: 1px;
+    padding-inline: 32px;
+    padding-block: 2px;
+    font-size: 18px;
+    line-height: 1.55;
+    white-space: nowrap;
+    color: #fff;
+    transition-property: color, box-shadow;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+    transition-duration: .15s;
 }
 
 .trial-badge.trial-phase {
-  background-color: #2d4a47;
-  color: #fff;
-  border: none;
+  background-color: #022c22;
 }
 
 .trial-badge.trial-id {
-  background-color: transparent;
-  color: #fff;
-  border: 2px solid #fff;
+  border: 1px solid #fff;
 }
 
 /* ===== STUDY FOCUS & ELIGIBILITY CARDS ===== */
 .trial-cards-section {
   background-color: #f5f5f5;
-  padding: 48px 24px;
+  padding: 60px 24px;
 }
 
 .trial-cards-section-inner {
-  max-width: 1200px;
+  max-width: 1264px;
   margin: 0 auto;
 }
 
 .trial-cards-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 8px;
 }
 
 .trial-card {
   background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  padding: 32px;
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 0;
   display: flex;
   flex-direction: column;
   min-height: 480px;
+  overflow: hidden;
 }
 
 .trial-card-header {
-  margin-bottom: 0;
+  padding: 48px 48px 0 48px;
 }
 
 .trial-card-title {
   margin: 0;
-  font-size: 1.375rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 36px;
   color: #1f2937;
-}
-
-.study-focus-card .trial-card-title {
-  color: #1f2937;
-}
-
-.eligibility-card .trial-card-title {
-  color: #c59a3f;
 }
 
 .trial-card-divider {
-  height: 1px;
-  background-color: #e5e7eb;
-  margin: 16px 0 20px 0;
+  position: relative;
+  height: 0.35rem;
+  background-color: #d1dbd1;
+  width: 8rem;
+  margin: 24px 0 32px 56px;
+}
+
+.trial-card-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background-color: #000;
 }
 
 .trial-card-footnote {
-  margin: 16px 0 0 0;
-  font-size: 0.75rem;
-  color: #6b7280;
-  line-height: 1.5;
-  font-style: italic;
+  margin: 16px 56px 0 56px;
+  font-size: 0.8rem;
+  line-height: 1rem;
+  font-style: normal;
 }
 
 .trial-card-content {
   flex: 1;
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0 56px;
 }
 
 .trial-card-content p {
   margin: 0 0 16px 0;
-  color: #4b5563;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 .trial-card-content p:first-child {
-  margin-bottom: 16px;
+  margin-bottom: 40px;
 }
 
 .trial-card-content ul {
-  margin: 16px 0 0 0;
-  padding-left: 24px;
-  list-style: disc;
+    margin-bottom: 40px;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+    color: #0e4343;
 }
 
 .trial-card-content li {
-  margin-bottom: 12px;
-  color: #374151;
-  font-size: 0.875rem;
-  line-height: 1.6;
+    margin-left: 32px;
+    font-size: 18px;
+    line-height: 28px;
+    position: relative;
 }
 
 .trial-card-content li::marker {
@@ -211,16 +213,25 @@
 }
 
 .trial-card-icon {
-  margin-top: auto;
-  padding-top: 40px;
+  margin-top: 32px;
+  padding: 32px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  overflow: hidden;
 }
 
-.trial-card-icon svg {
-  width: 140px;
-  height: 110px;
+.trial-card-icon svg,
+.trial-card-icon img {
+  width: 100%;
+  max-width: 168px;
+  height: auto;
+  object-fit: cover;
+}
+
+.eligibility-card .trial-card-icon svg,
+.eligibility-card .trial-card-icon img {
+  max-width: 224px;
 }
 
 /* ===== PHASE & TIMELINES INFO CARDS ===== */
@@ -230,31 +241,31 @@
 }
 
 .trial-info-section-inner {
-  max-width: 1200px;
+  max-width: 1264px;
   margin: 0 auto;
 }
 
 .trial-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 8px;
 }
 
 .trial-info-card {
-  background-color: #fff;
+  background-color: oklch(0.9436 0.0051 228.82);
   border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 24px;
+  border-radius: 16px;
+  gap: 8px;
+  padding: 48px 24px;
   display: flex;
   flex-direction: column;
-  min-height: 300px;
 }
 
 .trial-info-card-title {
   margin: 0 0 24px 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1a6b66;
+  font-size: 30px;
+  line-height: 36px;
+  color: oklch(0.3498 0.0532 195);
 }
 
 .trial-info-card-icon {
@@ -262,33 +273,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f7f6;
-  border-radius: 8px;
-  padding: 32px;
-  margin-bottom: 24px;
-}
-
-.trial-info-card-icon svg {
-  width: 100px;
-  height: 80px;
+  background-color: #d3eae5;
+  padding: 16px;
 }
 
 .trial-info-card-footer {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
 .trial-info-label {
-  font-size: 0.95rem;
-  color: #333;
-  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.55;
+  font-size: 18px;
+  color: oklch(0.3498 0.0532 195);
 }
 
 .trial-info-value {
   font-size: 1rem;
-  color: #333;
-  font-weight: 500;
+  color: oklch(0.3498 0.0532 195);
 }
 
 /* ===== CONTACT SECTION ===== */
@@ -298,7 +303,7 @@
 }
 
 .trial-contact-section-inner {
-  max-width: 1200px;
+  max-width: 1264px;
   margin: 0 auto;
 }
 
@@ -325,35 +330,22 @@
 /* ===== REFERENCE SECTION ===== */
 .trial-reference-section {
   background-color: #f5f5f5;
-  padding: 48px 24px;
+  padding: 96px 0;
 }
 
 .trial-reference-section-inner {
-  max-width: 1200px;
+  max-width: 1264px;
   margin: 0 auto;
 }
 
 .trial-reference-title {
-  margin: 0 0 16px 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #333;
+  font-size: 30px;
+  line-height: 36px;
+  color: oklch(0.3498 0.0532 195);
 }
 
 .trial-reference-content {
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: #666;
-}
-
-.trial-reference-content p {
-  margin: 0;
-}
-
-.trial-reference-content a {
-  color: #1a6b66;
-  text-decoration: underline;
-  word-break: break-all;
+  color: oklch(0.3498 0.0532 195);
 }
 
 /* ===== LOADING & ERROR ===== */
@@ -408,43 +400,36 @@
 
   .trial-card {
     min-height: auto;
-    padding: 24px;
+  }
+
+  .trial-card-header {
+    padding: 32px 32px 0 32px;
+  }
+
+  .trial-card-divider {
+    margin-left: 32px;
+  }
+
+  .trial-card-content {
+    padding: 0 32px;
+  }
+
+  .trial-card-footnote {
+    margin-left: 32px;
+    margin-right: 32px;
   }
 
   .trial-info-card {
     min-height: auto;
   }
 
-  .trial-card-icon svg {
-    width: 100px;
-    height: 80px;
-  }
-}
-
-@media (max-width: 480px) {
-  .trial-hero-inner {
-    padding: 24px 16px 40px;
+  .trial-card-icon svg,
+  .trial-card-icon img {
+    max-width: 140px;
   }
 
-  .trial-headline {
-    font-size: 1.5rem;
-  }
-
-  .trial-badge {
-    padding: 8px 16px;
-    font-size: 0.8rem;
-    min-height: 38px;
-  }
-
-  .trial-card {
-    padding: 20px;
-  }
-
-  .trial-card-title {
-    font-size: 1.25rem;
-  }
-
-  .trial-info-card {
-    padding: 20px;
+  .eligibility-card .trial-card-icon svg,
+  .eligibility-card .trial-card-icon img {
+    max-width: 180px;
   }
 }
