@@ -3,7 +3,7 @@ const API_BASE_URL = 'https://publish-p52710-e1559444.adobeaemcloud.com/graphql/
 const NCT_ID_PATTERN = /NCT[0-9]+/i;
 
 // ========== API ==========
-async function fetchTrialData(trialId) {
+async function fetchTrialDataByReqId(trialId) {
   const apiUrl = `${API_BASE_URL}/getrequirementIdData;reqId=${trialId.toUpperCase()}?q=${Date.now()}`;
 
   try {
@@ -12,15 +12,46 @@ async function fetchTrialData(trialId) {
     return data?.clinicalTrialsDetailsModelList?.items?.[0] ?? null;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Failed to fetch trial data:', error);
+    console.error('Failed to fetch trial data by reqId:', error);
+    return null;
+  }
+}
+
+async function fetchTrialDataByPath(fragmentPath) {
+  const apiUrl = `${API_BASE_URL}/getRequirementByPathData;path=${fragmentPath}?q=${Date.now()}`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const { data } = await response.json();
+    return data?.clinicalTrialsDetailsModelList?.items?.[0] ?? null;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to fetch trial data by path:', error);
     return null;
   }
 }
 
 // ========== UTILITIES ==========
 const extractTrialId = (block) => {
-  const match = block.textContent.trim().match(NCT_ID_PATTERN);
+  // Only look at the first row (first child div) for the NCT ID
+  const firstRow = block.querySelector(':scope > div:first-child');
+  if (!firstRow) return null;
+
+  const text = firstRow.textContent.trim();
+  if (!text) return null;
+
+  const match = text.match(NCT_ID_PATTERN);
   return match?.[0] ?? null;
+};
+
+const extractFragmentPath = (block) => {
+  const anchor = block.querySelector('a[href*="/content/dam/"]');
+  if (!anchor) return null;
+
+  const fullPath = anchor.getAttribute('href');
+  // Remove the trailing suffix like "-fragment0", "-fragment1", etc.
+  const basePath = fullPath.replace(/-fragment\d*$/, '');
+  return basePath || null;
 };
 
 const createElement = (tag, className = '', textContent = '') => {
@@ -245,18 +276,28 @@ const showError = (block, message) => {
 // ========== ENTRY POINT ==========
 export default async function decorate(block) {
   const trialId = extractTrialId(block);
+  const fragmentPath = extractFragmentPath(block);
 
-  if (!trialId) {
-    showError(block, 'No valid NCT ID provided. Please enter an NCT identifier (e.g., NCT12345678).');
+  if (!trialId && !fragmentPath) {
+    showError(block, 'No valid NCT ID or fragment path provided. Please enter an NCT identifier (e.g., NCT12345678) or provide a valid content fragment path.');
     return;
   }
 
   showLoading(block);
 
-  const trialData = await fetchTrialData(trialId);
+  let trialData = null;
+
+  // Try fetching by trialId first, fallback to fragmentPath
+  if (trialId) {
+    trialData = await fetchTrialDataByReqId(trialId);
+  }
+
+  if (!trialData && fragmentPath) {
+    trialData = await fetchTrialDataByPath(fragmentPath);
+  }
 
   if (!trialData) {
-    showError(block, `Unable to load clinical trial data for ${trialId}.`);
+    showError(block, `Unable to load clinical trial data for ${trialId || fragmentPath}.`);
     return;
   }
 
