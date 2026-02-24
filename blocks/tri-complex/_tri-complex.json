@@ -37,59 +37,11 @@
       "id": "tri-complex",
       "fields": [
         {
-          "component": "text",
-          "name": "instruction",
-          "label": "Instruction",
-          "valueType": "string"
-        },
-        {
           "component": "reference",
           "valueType": "string",
-          "name": "desktopImage",
-          "label": "Desktop Image",
+          "name": "icon",
+          "label": "Icon (SVG)",
           "multi": false
-        },
-        {
-          "component": "reference",
-          "valueType": "string",
-          "name": "mobileImage",
-          "label": "Mobile Image",
-          "multi": false
-        },
-        {
-          "component": "text",
-          "name": "imageAlt",
-          "label": "Image Alt Text",
-          "valueType": "string"
-        }
-      ]
-    },
-    {
-      "id": "tri-complex-item",
-      "fields": [
-        {
-          "component": "select",
-          "name": "triComplexId",
-          "label": "Tri Complex ID",
-          "valueType": "string",
-          "options": [
-            {
-              "name": "h1",
-              "value": "h1"
-            },
-            {
-              "name": "h2",
-              "value": "h2"
-            },
-            {
-              "name": "h4",
-              "value": "h4"
-            },
-            {
-              "name": "h5",
-              "value": "h5"
-            }
-          ]
         },
         {
           "component": "text",
@@ -98,15 +50,27 @@
           "valueType": "string"
         },
         {
-          "component": "richtext",
-          "name": "description",
-          "label": "Description",
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        }
+      ]
+    },
+    {
+      "id": "tri-complex-item",
+      "fields": [
+        {
+          "component": "text",
+          "name": "text",
+          "label": "Text",
           "valueType": "string"
         },
         {
-          "component": "text",
-          "name": "superscript",
-          "label": "Superscript (optional)",
+          "component": "richtext",
+          "name": "richtext",
+          "label": "Rich Text",
           "valueType": "string"
         }
       ]

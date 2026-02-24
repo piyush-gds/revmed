@@ -1,6 +1,7 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 const MOBILE_MEDIA_QUERY = '(max-width: 1023px)';
+const TRI_COMPLEX_ORDER = ['h1', 'h2', 'h4', 'h5'];
 
 const TRI_COMPLEX_PRESET = {
   h1: {
@@ -25,7 +26,7 @@ const TRI_COMPLEX_PRESET = {
   },
 };
 
-const CONFIG_KEYS = new Set(['instruction', 'desktopimage', 'mobileimage', 'imagealt']);
+const CONFIG_KEYS = new Set(['icon', 'title', 'image']);
 
 const getText = (element) => element?.textContent?.trim() || '';
 
@@ -50,13 +51,6 @@ const createTriComplexPill = (item, onClick) => {
   label.textContent = item.title;
   button.append(label);
 
-  if (item.superscript) {
-    const superscript = document.createElement('span');
-    superscript.className = `tri-complex-pill-superscript tri-complex-pill-superscript--${item.id}`;
-    superscript.textContent = item.superscript;
-    button.append(superscript);
-  }
-
   button.addEventListener('click', (event) => {
     event.stopPropagation();
     onClick(item.id, button);
@@ -69,64 +63,64 @@ const normalizeConfigKey = (text) => text.toLowerCase().replace(/[^a-z]/g, '');
 
 const parseBlockRows = (block) => {
   const config = {
-    instruction: '',
-    desktopImage: '',
-    mobileImage: '',
-    imageAlt: '',
+    icon: '',
+    title: '',
+    image: '',
   };
 
-  const authoredById = {};
+  const authoredRows = [];
 
-  [...block.children].forEach((row) => {
+  [...block.children].forEach((row, rowIndex) => {
     const cols = [...row.children];
+    if (!cols.length) return;
 
-    if (cols.length >= 4 && !TRI_COMPLEX_PRESET[getText(cols[0]).toLowerCase()]) {
-      config.instruction = getText(cols[0]);
-      config.desktopImage = getAssetValue(cols[1]);
-      config.mobileImage = getAssetValue(cols[2]);
-      config.imageAlt = getText(cols[3]);
+    if (rowIndex === 0 && cols.length >= 3) {
+      config.icon = getAssetValue(cols[0]);
+      config.title = getText(cols[1]);
+      config.image = getAssetValue(cols[2]);
       return;
     }
 
     if (cols.length === 2) {
       const key = normalizeConfigKey(getText(cols[0]));
       if (CONFIG_KEYS.has(key)) {
-        if (key === 'instruction') config.instruction = getText(cols[1]);
-        if (key === 'desktopimage') config.desktopImage = getAssetValue(cols[1]);
-        if (key === 'mobileimage') config.mobileImage = getAssetValue(cols[1]);
-        if (key === 'imagealt') config.imageAlt = getText(cols[1]);
+        if (key === 'icon') config.icon = getAssetValue(cols[1]);
+        if (key === 'title') config.title = getText(cols[1]);
+        if (key === 'image') config.image = getAssetValue(cols[1]);
+        return;
       }
+
+      authoredRows.push({
+        title: getText(cols[0]) || '',
+        description: cols[1].innerHTML?.trim() || '',
+      });
       return;
     }
 
-    if (cols.length < 3) return;
-
-    const triComplexId = getText(cols[0]).toLowerCase();
-    if (!TRI_COMPLEX_PRESET[triComplexId]) return;
-
-    authoredById[triComplexId] = {
-      triComplexId,
-      title: getText(cols[1]) || '',
+    if (cols.length >= 3) {
+      authoredRows.push({
+        title: getText(cols[1]) || '',
       description: cols[2].innerHTML?.trim() || '',
-      superscript: getText(cols[3]) || '',
-    };
+      });
+    }
   });
 
-  const triComplexItems = Object.keys(TRI_COMPLEX_PRESET)
-    .filter((id) => authoredById[id]?.description)
-    .map((id) => {
-      const authored = authoredById[id];
+  const triComplexItems = TRI_COMPLEX_ORDER
+    .map((id, index) => {
+      const authored = authoredRows[index];
+      if (!authored?.description) return null;
+
       const preset = TRI_COMPLEX_PRESET[id];
       return {
         id,
         title: authored.title || '',
         description: authored.description,
-        superscript: authored.superscript,
         column: preset.column,
         desktop: preset.desktop,
         mobile: preset.mobile,
       };
-    });
+    })
+    .filter(Boolean);
 
   return { config, triComplexItems };
 };
@@ -219,16 +213,29 @@ export default function decorate(block) {
   const root = document.createElement('div');
   root.className = 'tri-complex-shell';
 
-  const instruction = document.createElement('p');
-  instruction.className = 'tri-complex-instruction';
-  instruction.textContent = config.instruction;
+  const header = document.createElement('div');
+  header.className = 'tri-complex-header';
+
+  if (config.icon) {
+    const iconWrap = document.createElement('div');
+    iconWrap.className = 'tri-complex-icon-wrap';
+    const icon = createOptimizedPicture(config.icon, 'Tri Complex Icon', false, [{ width: '64' }]);
+    icon.classList.add('tri-complex-icon');
+    iconWrap.append(icon);
+    header.append(iconWrap);
+  }
+
+  const title = document.createElement('p');
+  title.className = 'tri-complex-instruction';
+  title.textContent = config.title;
+  header.append(title);
 
   const stage = document.createElement('div');
   stage.className = 'tri-complex-stage';
 
   const image = document.createElement('img');
-  image.src = window.matchMedia(MOBILE_MEDIA_QUERY).matches ? config.mobileImage : config.desktopImage;
-  image.alt = config.imageAlt;
+  image.src = config.image;
+  image.alt = config.title || '';
 
   const optimizedPicture = createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]);
   optimizedPicture.classList.add('tri-complex-picture');
@@ -250,9 +257,7 @@ export default function decorate(block) {
   const updateImageByViewport = () => {
     const pictureImg = optimizedPicture.querySelector('img');
     if (!pictureImg) return;
-
-    const expectedSrc = window.matchMedia(MOBILE_MEDIA_QUERY).matches ? config.mobileImage : config.desktopImage;
-    pictureImg.src = expectedSrc;
+    pictureImg.src = config.image;
   };
 
   const clearActive = () => {
@@ -324,7 +329,7 @@ export default function decorate(block) {
   mediaQuery.addEventListener('change', handleViewportChange);
 
   stage.append(optimizedPicture, pillsLayer);
-  root.append(instruction, stage, panels, dialog);
+  root.append(header, stage, panels, dialog);
   block.append(root);
 
   setPillPositions(pillsLayer, triComplexItems);

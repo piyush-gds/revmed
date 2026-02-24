@@ -9,10 +9,35 @@
   padding: 2rem 1rem 1rem;
 }
 
+.tri-complex-header {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.tri-complex-icon-wrap {
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid #fff;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tri-complex-icon picture,
+.tri-complex-icon img {
+  width: 2rem;
+  height: 2rem;
+  display: block;
+}
+
 .tri-complex-instruction {
-  margin: 0 0 1rem;
+  margin: 0;
   color: #fff;
-  text-align: center;
+  text-align: left;
   font-size: 1.125rem;
   line-height: 1.4;
 }
