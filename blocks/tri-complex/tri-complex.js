@@ -5,28 +5,24 @@ const TRI_COMPLEX_ORDER = ['h1', 'h2', 'h4', 'h5'];
 
 const TRI_COMPLEX_PRESET = {
   h1: {
-    column: 'left',
     desktop: { x: (70 / 1112) * 100, y: (30 / 257) * 100 },
     mobile: { x: (350 / 1200) * 100, y: (210 / 2133) * 100 },
   },
   h2: {
-    column: 'left',
     desktop: { x: (340 / 1112) * 100, y: (149 / 257) * 100 },
     mobile: { x: (590 / 1200) * 100, y: (430 / 2133) * 100 },
   },
   h4: {
-    column: 'right',
     desktop: { x: (610 / 1112) * 100, y: (150 / 257) * 100 },
     mobile: { x: (590 / 1200) * 100, y: (1180 / 2133) * 100 },
   },
   h5: {
-    column: 'right',
     desktop: { x: (910 / 1112) * 100, y: (195 / 257) * 100 },
     mobile: { x: (850 / 1200) * 100, y: (1900 / 2133) * 100 },
   },
 };
 
-const CONFIG_KEYS = new Set([
+const FIELD_KEYS = [
   'icon',
   'title',
   'image',
@@ -38,8 +34,9 @@ const CONFIG_KEYS = new Set([
   'richtext3',
   'text4',
   'richtext4',
-]);
+];
 
+const normalizeKey = (value) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
 const getText = (element) => element?.textContent?.trim() || '';
 
 const getAssetValue = (cell) => {
@@ -51,42 +48,10 @@ const getAssetValue = (cell) => {
   return getText(cell);
 };
 
-const createTriComplexPill = (item, onClick) => {
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = `tri-complex-pill tri-complex-pill--${item.id}`;
-  button.dataset.triComplexId = item.id;
-  button.setAttribute('aria-label', `Show details for ${item.title || item.id}`);
+const createEmptyConfig = () => Object.fromEntries(FIELD_KEYS.map((key) => [key, '']));
 
-  const label = document.createElement('span');
-  label.className = 'tri-complex-pill-label';
-  label.textContent = item.title;
-  button.append(label);
-
-  button.addEventListener('click', (event) => {
-    event.stopPropagation();
-    onClick(item.id, button);
-  });
-
-  return button;
-};
-
-const normalizeConfigKey = (text) => text.toLowerCase().replace(/[^a-z]/g, '');
-
-const parseBlockRows = (block) => {
-  const config = {
-    icon: '',
-    title: '',
-    image: '',
-    text1: '',
-    richtext1: '',
-    text2: '',
-    richtext2: '',
-    text3: '',
-    richtext3: '',
-    text4: '',
-    richtext4: '',
-  };
+const readConfigFromBlock = (block) => {
+  const config = createEmptyConfig();
 
   [...block.children].forEach((row, rowIndex) => {
     const cols = [...row.children];
@@ -99,139 +64,160 @@ const parseBlockRows = (block) => {
       return;
     }
 
-    if (cols.length === 2) {
-      const key = normalizeConfigKey(getText(cols[0]));
-      if (CONFIG_KEYS.has(key)) {
-        if (key === 'icon') config.icon = getAssetValue(cols[1]);
-        if (key === 'title') config.title = getText(cols[1]);
-        if (key === 'image') config.image = getAssetValue(cols[1]);
-        if (key === 'text1') config.text1 = getText(cols[1]);
-        if (key === 'richtext1') config.richtext1 = cols[1].innerHTML?.trim() || '';
-        if (key === 'text2') config.text2 = getText(cols[1]);
-        if (key === 'richtext2') config.richtext2 = cols[1].innerHTML?.trim() || '';
-        if (key === 'text3') config.text3 = getText(cols[1]);
-        if (key === 'richtext3') config.richtext3 = cols[1].innerHTML?.trim() || '';
-        if (key === 'text4') config.text4 = getText(cols[1]);
-        if (key === 'richtext4') config.richtext4 = cols[1].innerHTML?.trim() || '';
-        return;
-      }
+    if (cols.length < 2) return;
+
+    const key = normalizeKey(getText(cols[0]));
+    if (!FIELD_KEYS.includes(key)) return;
+
+    const valueCell = cols[1];
+
+    if (key === 'icon' || key === 'image') {
+      config[key] = getAssetValue(valueCell);
+      return;
     }
+
+    if (key.startsWith('richtext')) {
+      config[key] = valueCell.innerHTML?.trim() || '';
+      return;
+    }
+
+    config[key] = getText(valueCell);
   });
 
-  const authoredRows = [
-    { title: config.text1, description: config.richtext1 },
-    { title: config.text2, description: config.richtext2 },
-    { title: config.text3, description: config.richtext3 },
-    { title: config.text4, description: config.richtext4 },
-  ];
-
-  const triComplexItems = TRI_COMPLEX_ORDER
-    .map((id, index) => {
-      const authored = authoredRows[index];
-      if (!authored?.description) return null;
-
-      const preset = TRI_COMPLEX_PRESET[id];
-      return {
-        id,
-        title: authored.title || '',
-        description: authored.description,
-        column: preset.column,
-        desktop: preset.desktop,
-        mobile: preset.mobile,
-      };
-    })
-    .filter(Boolean);
-
-  return { config, triComplexItems };
+  return config;
 };
 
-const setPillPositions = (container, triComplexItems) => {
+const buildItems = (config) => {
+  const authored = [
+    { label: config.text1, description: config.richtext1 },
+    { label: config.text2, description: config.richtext2 },
+    { label: config.text3, description: config.richtext3 },
+    { label: config.text4, description: config.richtext4 },
+  ];
+
+  return TRI_COMPLEX_ORDER.map((id, index) => ({
+    id,
+    label: authored[index].label,
+    description: authored[index].description,
+    desktop: TRI_COMPLEX_PRESET[id].desktop,
+    mobile: TRI_COMPLEX_PRESET[id].mobile,
+  })).filter((item) => item.label || item.description);
+};
+
+const setPillPositions = (layer, items) => {
   const isMobile = window.matchMedia(MOBILE_MEDIA_QUERY).matches;
-  triComplexItems.forEach((item) => {
-    const pill = container.querySelector(`.tri-complex-pill[data-tri-complex-id="${item.id}"]`);
+
+  items.forEach((item) => {
+    const pill = layer.querySelector(`[data-tri-complex-id="${item.id}"]`);
     if (!pill) return;
 
-    const position = isMobile ? item.mobile : item.desktop;
-    pill.style.left = `${position.x}%`;
-    pill.style.top = `${position.y}%`;
+    const point = isMobile ? item.mobile : item.desktop;
+    pill.style.left = `${point.x}%`;
+    pill.style.top = `${point.y}%`;
     pill.style.transform = 'translate(-50%, -50%)';
   });
 };
 
-const setActivePill = (container, activeTriComplexId) => {
-  container.querySelectorAll('.tri-complex-pill').forEach((pill) => {
-    const isActive = pill.dataset.triComplexId === activeTriComplexId;
-    pill.classList.toggle('is-active', isActive);
-  });
-};
+const createDescriptionPanel = () => {
+  const container = document.createElement('div');
+  container.className = 'tri-complex-panels';
 
-const getTriComplexItemById = (triComplexItems, id) => triComplexItems.find((item) => item.id === id) || null;
+  const render = (item) => {
+    container.innerHTML = '';
+    if (!item || !item.description) return;
 
-const renderDesktopPanels = (panelsContainer, item) => {
-  const leftColumn = panelsContainer.querySelector('.tri-complex-panel-left');
-  const rightColumn = panelsContainer.querySelector('.tri-complex-panel-right');
+    const card = document.createElement('div');
+    card.className = 'tri-complex-panel-card';
+    card.innerHTML = item.description;
+    container.append(card);
+  };
 
-  leftColumn.innerHTML = '';
-  rightColumn.innerHTML = '';
-
-  if (!item) return;
-
-  const panel = document.createElement('div');
-  panel.className = 'tri-complex-panel-card';
-  panel.innerHTML = item.description;
-
-  if (item.column === 'left') {
-    leftColumn.append(panel);
-  } else if (item.column === 'right') {
-    rightColumn.append(panel);
-  }
+  return { container, render };
 };
 
 const createModal = () => {
   const dialog = document.createElement('dialog');
   dialog.className = 'tri-complex-modal';
 
-  const closeButton = document.createElement('button');
-  closeButton.className = 'tri-complex-modal-close';
-  closeButton.type = 'button';
-  closeButton.setAttribute('aria-label', 'Close modal');
-  closeButton.innerHTML = '&times;';
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.className = 'tri-complex-modal-close';
+  close.setAttribute('aria-label', 'Close details');
+  close.innerHTML = '&times;';
 
-  const title = document.createElement('h3');
-  title.className = 'tri-complex-modal-title';
+  const heading = document.createElement('h3');
+  heading.className = 'tri-complex-modal-title';
 
   const body = document.createElement('div');
   body.className = 'tri-complex-modal-body';
 
-  closeButton.addEventListener('click', () => dialog.close());
-
-  dialog.append(closeButton, title, body);
+  close.addEventListener('click', () => dialog.close());
 
   dialog.addEventListener('click', (event) => {
     const rect = dialog.getBoundingClientRect();
-    const isInDialog = rect.top <= event.clientY
+    const inside = rect.top <= event.clientY
       && event.clientY <= rect.top + rect.height
       && rect.left <= event.clientX
       && event.clientX <= rect.left + rect.width;
 
-    if (!isInDialog) dialog.close();
+    if (!inside) dialog.close();
   });
 
-  return { dialog, title, body };
+  dialog.append(close, heading, body);
+
+  const render = (item) => {
+    if (!item) {
+      if (dialog.open) dialog.close();
+      return;
+    }
+
+    heading.textContent = item.label;
+    body.innerHTML = item.description || '';
+    if (!dialog.open) dialog.showModal();
+  };
+
+  return { dialog, render };
+};
+
+const createPill = (item, onClick) => {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = `tri-complex-pill tri-complex-pill--${item.id}`;
+  button.dataset.triComplexId = item.id;
+  button.setAttribute('aria-label', `Show details for ${item.label || item.id}`);
+
+  const label = document.createElement('span');
+  label.className = 'tri-complex-pill-label';
+  label.textContent = item.label || '';
+  button.append(label);
+
+  button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    onClick(item.id, button);
+  });
+
+  return button;
+};
+
+const setActivePill = (layer, activeId) => {
+  layer.querySelectorAll('.tri-complex-pill').forEach((pill) => {
+    pill.classList.toggle('is-active', pill.dataset.triComplexId === activeId);
+  });
 };
 
 export default function decorate(block) {
-  const { config, triComplexItems } = parseBlockRows(block);
+  const config = readConfigFromBlock(block);
+  const items = buildItems(config);
 
-  if (!triComplexItems.length) {
-    block.textContent = 'No Tri Complex content found. Add item rows (h1, h2, h4, h5) with description content.';
+  if (!config.image || !items.length) {
+    block.textContent = 'Tri Complex requires image + text/description fields.';
     return;
   }
 
   block.textContent = '';
 
-  const root = document.createElement('div');
-  root.className = 'tri-complex-shell';
+  const shell = document.createElement('div');
+  shell.className = 'tri-complex-shell';
 
   const header = document.createElement('div');
   header.className = 'tri-complex-header';
@@ -239,120 +225,107 @@ export default function decorate(block) {
   if (config.icon) {
     const iconWrap = document.createElement('div');
     iconWrap.className = 'tri-complex-icon-wrap';
-    const icon = createOptimizedPicture(config.icon, 'Tri Complex Icon', false, [{ width: '64' }]);
-    icon.classList.add('tri-complex-icon');
-    iconWrap.append(icon);
+
+    const iconPicture = createOptimizedPicture(config.icon, 'Tri Complex icon', false, [{ width: '64' }]);
+    iconPicture.classList.add('tri-complex-icon');
+
+    iconWrap.append(iconPicture);
     header.append(iconWrap);
   }
 
   const title = document.createElement('p');
   title.className = 'tri-complex-instruction';
-  title.textContent = config.title;
+  title.textContent = config.title || '';
   header.append(title);
 
   const stage = document.createElement('div');
   stage.className = 'tri-complex-stage';
 
-  const image = document.createElement('img');
-  image.src = config.image;
-  image.alt = config.title || '';
+  const picture = createOptimizedPicture(config.image, config.title || 'Tri Complex', false, [{ width: '2000' }]);
+  picture.classList.add('tri-complex-picture');
 
-  const optimizedPicture = createOptimizedPicture(image.src, image.alt, false, [{ width: '2000' }]);
-  optimizedPicture.classList.add('tri-complex-picture');
+  const layer = document.createElement('div');
+  layer.className = 'tri-complex-pills-layer';
 
-  const pillsLayer = document.createElement('div');
-  pillsLayer.className = 'tri-complex-pills-layer';
+  const { container: descriptionContainer, render: renderDescription } = createDescriptionPanel();
+  const { dialog, render: renderModal } = createModal();
 
-  const panels = document.createElement('div');
-  panels.className = 'tri-complex-panels';
-  panels.innerHTML = `
-    <div class="tri-complex-panel-column tri-complex-panel-left"></div>
-    <div class="tri-complex-panel-column tri-complex-panel-right"></div>
-  `;
-
-  const { dialog, title: modalTitle, body: modalBody } = createModal();
+  let activeId = '';
   let lastTrigger = null;
-  let activeTriComplexId = '';
 
-  const updateImageByViewport = () => {
-    const pictureImg = optimizedPicture.querySelector('img');
-    if (!pictureImg) return;
-    pictureImg.src = config.image;
+  const getItemById = (id) => items.find((item) => item.id === id) || null;
+
+  const clearSelection = () => {
+    activeId = '';
+    setActivePill(layer, activeId);
+    renderDescription(null);
+    renderModal(null);
   };
 
-  const clearActive = () => {
-    activeTriComplexId = '';
-    setActivePill(pillsLayer, activeTriComplexId);
-    renderDesktopPanels(panels, null);
-    if (dialog.open) dialog.close();
-  };
-
-  const openMobileModal = (item) => {
-    modalTitle.textContent = item.title;
-    modalBody.innerHTML = item.description;
-    if (!dialog.open) dialog.showModal();
-  };
-
-  const handleTriComplexActivate = (triComplexId, trigger) => {
-    if (activeTriComplexId === triComplexId) {
-      clearActive();
+  const activate = (id, trigger) => {
+    if (activeId === id) {
+      clearSelection();
       return;
     }
 
-    activeTriComplexId = triComplexId;
+    activeId = id;
     lastTrigger = trigger;
 
-    const item = getTriComplexItemById(triComplexItems, activeTriComplexId);
-    if (!item) return;
+    const item = getItemById(id);
+    setActivePill(layer, activeId);
 
-    setActivePill(pillsLayer, activeTriComplexId);
-
-    if (window.matchMedia(MOBILE_MEDIA_QUERY).matches) {
-      openMobileModal(item);
+    if (!item) {
+      clearSelection();
       return;
     }
 
-    renderDesktopPanels(panels, item);
+    if (window.matchMedia(MOBILE_MEDIA_QUERY).matches) {
+      renderDescription(null);
+      renderModal(item);
+      return;
+    }
+
+    renderModal(null);
+    renderDescription(item);
   };
 
-  const pills = triComplexItems.map((item) => createTriComplexPill(item, handleTriComplexActivate));
-  pills.forEach((pill) => pillsLayer.append(pill));
+  items.forEach((item) => {
+    const pill = createPill(item, activate);
+    layer.append(pill);
+  });
 
   stage.addEventListener('click', (event) => {
     if (event.target.closest('.tri-complex-pill')) return;
-    clearActive();
+    clearSelection();
   });
 
   dialog.addEventListener('close', () => {
-    if (lastTrigger instanceof HTMLElement) {
-      lastTrigger.focus();
-    }
+    if (lastTrigger instanceof HTMLElement) lastTrigger.focus();
   });
 
   const mediaQuery = window.matchMedia(MOBILE_MEDIA_QUERY);
   const handleViewportChange = () => {
-    updateImageByViewport();
-    setPillPositions(pillsLayer, triComplexItems);
+    setPillPositions(layer, items);
 
-    if (!mediaQuery.matches && dialog.open) {
-      dialog.close();
-    }
+    const activeItem = getItemById(activeId);
+    if (!activeItem) return;
 
-    const activeItem = getTriComplexItemById(triComplexItems, activeTriComplexId);
-    if (!mediaQuery.matches) {
-      renderDesktopPanels(panels, activeItem);
+    if (mediaQuery.matches) {
+      renderDescription(null);
+      renderModal(activeItem);
     } else {
-      renderDesktopPanels(panels, null);
+      renderModal(null);
+      renderDescription(activeItem);
     }
   };
 
   mediaQuery.addEventListener('change', handleViewportChange);
 
-  stage.append(optimizedPicture, pillsLayer);
-  root.append(header, stage, panels, dialog);
-  block.append(root);
+  stage.append(picture, layer);
+  shell.append(header, stage, descriptionContainer, dialog);
+  block.append(shell);
 
-  setPillPositions(pillsLayer, triComplexItems);
+  setPillPositions(layer, items);
 
   block.addEventListener('remove', () => {
     mediaQuery.removeEventListener('change', handleViewportChange);
