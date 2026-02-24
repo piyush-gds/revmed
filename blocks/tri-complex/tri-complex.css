@@ -1,0 +1,211 @@
+.tri-complex {
+  color: #fff;
+}
+
+.tri-complex-shell {
+  border-radius: 1rem;
+  border-top-left-radius: 5rem;
+  background: var(--dark-green);
+  padding: 2rem 1rem 1rem;
+}
+
+.tri-complex-instruction {
+  margin: 0 0 1rem;
+  color: #fff;
+  text-align: center;
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+.tri-complex-stage {
+  position: relative;
+}
+
+.tri-complex-picture {
+  display: block;
+  width: 100%;
+}
+
+.tri-complex-picture img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 1rem;
+}
+
+.tri-complex-pills-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.tri-complex-pill {
+  position: absolute;
+  min-height: 2.25rem;
+  border: 3px solid #fff;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 20%);
+  color: #fff;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+
+.tri-complex-pill--h1 {
+  background: #B278B2;
+}
+
+.tri-complex-pill--h2,
+.tri-complex-pill--h4 {
+  background: #DEBB6B;
+}
+
+.tri-complex-pill--h5 {
+  background: linear-gradient(90deg, rgba(222, 187, 107, 1) 0%, rgba(27, 155, 69, 1) 100%);
+}
+
+.tri-complex-pill:hover,
+.tri-complex-pill:focus-visible {
+  transform: translate(-50%, -50%) scale(1.08);
+  box-shadow: 0 0.75rem 1.125rem rgb(0 0 0 / 30%);
+}
+
+.tri-complex-pill.is-active {
+  filter: brightness(1.05);
+  box-shadow: 0 0.875rem 1.5rem rgb(5 150 105 / 35%);
+}
+
+.tri-complex-pill-label {
+  display: block;
+  margin: 0;
+  font-size: .875rem;
+  line-height: 1;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tri-complex-pill-superscript {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(75%, -45%);
+  min-width: 1.25rem;
+  border: 1px solid;
+  border-radius: .4rem;
+  background: #fff;
+  font-size: .675rem;
+  line-height: 1;
+  text-align: center;
+  padding: .15rem .25rem;
+}
+
+.tri-complex-pill-superscript--h1 {
+  border-color: #B278B2;
+  color: #B278B2;
+}
+
+.tri-complex-pill-superscript--h2,
+.tri-complex-pill-superscript--h4 {
+  border-color: #DEBB6B;
+  color: #DEBB6B;
+}
+
+.tri-complex-pill-superscript--h5 {
+  border-color: #1B9B45;
+  color: #1B9B45;
+}
+
+.tri-complex-panels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.tri-complex-panel-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (max-width: 1023px) {
+  .tri-complex-panels {
+    display: none;
+  }
+}
+
+.tri-complex-panel-card {
+  border-radius: 1rem;
+  padding: 1rem;
+  background: #fff;
+  color: var(--text-color);
+}
+
+.tri-complex-panel-card p:first-child {
+  margin-top: 0;
+}
+
+.tri-complex-panel-card p:last-child {
+  margin-bottom: 0;
+}
+
+.tri-complex-modal {
+  width: min(36rem, calc(100vw - 2rem));
+  border: 1px solid var(--ring);
+  border-radius: 0.75rem;
+  padding: 0;
+}
+
+.tri-complex-modal::backdrop {
+  background: rgb(0 0 0 / 60%);
+}
+
+.tri-complex-modal-close {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-color);
+  font-size: 2rem;
+  line-height: 1;
+  padding: 0 .375rem;
+  cursor: pointer;
+}
+
+.tri-complex-modal-title {
+  margin: 0;
+  color: var(--dark-green);
+  padding: 1rem 3rem 0 1rem;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.tri-complex-modal-body {
+  color: var(--text-color);
+  padding: 1rem;
+  max-height: calc(100dvh - 8rem);
+  overflow: auto;
+}
+
+.tri-complex-modal-body p:first-child {
+  margin-top: 0;
+}
+
+.tri-complex-modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 1024px) {
+  .tri-complex-shell {
+    padding: 2.5rem 1rem 1rem;
+  }
+
+  .tri-complex-panels {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tri-complex-modal {
+    display: none;
+  }
+}

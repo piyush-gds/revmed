@@ -55,5 +55,11 @@
   {
     "id": "revmed-hero-banner",
     "components": []
+  },
+  {
+    "id": "tri-complex",
+    "components": [
+      "tri-complex-item"
+    ]
   }
 ]
