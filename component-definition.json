@@ -264,21 +264,6 @@
           }
         },
         {
-          "title": "Tri Complex Item",
-          "id": "tri-complex-item",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Tri Complex Item",
-                  "model": "tri-complex-item"
-                }
-              }
-            }
-          }
-        },
-        {
           "title": "Video",
           "id": "video",
           "plugins": {

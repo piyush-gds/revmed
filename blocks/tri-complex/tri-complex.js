@@ -26,7 +26,19 @@ const TRI_COMPLEX_PRESET = {
   },
 };
 
-const CONFIG_KEYS = new Set(['icon', 'title', 'image']);
+const CONFIG_KEYS = new Set([
+  'icon',
+  'title',
+  'image',
+  'text1',
+  'richtext1',
+  'text2',
+  'richtext2',
+  'text3',
+  'richtext3',
+  'text4',
+  'richtext4',
+]);
 
 const getText = (element) => element?.textContent?.trim() || '';
 
@@ -66,9 +78,15 @@ const parseBlockRows = (block) => {
     icon: '',
     title: '',
     image: '',
+    text1: '',
+    richtext1: '',
+    text2: '',
+    richtext2: '',
+    text3: '',
+    richtext3: '',
+    text4: '',
+    richtext4: '',
   };
-
-  const authoredRows = [];
 
   [...block.children].forEach((row, rowIndex) => {
     const cols = [...row.children];
@@ -87,23 +105,25 @@ const parseBlockRows = (block) => {
         if (key === 'icon') config.icon = getAssetValue(cols[1]);
         if (key === 'title') config.title = getText(cols[1]);
         if (key === 'image') config.image = getAssetValue(cols[1]);
+        if (key === 'text1') config.text1 = getText(cols[1]);
+        if (key === 'richtext1') config.richtext1 = cols[1].innerHTML?.trim() || '';
+        if (key === 'text2') config.text2 = getText(cols[1]);
+        if (key === 'richtext2') config.richtext2 = cols[1].innerHTML?.trim() || '';
+        if (key === 'text3') config.text3 = getText(cols[1]);
+        if (key === 'richtext3') config.richtext3 = cols[1].innerHTML?.trim() || '';
+        if (key === 'text4') config.text4 = getText(cols[1]);
+        if (key === 'richtext4') config.richtext4 = cols[1].innerHTML?.trim() || '';
         return;
       }
-
-      authoredRows.push({
-        title: getText(cols[0]) || '',
-        description: cols[1].innerHTML?.trim() || '',
-      });
-      return;
-    }
-
-    if (cols.length >= 3) {
-      authoredRows.push({
-        title: getText(cols[1]) || '',
-      description: cols[2].innerHTML?.trim() || '',
-      });
     }
   });
+
+  const authoredRows = [
+    { title: config.text1, description: config.richtext1 },
+    { title: config.text2, description: config.richtext2 },
+    { title: config.text3, description: config.richtext3 },
+    { title: config.text4, description: config.richtext4 },
+  ];
 
   const triComplexItems = TRI_COMPLEX_ORDER
     .map((id, index) => {

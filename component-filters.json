@@ -59,8 +59,6 @@
   },
   {
     "id": "tri-complex",
-    "components": [
-      "tri-complex-item"
-    ]
+    "components": []
   }
 ]

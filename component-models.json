@@ -509,22 +509,53 @@
         "name": "image",
         "label": "Image",
         "multi": false
-      }
-    ]
-  },
-  {
-    "id": "tri-complex-item",
-    "fields": [
+      },
       {
         "component": "text",
-        "name": "text",
-        "label": "Text",
+        "name": "text1",
+        "label": "Text 1",
         "valueType": "string"
       },
       {
         "component": "richtext",
-        "name": "richtext",
-        "label": "Rich Text",
+        "name": "richtext1",
+        "label": "Description 1",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "text2",
+        "label": "Text 2",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "richtext2",
+        "label": "Description 2",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "text3",
+        "label": "Text 3",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "richtext3",
+        "label": "Description 3",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "text4",
+        "label": "Text 4",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "richtext4",
+        "label": "Description 4",
         "valueType": "string"
       }
     ]
