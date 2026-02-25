@@ -25,7 +25,8 @@ const TRI_COMPLEX_PRESET = {
 const FIELD_KEYS = [
   'icon',
   'title',
-  'image',
+  'desktopImage',
+  'mobileImage',
   'text1',
   'richtext1',
   'text2',
@@ -36,8 +37,8 @@ const FIELD_KEYS = [
   'richtext4',
 ];
 
-const normalizeKey = (value) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
 const getText = (element) => element?.textContent?.trim() || '';
+const hasValue = (value) => Boolean(String(value || '').trim());
 
 const getAssetValue = (cell) => {
   if (!cell) return '';
@@ -48,60 +49,65 @@ const getAssetValue = (cell) => {
   return getText(cell);
 };
 
-const createEmptyConfig = () => Object.fromEntries(FIELD_KEYS.map((key) => [key, '']));
-
-const readConfigFromBlock = (block) => {
-  const config = createEmptyConfig();
-
-  [...block.children].forEach((row, rowIndex) => {
-    const cols = [...row.children];
-    if (!cols.length) return;
-
-    if (rowIndex === 0 && cols.length >= 3) {
-      config.icon = getAssetValue(cols[0]);
-      config.title = getText(cols[1]);
-      config.image = getAssetValue(cols[2]);
-      return;
-    }
-
-    if (cols.length < 2) return;
-
-    const key = normalizeKey(getText(cols[0]));
-    if (!FIELD_KEYS.includes(key)) return;
-
-    const valueCell = cols[1];
-
-    if (key === 'icon' || key === 'image') {
-      config[key] = getAssetValue(valueCell);
-      return;
-    }
-
-    if (key.startsWith('richtext')) {
-      config[key] = valueCell.innerHTML?.trim() || '';
-      return;
-    }
-
-    config[key] = getText(valueCell);
-  });
-
-  return config;
+const getCellValue = (key, cell) => {
+  if (!cell) return '';
+  if (key === 'icon' || key === 'desktopImage' || key === 'mobileImage') return getAssetValue(cell);
+  if (key.startsWith('richtext')) return cell.innerHTML?.trim() || '';
+  return getText(cell);
 };
 
-const buildItems = (config) => {
-  const authored = [
-    { label: config.text1, description: config.richtext1 },
-    { label: config.text2, description: config.richtext2 },
-    { label: config.text3, description: config.richtext3 },
-    { label: config.text4, description: config.richtext4 },
+const getOrderedValueCells = (block) => {
+  const rows = [...block.children]
+    .map((row) => [...row.children])
+    .filter((cols) => cols.length);
+
+  if (!rows.length) return [];
+
+  if (rows.length === 1) {
+    return rows[0].slice(0, FIELD_KEYS.length);
+  }
+
+  if (rows.every((cols) => cols.length === 2)) {
+    return rows.slice(0, FIELD_KEYS.length).map((cols) => cols[1]);
+  }
+
+  if (rows[0].length >= 3) {
+    const values = [rows[0][0], rows[0][1], rows[0][2]];
+    rows.slice(1).forEach((cols) => {
+      if (values.length < FIELD_KEYS.length && cols.length) {
+        values.push(cols[cols.length - 1]);
+      }
+    });
+    return values.slice(0, FIELD_KEYS.length);
+  }
+
+  return rows.flat().slice(0, FIELD_KEYS.length);
+};
+
+const parseBlockData = (block) => {
+  const cells = getOrderedValueCells(block);
+
+  const config = FIELD_KEYS.reduce((result, key, index) => {
+    result[key] = getCellValue(key, cells[index]);
+    return result;
+  }, {});
+
+  const authoredItems = [
+    { id: TRI_COMPLEX_ORDER[0], label: config.text1, description: config.richtext1, column: 'left' },
+    { id: TRI_COMPLEX_ORDER[1], label: config.text2, description: config.richtext2, column: 'left' },
+    { id: TRI_COMPLEX_ORDER[2], label: config.text3, description: config.richtext3, column: 'right' },
+    { id: TRI_COMPLEX_ORDER[3], label: config.text4, description: config.richtext4, column: 'right' },
   ];
 
-  return TRI_COMPLEX_ORDER.map((id, index) => ({
-    id,
-    label: authored[index].label,
-    description: authored[index].description,
-    desktop: TRI_COMPLEX_PRESET[id].desktop,
-    mobile: TRI_COMPLEX_PRESET[id].mobile,
-  })).filter((item) => item.label || item.description);
+  const items = authoredItems
+    .map((item) => ({
+      ...item,
+      desktop: TRI_COMPLEX_PRESET[item.id].desktop,
+      mobile: TRI_COMPLEX_PRESET[item.id].mobile,
+    }))
+    .filter((item) => item.label && item.description);
+
+  return { config, items };
 };
 
 const setPillPositions = (layer, items) => {
@@ -122,14 +128,28 @@ const createDescriptionPanel = () => {
   const container = document.createElement('div');
   container.className = 'tri-complex-panels';
 
+  const left = document.createElement('div');
+  left.className = 'tri-complex-panel-column tri-complex-panel-left';
+
+  const right = document.createElement('div');
+  right.className = 'tri-complex-panel-column tri-complex-panel-right';
+
+  container.append(left, right);
+
   const render = (item) => {
-    container.innerHTML = '';
+    left.innerHTML = '';
+    right.innerHTML = '';
     if (!item || !item.description) return;
 
     const card = document.createElement('div');
     card.className = 'tri-complex-panel-card';
     card.innerHTML = item.description;
-    container.append(card);
+
+    if (item.column === 'left') {
+      left.append(card);
+    } else {
+      right.append(card);
+    }
   };
 
   return { container, render };
@@ -206,10 +226,9 @@ const setActivePill = (layer, activeId) => {
 };
 
 export default function decorate(block) {
-  const config = readConfigFromBlock(block);
-  const items = buildItems(config);
+  const { config, items } = parseBlockData(block);
 
-  if (!config.image || !items.length) {
+  if (!hasValue(config.desktopImage) || !items.length) {
     block.textContent = 'Tri Complex requires image + text/description fields.';
     return;
   }
@@ -241,8 +260,32 @@ export default function decorate(block) {
   const stage = document.createElement('div');
   stage.className = 'tri-complex-stage';
 
-  const picture = createOptimizedPicture(config.image, config.title || 'Tri Complex', false, [{ width: '2000' }]);
+  const getStageImage = () => {
+    const isMobile = window.matchMedia(MOBILE_MEDIA_QUERY).matches;
+    if (isMobile) {
+      return config.mobileImage || config.desktopImage;
+    }
+    return config.desktopImage;
+  };
+
+  const picture = createOptimizedPicture(getStageImage(), config.title || 'Tri Complex', false, [{ width: '2000' }]);
   picture.classList.add('tri-complex-picture');
+
+  const setPictureSource = () => {
+    const selectedImage = getStageImage();
+    const isMobile = window.matchMedia(MOBILE_MEDIA_QUERY).matches;
+
+    picture.classList.toggle('is-mobile-image', isMobile && Boolean(config.mobileImage));
+
+    const img = picture.querySelector('img');
+    if (img) {
+      img.src = selectedImage;
+    }
+
+    picture.querySelectorAll('source').forEach((source) => {
+      source.srcset = selectedImage;
+    });
+  };
 
   const layer = document.createElement('div');
   layer.className = 'tri-complex-pills-layer';
@@ -305,6 +348,7 @@ export default function decorate(block) {
 
   const mediaQuery = window.matchMedia(MOBILE_MEDIA_QUERY);
   const handleViewportChange = () => {
+    setPictureSource();
     setPillPositions(layer, items);
 
     const activeItem = getItemById(activeId);
@@ -325,6 +369,7 @@ export default function decorate(block) {
   shell.append(header, stage, descriptionContainer, dialog);
   block.append(shell);
 
+  setPictureSource();
   setPillPositions(layer, items);
 
   block.addEventListener('remove', () => {

@@ -58,6 +58,10 @@
   border-radius: 1rem;
 }
 
+.tri-complex-picture.is-mobile-image img {
+  width: 100%;
+}
+
 .tri-complex-pills-layer {
   position: absolute;
   inset: 0;
