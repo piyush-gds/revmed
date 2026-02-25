@@ -568,6 +568,40 @@
     ]
   },
   {
+    "id": "video-timed-text",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "videoUrl",
+        "label": "Video URL",
+        "description": "Enter video URL"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "poster",
+        "label": "Poster Image",
+        "multi": false,
+        "description": "Optional placeholder image shown before video plays"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "posterAlt",
+        "label": "Poster Alt Text",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "timedEntries",
+        "label": "Timed Entries",
+        "description": "Enter one entry per line in this format: seconds | text"
+      }
+    ]
+  },
+  {
     "id": "video",
     "fields": [
       {

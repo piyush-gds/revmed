@@ -1,0 +1,56 @@
+{
+  "definitions": [
+    {
+      "title": "Video Timed Text",
+      "id": "video-timed-text",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Video Timed Text",
+              "model": "video-timed-text"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "video-timed-text",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "videoUrl",
+          "label": "Video URL",
+          "description": "Enter video URL"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "poster",
+          "label": "Poster Image",
+          "multi": false,
+          "description": "Optional placeholder image shown before video plays"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "posterAlt",
+          "label": "Poster Alt Text",
+          "value": ""
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "timedEntries",
+          "label": "Timed Entries",
+          "description": "Enter one entry per line in this format: seconds | text"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
