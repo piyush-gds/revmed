@@ -46,13 +46,20 @@ export default function decorate(block) {
 
   const rows = Array.from(block.children);
 
-  const variation =
-    rows[0]?.querySelector("div")?.textContent.trim() || "image";
+  const getRowText = (index) => rows[index]?.querySelector("div")?.textContent.trim() || "";
+  const getRowHTML = (index) => rows[index]?.querySelector("div")?.innerHTML || "";
+
+  const variation = getRowText(0) || "image";
   const assetPicked =
     rows[1]?.querySelector("picture") ||
     rows[1]?.querySelector("video") ||
     rows[1]?.querySelector("a");
-  const text = rows[2]?.querySelector("div")?.innerHTML || "";
+  const text = getRowHTML(2);
+  const overlayText = getRowHTML(3) || text;
+  const primaryButtonLabel = getRowText(4);
+  const primaryButtonLink = getRowText(5);
+  const secondaryButtonLabel = getRowText(6);
+  const secondaryButtonLink = getRowText(7);
 
   block.innerHTML = "";
 
@@ -134,6 +141,66 @@ export default function decorate(block) {
 
     imageWrapper.appendChild(imageContainer);
     imageWrapper.appendChild(textContainer);
+    block.appendChild(imageWrapper);
+  } else if (variation === "image-text-buttons") {
+    const imageWrapper = document.createElement("div");
+    imageWrapper.className = "hero-overlay-image-wrapper";
+
+    const imageContainer = document.createElement("div");
+    imageContainer.className = "hero-overlay-image-container";
+
+    const img = assetPicked?.querySelector("img") || assetPicked;
+
+    if (img && img.tagName === "IMG") {
+      const imgSrc = img.src || "";
+      const isImage = IMAGE_EXTENSIONS.some((ext) =>
+        imgSrc.toLowerCase().includes(ext)
+      );
+
+      if (isImage) {
+        imageContainer.appendChild(img);
+      } else {
+        console.error(
+          "Invalid image file. Please upload an image file (.jpg, .png, .gif, .webp, .svg, etc.)"
+        );
+      }
+    }
+
+    const overlay = document.createElement("div");
+    overlay.className = "hero-overlay-content";
+
+    if (overlayText) {
+      const overlayTextContainer = document.createElement("div");
+      overlayTextContainer.className = "hero-overlay-text";
+      overlayTextContainer.innerHTML = overlayText;
+      overlay.appendChild(overlayTextContainer);
+    }
+
+    if (primaryButtonLabel || secondaryButtonLabel) {
+      const actions = document.createElement("div");
+      actions.className = "hero-overlay-actions";
+
+      if (primaryButtonLabel) {
+        const primaryButton = document.createElement("a");
+        primaryButton.className = "hero-overlay-button";
+        primaryButton.href = primaryButtonLink || "#";
+        primaryButton.textContent = primaryButtonLabel;
+        actions.appendChild(primaryButton);
+      }
+
+      if (secondaryButtonLabel) {
+        const secondaryButton = document.createElement("a");
+        secondaryButton.className = "hero-overlay-button";
+        secondaryButton.href = secondaryButtonLink || "#";
+        secondaryButton.textContent = secondaryButtonLabel;
+        actions.appendChild(secondaryButton);
+      }
+
+      overlay.appendChild(actions);
+    }
+
+    imageContainer.appendChild(overlay);
+    imageWrapper.appendChild(imageContainer);
     block.appendChild(imageWrapper);
   }
 }
