@@ -21,11 +21,11 @@
       "id": "video-timed-text",
       "fields": [
         {
-          "component": "text",
+          "component": "reference",
           "valueType": "string",
           "name": "videoUrl",
           "label": "Video URL",
-          "description": "Enter video URL"
+          "description": "Upload video file"
         },
         {
           "component": "reference",
@@ -41,6 +41,20 @@
           "name": "posterAlt",
           "label": "Poster Alt Text",
           "value": ""
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "buttonText",
+          "label": "Button Text",
+          "description": "CTA button label shown before video plays"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "disclaimerText",
+          "label": "Disclaimer Text",
+          "description": "Disclaimer shown below the video"
         },
         {
           "component": "richtext",
