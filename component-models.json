@@ -392,6 +392,14 @@
         "description": "Unmet Need / Mutations content. Use bullet lists, bold headings, etc. Pipe-delimited lines auto-convert to tables."
       },
       {
+        "component": "reference",
+        "valueType": "string",
+        "name": "overlayImage1",
+        "label": "Hotspot 1 - Glow Overlay Image",
+        "multi": false,
+        "description": "Transparent PNG highlighting this organ area (shown on click)."
+      },
+      {
         "component": "text",
         "name": "label2",
         "label": "Hotspot 2 - Label",
@@ -416,6 +424,14 @@
         "valueType": "string"
       },
       {
+        "component": "reference",
+        "valueType": "string",
+        "name": "overlayImage2",
+        "label": "Hotspot 2 - Glow Overlay Image",
+        "multi": false,
+        "description": "Transparent PNG highlighting this organ area (shown on click)."
+      },
+      {
         "component": "text",
         "name": "label3",
         "label": "Hotspot 3 - Label",
@@ -438,6 +454,14 @@
         "name": "rightContent3",
         "label": "Hotspot 3 - Right Panel Content",
         "valueType": "string"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "overlayImage3",
+        "label": "Hotspot 3 - Glow Overlay Image",
+        "multi": false,
+        "description": "Transparent PNG highlighting this organ area (shown on click)."
       }
     ]
   },
