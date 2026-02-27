@@ -33,6 +33,10 @@
             {
               "name": "Video",
               "value": "video"
+            },
+            {
+              "name": "Image with Text and Buttons",
+              "value": "image-text-buttons"
             }
           ]
         },
@@ -49,6 +53,41 @@
           "value": "",
           "label": "Text",
           "valueType": "string"
+        },
+        {
+          "component": "richtext",
+          "name": "overlayText",
+          "value": "",
+          "label": "Overlay Text",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "primaryButtonLabel",
+          "label": "Primary Button Label",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "primaryButtonLink",
+          "label": "Primary Button Link",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "secondaryButtonLabel",
+          "label": "Secondary Button Label",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "secondaryButtonLink",
+          "label": "Secondary Button Link",
+          "value": ""
         }
       ]
     }
