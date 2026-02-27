@@ -108,7 +108,8 @@
         "carousel",
         "clinical-trial-id",
         "tri-complex",
-        "video-timed-text"
+        "video-timed-text",
+        "trials-table"
       ]
     }
   ]

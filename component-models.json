@@ -568,6 +568,18 @@
     ]
   },
   {
+    "id": "trials-table",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Table Heading",
+        "description": "Optional heading displayed above the trials table"
+      }
+    ]
+  },
+  {
     "id": "video-timed-text",
     "fields": [
       {

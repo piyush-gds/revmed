@@ -1,0 +1,249 @@
+/* ===== TRIALS TABLE BLOCK ===== */
+
+/* Wrapper overrides */
+.trials-table-wrapper-outer {
+  max-width: unset !important;
+  padding: unset !important;
+}
+
+.trials-table {
+  display: block;
+  width: 100%;
+}
+
+/* Loading & empty states */
+.trials-table-loader {
+  text-align: center;
+  padding: 48px 24px;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.trials-table-empty {
+  text-align: center;
+  padding: 48px 24px;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+/* Table wrapper for horizontal scroll on small screens */
+.trials-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ===== TABLE GRID ===== */
+.trials-table-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  min-width: 960px;
+}
+
+/* ===== HEADER ===== */
+.trials-table-grid thead {
+  background-color: #0e4343;
+}
+
+.trials-table-th {
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.4;
+  padding: 20px 24px;
+  text-align: left;
+  vertical-align: bottom;
+  border: none;
+}
+
+.trials-table-th span {
+  display: inline;
+}
+
+.trials-table-th sup {
+  font-size: 11px;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.trials-table-th-subtitle {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 4px;
+  color: rgba(255 255 255 / 85%);
+}
+
+.trials-table-th-subtitle sup {
+  font-size: 9px;
+}
+
+/* Column widths */
+.trials-table-th--tumour {
+  width: 18%;
+}
+
+.trials-table-th--description {
+  width: 25%;
+}
+
+.trials-table-th--criteria {
+  width: 28%;
+}
+
+.trials-table-th--status {
+  width: 14%;
+  text-align: center;
+}
+
+.trials-table-th--nct {
+  width: 15%;
+  text-align: center;
+}
+
+/* ===== BODY ROWS ===== */
+.trials-table-grid tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.trials-table-grid tbody tr:last-child {
+  border-bottom: 2px solid #0e4343;
+}
+
+.trials-table-cell {
+  padding: 24px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #1f2937;
+  vertical-align: top;
+}
+
+/* Tumour column */
+.trials-table-cell--tumour {
+  font-size: 17px;
+  color: #0e4343;
+}
+
+.trials-table-cell--tumour strong {
+  font-weight: 700;
+}
+
+/* Description column */
+.trials-table-cell--description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.trials-table-cell--description p {
+  margin: 0;
+}
+
+/* Criteria column */
+.trials-table-cell--criteria {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.trials-table-cell--criteria ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trials-table-cell--criteria li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.trials-table-cell--criteria li:last-child {
+  margin-bottom: 0;
+}
+
+.trials-table-cell--criteria li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #0e4343;
+}
+
+/* Status column */
+.trials-table-cell--status {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.trials-table-status-badge {
+  display: inline-block;
+  background-color: #0e4343;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 10px 20px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* NCT link column */
+.trials-table-cell--nct {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.trials-table-nct-link {
+  color: #0e4343;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.trials-table-nct-link:hover {
+  color: #1e6b5c;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .trials-table-grid {
+    min-width: 860px;
+  }
+
+  .trials-table-th,
+  .trials-table-cell {
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  .trials-table-th {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .trials-table-grid {
+    min-width: 720px;
+  }
+
+  .trials-table-th {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .trials-table-cell {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .trials-table-status-badge {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+}
