@@ -11,6 +11,169 @@
   width: 100%;
 }
 
+/* ===== FILTER BAR ===== */
+.trials-filter-bar {
+  padding: 24px 0 16px;
+}
+
+.trials-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+/* --- Custom dropdown --- */
+.trials-filter-dropdown {
+  position: relative;
+  min-width: 180px;
+}
+
+.trials-filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  background-color: #0e4343;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  outline: none;
+  line-height: 1.4;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background-color 0.15s;
+}
+
+.trials-filter-btn:hover {
+  background-color: #13524f;
+}
+
+.trials-filter-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(14, 67, 67, 0.35);
+}
+
+/* Muted variant for State */
+.trials-filter-dropdown--muted .trials-filter-btn {
+  background-color: #9db5b0;
+  color: #1f2937;
+}
+
+.trials-filter-dropdown--muted .trials-filter-btn:hover {
+  background-color: #8ca8a2;
+}
+
+.trials-filter-dropdown--muted .trials-filter-chevron {
+  color: #1f2937;
+}
+
+/* Chevron */
+.trials-filter-chevron {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.trials-filter-chevron svg {
+  display: block;
+}
+
+/* Rotate chevron when open */
+.trials-filter-dropdown.is-open .trials-filter-chevron {
+  transform: rotate(180deg);
+}
+
+/* --- Dropdown panel --- */
+.trials-filter-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 100%;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.trials-filter-dropdown.is-open .trials-filter-panel {
+  display: block;
+}
+
+.trials-filter-option {
+  padding: 10px 24px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1f2937;
+  cursor: pointer;
+  transition: background-color 0.1s;
+  white-space: nowrap;
+}
+
+.trials-filter-option:hover {
+  background-color: #f3f4f6;
+}
+
+.trials-filter-option[aria-selected="true"] {
+  background-color: #e8f5f0;
+  font-weight: 600;
+  color: #0e4343;
+}
+
+/* --- Clear All button --- */
+.trials-filter-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #c0392b;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  outline: none;
+  line-height: 1.4;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background-color 0.15s;
+  flex-shrink: 0;
+}
+
+.trials-filter-clear:hover {
+  background-color: #a93226;
+}
+
+.trials-filter-clear:focus-visible {
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.35);
+}
+
+.trials-filter-clear svg {
+  display: block;
+}
+
+/* --- Status text --- */
+.trials-filter-status {
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
 /* Loading & empty states */
 .trials-table-loader {
   text-align: center;
@@ -245,5 +408,33 @@
   .trials-table-status-badge {
     font-size: 12px;
     padding: 8px 14px;
+  }
+
+  .trials-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .trials-filter-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .trials-filter-dropdown {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .trials-filter-btn {
+    font-size: 15px;
+    padding: 12px 20px;
+  }
+
+  .trials-filter-clear {
+    font-size: 15px;
+    padding: 12px 20px;
+    width: 100%;
+    justify-content: center;
   }
 }
