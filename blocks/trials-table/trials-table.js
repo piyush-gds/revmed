@@ -1,68 +1,14 @@
 import { fetchGraphQL } from '../../scripts/graphql.js';
 
-// Persisted query paths
-const TRIALS_QUERY_PATH = '/getTrialsTableData';
-const REGION_QUERY_PATH = '/getRegionCountryData';
-
-// Fallback direct endpoints
-const FALLBACK_TRIALS = 'https://publish-p178131-e1882764.adobeaemcloud.com/graphql/execute.json/revmed-aem-core/getTrialsTableData';
-const FALLBACK_REGION = 'https://publish-p178131-e1882764.adobeaemcloud.com/graphql/execute.json/revmed-aem-core/getRegionCountryData';
-
 /**
- * Generic fallback fetch for a given endpoint.
+ * Fetch items from an AEM persisted query.
+ * @param {string} queryPath - e.g. '/getTrialsTableData'
+ * @param {string} dataPath  - dot-separated path into the response data, e.g. 'tableNctDataList'
+ * @returns {Promise<Array>}
  */
-async function fallbackFetch(endpoint) {
-  const resp = await fetch(`${endpoint}?q=${Date.now()}`, {
-    headers: { 'Content-Type': 'application/json' },
-  });
-  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-  return resp.json();
-}
-
-/**
- * Fetch the trials table data from AEM GraphQL.
- * @returns {Promise<Array>} Array of trial items
- */
-async function fetchTrialsData() {
-  try {
-    const result = await fetchGraphQL(TRIALS_QUERY_PATH);
-    const items = result?.data?.tableNctDataList?.items;
-    if (items && items.length) return items;
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn('trials-table: fetchGraphQL failed, trying fallback', err);
-  }
-  try {
-    const json = await fallbackFetch(FALLBACK_TRIALS);
-    return json?.data?.tableNctDataList?.items ?? [];
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error('trials-table: fallback fetch failed', err);
-    return [];
-  }
-}
-
-/**
- * Fetch region / country / state data from AEM GraphQL.
- * @returns {Promise<Array>} Array of region items
- */
-async function fetchRegionData() {
-  try {
-    const result = await fetchGraphQL(REGION_QUERY_PATH);
-    const items = result?.data?.mapModelList?.items;
-    if (items && items.length) return items;
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn('trials-table: region fetchGraphQL failed, trying fallback', err);
-  }
-  try {
-    const json = await fallbackFetch(FALLBACK_REGION);
-    return json?.data?.mapModelList?.items ?? [];
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error('trials-table: region fallback fetch failed', err);
-    return [];
-  }
+async function fetchItems(queryPath, dataPath) {
+  const result = await fetchGraphQL(queryPath);
+  return result?.data?.[dataPath]?.items ?? [];
 }
 
 /* ------------------------------------------------------------------ */
@@ -70,146 +16,101 @@ async function fetchRegionData() {
 /* ------------------------------------------------------------------ */
 
 /**
- * Parse region data into a structured map:
- *   { regionName -> { countryName -> [states] } }
+ * Parse region data into { regionName -> { countryName -> [states] } }.
  */
 function buildRegionMap(regionItems) {
   const map = {};
-  regionItems.forEach((item) => {
-    const region = item.regionName;
-    if (!region) return;
-    if (!map[region]) map[region] = {};
-    const details = item.countryStateDetails;
-    if (!details?.country) return;
-    const country = details.country.name;
-    if (!country) return;
-    map[region][country] = details.country.states || [];
+  regionItems.forEach(({ regionName, countryStateDetails }) => {
+    if (!regionName || !countryStateDetails?.country?.name) return;
+    if (!map[regionName]) map[regionName] = {};
+    map[regionName][countryStateDetails.country.name] = countryStateDetails.country.states || [];
   });
   return map;
 }
 
-/**
- * Extract unique sorted values of a field from trial items.
- */
-function uniqueValues(items, fieldName) {
-  const set = new Set();
-  items.forEach((item) => {
-    const val = item[fieldName];
-    if (val && typeof val === 'string') {
-      set.add(val.trim());
-    }
-  });
-  return [...set].sort();
+/** Sorted unique string values of a field across items. */
+const uniqueValues = (items, field) => [
+  ...new Set(items.map((i) => i[field]?.trim()).filter(Boolean)),
+].sort();
+
+/** All countries from every region. */
+const allCountries = (rm) => [...new Set(
+  Object.values(rm).flatMap((c) => Object.keys(c)),
+)].sort();
+
+/** All states from every region. */
+const allStates = (rm) => [...new Set(
+  Object.values(rm).flatMap((c) => Object.values(c).flat()),
+)].sort();
+
+/** Countries for a specific region. */
+const countriesFor = (rm, region) => Object.keys(rm[region] || {}).sort();
+
+/** States for a specific region (all countries in it). */
+const statesForRegion = (rm, region) => Object.values(rm[region] || {}).flat().sort();
+
+/** States for a specific country across all or one region. */
+function statesForCountry(rm, region, country) {
+  if (region) return (rm[region]?.[country] || []).sort();
+  const found = Object.values(rm).find((c) => c[country]);
+  return (found?.[country] || []).sort();
 }
 
-/**
- * Create a single custom dropdown (pill button + flyout list).
- */
+const CHEVRON_SVG = `<svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+/** Build option <li> elements into a panel. */
+function populateDropdown(wrapper, options) {
+  const panel = wrapper.querySelector('.trials-filter-panel');
+  panel.innerHTML = options.map((o) => `<li class="trials-filter-option" role="option" aria-selected="false" data-value="${o}">${o}</li>`).join('');
+}
+
+/** Create a custom dropdown (pill button + flyout list). */
 function createDropdown(id, label, options, variant) {
   const wrapper = document.createElement('div');
   wrapper.className = `trials-filter-dropdown${variant ? ` trials-filter-dropdown--${variant}` : ''}`;
-  wrapper.dataset.filterId = id;
+  Object.assign(wrapper.dataset, { filterId: id, label });
 
-  // Trigger button
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'trials-filter-btn';
-  btn.setAttribute('aria-haspopup', 'listbox');
-  btn.setAttribute('aria-expanded', 'false');
-  btn.id = `${id}-btn`;
+  wrapper.innerHTML = `
+    <button type="button" class="trials-filter-btn" id="${id}-btn" aria-haspopup="listbox" aria-expanded="false">
+      <span class="trials-filter-btn-label">${label}</span>
+      <span class="trials-filter-chevron">${CHEVRON_SVG}</span>
+    </button>
+    <ul class="trials-filter-panel" role="listbox" id="${id}-panel" aria-labelledby="${id}-btn"></ul>`;
 
-  const btnLabel = document.createElement('span');
-  btnLabel.className = 'trials-filter-btn-label';
-  btnLabel.textContent = label;
-  btn.appendChild(btnLabel);
+  populateDropdown(wrapper, options);
 
-  const chevron = document.createElement('span');
-  chevron.className = 'trials-filter-chevron';
-  chevron.innerHTML = `<svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
-  btn.appendChild(chevron);
-
-  wrapper.appendChild(btn);
-
-  // Dropdown panel
-  const panel = document.createElement('ul');
-  panel.className = 'trials-filter-panel';
-  panel.setAttribute('role', 'listbox');
-  panel.setAttribute('aria-labelledby', `${id}-btn`);
-  panel.id = `${id}-panel`;
-
-  options.forEach((opt) => {
-    const li = document.createElement('li');
-    li.className = 'trials-filter-option';
-    li.setAttribute('role', 'option');
-    li.setAttribute('aria-selected', 'false');
-    li.dataset.value = opt;
-    li.textContent = opt;
-    panel.appendChild(li);
-  });
-
-  wrapper.appendChild(panel);
-
-  // Store original label for reset
-  wrapper.dataset.label = label;
+  const btn = wrapper.querySelector('.trials-filter-btn');
 
   // Toggle open/close
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    const isOpen = wrapper.classList.contains('is-open');
-    // Close all other dropdowns first
+    const opening = !wrapper.classList.contains('is-open');
     document.querySelectorAll('.trials-filter-dropdown.is-open').forEach((d) => {
-      if (d !== wrapper) {
-        d.classList.remove('is-open');
-        d.querySelector('.trials-filter-btn').setAttribute('aria-expanded', 'false');
-      }
+      d.classList.remove('is-open');
+      d.querySelector('.trials-filter-btn').setAttribute('aria-expanded', 'false');
     });
-    wrapper.classList.toggle('is-open', !isOpen);
-    btn.setAttribute('aria-expanded', String(!isOpen));
+    if (opening) {
+      wrapper.classList.add('is-open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
   });
 
-  // Option selection
-  panel.addEventListener('click', (e) => {
+  // Option selection (delegated)
+  wrapper.querySelector('.trials-filter-panel').addEventListener('click', (e) => {
     const li = e.target.closest('.trials-filter-option');
     if (!li) return;
-
-    const val = li.dataset.value;
-    // Deselect previous
-    panel.querySelectorAll('.trials-filter-option').forEach((o) => o.setAttribute('aria-selected', 'false'));
+    wrapper.querySelectorAll('.trials-filter-option').forEach((o) => o.setAttribute('aria-selected', 'false'));
     li.setAttribute('aria-selected', 'true');
-
-    // Update label
-    btnLabel.textContent = val;
-    wrapper.dataset.value = val;
+    wrapper.querySelector('.trials-filter-btn-label').textContent = li.dataset.value;
+    wrapper.dataset.value = li.dataset.value;
     wrapper.classList.add('has-value');
-
-    // Close
     wrapper.classList.remove('is-open');
     btn.setAttribute('aria-expanded', 'false');
-
-    // Fire custom event for filter logic
     wrapper.dispatchEvent(new CustomEvent('filter-change', { bubbles: true }));
   });
 
   return wrapper;
-}
-
-/**
- * Repopulate a custom dropdown panel with new options.
- */
-function populateDropdown(wrapper, options) {
-  const panel = wrapper.querySelector('.trials-filter-panel');
-  panel.innerHTML = '';
-  options.forEach((opt) => {
-    const li = document.createElement('li');
-    li.className = 'trials-filter-option';
-    li.setAttribute('role', 'option');
-    li.setAttribute('aria-selected', 'false');
-    li.dataset.value = opt;
-    li.textContent = opt;
-    panel.appendChild(li);
-  });
 }
 
 /**
@@ -225,9 +126,7 @@ function resetDropdown(wrapper) {
     .forEach((o) => o.setAttribute('aria-selected', 'false'));
 }
 
-/**
- * Build the filter bar with all five dropdowns + Clear All + status.
- */
+/** Build the filter bar with all five dropdowns + Clear All + status. */
 function buildFilterBar(regionMap, trialItems) {
   const bar = document.createElement('div');
   bar.className = 'trials-filter-bar';
@@ -235,63 +134,36 @@ function buildFilterBar(regionMap, trialItems) {
   const row = document.createElement('div');
   row.className = 'trials-filter-row';
 
-  // Region
-  const regions = Object.keys(regionMap).sort();
-  row.appendChild(createDropdown('filter-region', 'Region', regions));
+  [
+    ['filter-region', 'Region', Object.keys(regionMap).sort()],
+    ['filter-country', 'Country', allCountries(regionMap)],
+    ['filter-state', 'State', allStates(regionMap), 'muted'],
+    ['filter-tumor', 'Tumor', uniqueValues(trialItems, 'tumour')],
+    ['filter-intervention', 'Intervention', uniqueValues(trialItems, 'intervention')],
+  ].forEach(([id, label, opts, variant]) => row.appendChild(createDropdown(id, label, opts, variant)));
 
-  // Country
-  const allCountries = [...new Set(
-    Object.values(regionMap).flatMap((countries) => Object.keys(countries)),
-  )].sort();
-  row.appendChild(createDropdown('filter-country', 'Country', allCountries));
-
-  // State (lighter variant)
-  const allStates = [...new Set(
-    Object.values(regionMap).flatMap((countries) => Object.values(countries).flat()),
-  )].sort();
-  row.appendChild(createDropdown('filter-state', 'State', allStates, 'muted'));
-
-  // Tumor
-  const tumors = uniqueValues(trialItems, 'tumour');
-  row.appendChild(createDropdown('filter-tumor', 'Tumor', tumors));
-
-  // Intervention
-  const interventions = uniqueValues(trialItems, 'intervention');
-  row.appendChild(createDropdown('filter-intervention', 'Intervention', interventions));
-
-  // Clear All button
-  const clearBtn = document.createElement('button');
-  clearBtn.type = 'button';
-  clearBtn.className = 'trials-filter-clear';
-  clearBtn.innerHTML = `Clear All <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  </svg>`;
-
-  row.appendChild(clearBtn);
-
+  row.insertAdjacentHTML('beforeend', `<button type="button" class="trials-filter-clear">Clear All <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>`);
   bar.appendChild(row);
-
-  // Status text
-  const status = document.createElement('div');
-  status.className = 'trials-filter-status';
-  status.textContent = 'Showing all trials';
-  bar.appendChild(status);
-
+  bar.insertAdjacentHTML('beforeend', '<div class="trials-filter-status">Showing all trials</div>');
   return bar;
 }
 
-/**
- * Wire up cascading filter logic for Region → Country → State
- * and row-level filtering for Tumor + Intervention.
- */
+/** Wire cascading filter logic and row filtering. */
 function wireFilters(filterBar, regionMap, tableBody, trialItems) {
-  const regionDd = filterBar.querySelector('[data-filter-id="filter-region"]');
-  const countryDd = filterBar.querySelector('[data-filter-id="filter-country"]');
-  const stateDd = filterBar.querySelector('[data-filter-id="filter-state"]');
-  const tumorDd = filterBar.querySelector('[data-filter-id="filter-tumor"]');
-  const interventionDd = filterBar.querySelector('[data-filter-id="filter-intervention"]');
+  const dd = (id) => filterBar.querySelector(`[data-filter-id="${id}"]`);
+  const regionDd = dd('filter-region');
+  const countryDd = dd('filter-country');
+  const stateDd = dd('filter-state');
+  const tumorDd = dd('filter-tumor');
+  const interventionDd = dd('filter-intervention');
+  const allDds = [regionDd, countryDd, stateDd, tumorDd, interventionDd];
   const clearBtn = filterBar.querySelector('.trials-filter-clear');
   const statusEl = filterBar.querySelector('.trials-filter-status');
+
+  const resetGeoOptions = () => {
+    populateDropdown(countryDd, allCountries(regionMap));
+    populateDropdown(stateDd, allStates(regionMap));
+  };
 
   // Close dropdowns on outside click
   document.addEventListener('click', () => {
@@ -300,99 +172,68 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems) {
       d.querySelector('.trials-filter-btn').setAttribute('aria-expanded', 'false');
     });
   });
-
-  // Prevent click inside panel from closing
   filterBar.addEventListener('click', (e) => e.stopPropagation());
 
-  // --- Cascading geo dropdowns ---
+  // Cascading: Region → Country + State
   regionDd.addEventListener('filter-change', () => {
     const region = regionDd.dataset.value;
     if (region && regionMap[region]) {
-      populateDropdown(countryDd, Object.keys(regionMap[region]).sort());
-      populateDropdown(stateDd, Object.values(regionMap[region]).flat().sort());
+      populateDropdown(countryDd, countriesFor(regionMap, region));
+      populateDropdown(stateDd, statesForRegion(regionMap, region));
     } else {
-      populateDropdown(countryDd, [...new Set(
-        Object.values(regionMap).flatMap((c) => Object.keys(c)),
-      )].sort());
-      populateDropdown(stateDd, [...new Set(
-        Object.values(regionMap).flatMap((c) => Object.values(c).flat()),
-      )].sort());
+      resetGeoOptions();
     }
     resetDropdown(countryDd);
     resetDropdown(stateDd);
     applyFilters();
   });
 
+  // Cascading: Country → State
   countryDd.addEventListener('filter-change', () => {
-    const region = regionDd.dataset.value;
-    const country = countryDd.dataset.value;
+    const { value: region } = regionDd.dataset;
+    const { value: country } = countryDd.dataset;
     if (country) {
-      const source = region
-        ? { [country]: regionMap[region]?.[country] || [] }
-        : Object.values(regionMap).reduce((acc, c) => {
-          if (c[country]) acc[country] = c[country];
-          return acc;
-        }, {});
-      populateDropdown(stateDd, (source[country] || []).sort());
+      populateDropdown(stateDd, statesForCountry(regionMap, region, country));
     } else {
-      const pool = region
-        ? regionMap[region]
-        : Object.values(regionMap).reduce((acc, c) => ({ ...acc, ...c }), {});
-      populateDropdown(stateDd, [...new Set(Object.values(pool).flat())].sort());
+      populateDropdown(stateDd, region
+        ? statesForRegion(regionMap, region)
+        : allStates(regionMap));
     }
     resetDropdown(stateDd);
     applyFilters();
   });
 
-  stateDd.addEventListener('filter-change', applyFilters);
-  tumorDd.addEventListener('filter-change', applyFilters);
-  interventionDd.addEventListener('filter-change', applyFilters);
+  [stateDd, tumorDd, interventionDd].forEach((d) => d.addEventListener('filter-change', applyFilters));
 
   // Clear All
   clearBtn.addEventListener('click', () => {
-    [regionDd, countryDd, stateDd, tumorDd, interventionDd].forEach((dd) => resetDropdown(dd));
-    // Reset country / state options to full list
-    populateDropdown(countryDd, [...new Set(
-      Object.values(regionMap).flatMap((c) => Object.keys(c)),
-    )].sort());
-    populateDropdown(stateDd, [...new Set(
-      Object.values(regionMap).flatMap((c) => Object.values(c).flat()),
-    )].sort());
+    allDds.forEach(resetDropdown);
+    resetGeoOptions();
     applyFilters();
   });
 
   function applyFilters() {
     const tumorVal = (tumorDd.dataset.value || '').toLowerCase();
     const interventionVal = (interventionDd.dataset.value || '').toLowerCase();
+    const hasAnyFilter = allDds.some((d) => d.dataset.value);
 
     let visible = 0;
     const rows = tableBody.querySelectorAll('tr');
     rows.forEach((row, idx) => {
       const item = trialItems[idx];
-      if (!item) return;
-
-      let show = true;
-      if (tumorVal && (item.tumour || '').toLowerCase() !== tumorVal) show = false;
-      if (interventionVal && (item.intervention || '').toLowerCase() !== interventionVal) show = false;
-
+      if (!item) { return; }
+      const show = (!tumorVal || (item.tumour || '').toLowerCase() === tumorVal)
+        && (!interventionVal || (item.intervention || '').toLowerCase() === interventionVal);
       row.style.display = show ? '' : 'none';
       if (show) visible += 1;
     });
 
-    // Update status text
-    const hasAnyFilter = tumorVal || interventionVal
-      || regionDd.dataset.value || countryDd.dataset.value || stateDd.dataset.value;
-    if (hasAnyFilter) {
-      statusEl.textContent = `Showing ${visible} of ${rows.length} trials`;
-    } else {
-      statusEl.textContent = 'Showing all trials';
-    }
-
-    // Toggle clear button visibility
+    statusEl.textContent = hasAnyFilter
+      ? `Showing ${visible} of ${rows.length} trials`
+      : 'Showing all trials';
     clearBtn.style.display = hasAnyFilter ? '' : 'none';
   }
 
-  // Initial state — hide clear button
   clearBtn.style.display = 'none';
 }
 
@@ -539,8 +380,8 @@ export default async function decorate(block) {
 
   // Fetch data in parallel
   const [items, regionItems] = await Promise.all([
-    fetchTrialsData(),
-    fetchRegionData(),
+    fetchItems('/getTrialsTableData', 'tableNctDataList'),
+    fetchItems('/getRegionCountryData', 'mapModelList'),
   ]);
 
   // Remove loader

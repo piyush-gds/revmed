@@ -23,20 +23,12 @@
   align-items: center;
 }
 
-/* --- Custom dropdown --- */
-.trials-filter-dropdown {
-  position: relative;
-  min-width: 180px;
-}
-
-.trials-filter-btn {
-  display: flex;
+/* --- Shared pill-button base --- */
+.trials-filter-btn,
+.trials-filter-clear {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  width: 100%;
-  background-color: #0e4343;
-  color: #fff;
   font-size: 16px;
   font-weight: 600;
   padding: 14px 24px;
@@ -48,6 +40,19 @@
   font-family: inherit;
   white-space: nowrap;
   transition: background-color 0.15s;
+}
+
+/* --- Custom dropdown --- */
+.trials-filter-dropdown {
+  position: relative;
+  min-width: 180px;
+}
+
+.trials-filter-btn {
+  justify-content: space-between;
+  width: 100%;
+  background-color: #0e4343;
+  color: #fff;
 }
 
 .trials-filter-btn:hover {
@@ -81,11 +86,11 @@
   flex-shrink: 0;
 }
 
-.trials-filter-chevron svg {
+.trials-filter-chevron svg,
+.trials-filter-clear svg {
   display: block;
 }
 
-/* Rotate chevron when open */
 .trials-filter-dropdown.is-open .trials-filter-chevron {
   transform: rotate(180deg);
 }
@@ -135,22 +140,9 @@
 
 /* --- Clear All button --- */
 .trials-filter-clear {
-  display: inline-flex;
-  align-items: center;
   gap: 8px;
   background-color: #c0392b;
   color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 14px 24px;
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  outline: none;
-  line-height: 1.4;
-  font-family: inherit;
-  white-space: nowrap;
-  transition: background-color 0.15s;
   flex-shrink: 0;
 }
 
@@ -162,10 +154,6 @@
   box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.35);
 }
 
-.trials-filter-clear svg {
-  display: block;
-}
-
 /* --- Status text --- */
 .trials-filter-status {
   margin-top: 16px;
@@ -175,13 +163,7 @@
 }
 
 /* Loading & empty states */
-.trials-table-loader {
-  text-align: center;
-  padding: 48px 24px;
-  font-size: 18px;
-  color: #6b7280;
-}
-
+.trials-table-loader,
 .trials-table-empty {
   text-align: center;
   padding: 48px 24px;
@@ -220,10 +202,6 @@
   border: none;
 }
 
-.trials-table-th span {
-  display: inline;
-}
-
 .trials-table-th sup {
   font-size: 11px;
   vertical-align: super;
@@ -243,25 +221,14 @@
 }
 
 /* Column widths */
-.trials-table-th--tumour {
-  width: 18%;
-}
+.trials-table-th--tumour { width: 18%; }
+.trials-table-th--description { width: 25%; }
+.trials-table-th--criteria { width: 28%; }
+.trials-table-th--status { width: 14%; }
+.trials-table-th--nct { width: 15%; }
 
-.trials-table-th--description {
-  width: 25%;
-}
-
-.trials-table-th--criteria {
-  width: 28%;
-}
-
-.trials-table-th--status {
-  width: 14%;
-  text-align: center;
-}
-
+.trials-table-th--status,
 .trials-table-th--nct {
-  width: 15%;
   text-align: center;
 }
 
@@ -292,8 +259,9 @@
   font-weight: 700;
 }
 
-/* Description column */
-.trials-table-cell--description {
+/* Description & Criteria columns */
+.trials-table-cell--description,
+.trials-table-cell--criteria {
   font-size: 15px;
   line-height: 1.6;
   color: #374151;
@@ -301,13 +269,6 @@
 
 .trials-table-cell--description p {
   margin: 0;
-}
-
-/* Criteria column */
-.trials-table-cell--criteria {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #374151;
 }
 
 .trials-table-cell--criteria ul {
@@ -337,8 +298,9 @@
   background-color: #0e4343;
 }
 
-/* Status column */
-.trials-table-cell--status {
+/* Status & NCT columns */
+.trials-table-cell--status,
+.trials-table-cell--nct {
   text-align: center;
   vertical-align: middle;
 }
@@ -355,12 +317,7 @@
   white-space: nowrap;
 }
 
-/* NCT link column */
-.trials-table-cell--nct {
-  text-align: center;
-  vertical-align: middle;
-}
-
+/* NCT link */
 .trials-table-nct-link {
   color: #0e4343;
   font-size: 16px;
@@ -410,12 +367,6 @@
     padding: 8px 14px;
   }
 
-  .trials-filter-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
   .trials-filter-row {
     flex-direction: column;
     gap: 12px;
@@ -426,14 +377,13 @@
     width: 100%;
   }
 
-  .trials-filter-btn {
+  .trials-filter-btn,
+  .trials-filter-clear {
     font-size: 15px;
     padding: 12px 20px;
   }
 
   .trials-filter-clear {
-    font-size: 15px;
-    padding: 12px 20px;
     width: 100%;
     justify-content: center;
   }
