@@ -24,7 +24,8 @@
       "clinical-trial-id",
       "tri-complex",
       "video-timed-text",
-      "trials-table"
+      "trials-table",
+      "disease-hotspot"
     ]
   },
   {
@@ -54,6 +55,10 @@
       "title",
       "separator"
     ]
+  },
+  {
+    "id": "disease-hotspot",
+    "components": []
   },
   {
     "id": "revmed-hero-banner",

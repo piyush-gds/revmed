@@ -339,6 +339,109 @@
     ]
   },
   {
+    "id": "disease-hotspot",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "icon",
+        "label": "Icon (SVG)",
+        "multi": false
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Desktop Image",
+        "multi": false,
+        "description": "The main body/organ illustration"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "mobileImage",
+        "label": "Mobile Image (optional)",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "name": "label1",
+        "label": "Hotspot 1 - Label",
+        "valueType": "string",
+        "description": "Pill text shown on the image (e.g. Pancreas)"
+      },
+      {
+        "component": "text",
+        "name": "popupTitle1",
+        "label": "Hotspot 1 - Popup Title",
+        "valueType": "string",
+        "description": "Heading shown in the popup (e.g. Pancreatic Ductal Adenocarcinoma (PDAC))"
+      },
+      {
+        "component": "richtext",
+        "name": "leftContent1",
+        "label": "Hotspot 1 - Left Panel Content",
+        "valueType": "string",
+        "description": "Epidemiology stats. For table rows use pipe: 'Estimated Statistics | Result' on separate lines. First pipe-line = header. Non-pipe lines render normally."
+      },
+      {
+        "component": "richtext",
+        "name": "rightContent1",
+        "label": "Hotspot 1 - Right Panel Content",
+        "valueType": "string",
+        "description": "Unmet Need / Mutations content. Use bullet lists, bold headings, etc. Pipe-delimited lines auto-convert to tables."
+      },
+      {
+        "component": "text",
+        "name": "label2",
+        "label": "Hotspot 2 - Label",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "popupTitle2",
+        "label": "Hotspot 2 - Popup Title",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "leftContent2",
+        "label": "Hotspot 2 - Left Panel Content",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "rightContent2",
+        "label": "Hotspot 2 - Right Panel Content",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "label3",
+        "label": "Hotspot 3 - Label",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "popupTitle3",
+        "label": "Hotspot 3 - Popup Title",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "leftContent3",
+        "label": "Hotspot 3 - Left Panel Content",
+        "valueType": "string"
+      },
+      {
+        "component": "richtext",
+        "name": "rightContent3",
+        "label": "Hotspot 3 - Right Panel Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "fragment",
     "fields": [
       {

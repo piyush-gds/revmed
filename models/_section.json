@@ -109,7 +109,8 @@
         "clinical-trial-id",
         "tri-complex",
         "video-timed-text",
-        "trials-table"
+        "trials-table",
+        "disease-hotspot"
       ]
     }
   ]
