@@ -1,27 +1,9 @@
 /**
  * GraphQL helper – fetches data from AEM persisted‑query endpoints.
- *
- * The publish endpoint is resolved in this order:
- *  1. window.__graphqlEndpoint (if set by another script)
- *  2. A <meta name="graphql-endpoint"> tag in the page <head>
- *  3. The FALLBACK_ORIGIN constant below
  */
 
-const FALLBACK_ORIGIN = 'https://publish-p178131-e1882764.adobeaemcloud.com';
+const ORIGIN = 'https://publish-p178131-e1882764.adobeaemcloud.com';
 const GRAPHQL_PATH = '/graphql/execute.json/revmed-aem-core';
-
-/**
- * Resolve the base origin for the AEM GraphQL endpoint.
- * @returns {string}
- */
-function getEndpointOrigin() {
-  if (window.__graphqlEndpoint) return window.__graphqlEndpoint;
-
-  const meta = document.querySelector('meta[name="graphql-endpoint"]');
-  if (meta?.content) return meta.content.replace(/\/+$/, '');
-
-  return FALLBACK_ORIGIN;
-}
 
 /**
  * Execute an AEM persisted GraphQL query.
@@ -32,8 +14,7 @@ function getEndpointOrigin() {
  */
 export async function fetchGraphQL(queryPath, variables) {
   try {
-    const origin = getEndpointOrigin();
-    const url = new URL(`${GRAPHQL_PATH}${queryPath}`, origin);
+    const url = new URL(`${GRAPHQL_PATH}${queryPath}`, ORIGIN);
 
     // Cache‑bust
     url.searchParams.set('q', Date.now());
