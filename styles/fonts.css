@@ -1,4 +1,33 @@
 /* stylelint-disable max-line-length */
+
+/* FK Display ALT (Regular) */
+@font-face {
+  font-family: FKDisplayALT;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/FK_Display_ALT/woff2/FKDisplay-RegularAlt.woff2') format('woff2'),
+       url('../fonts/FK_Display_ALT/woff/FKDisplay-RegularAlt.woff') format('woff');
+}
+
+/* FK Grotesk Neue (Regular) */
+@font-face {
+  font-family: FKGroteskNeueRegular;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/FKGroteskNeue-Regular.woff2') format('woff2');
+}
+
+/* FK Grotesk Neue (Medium) */
+@font-face {
+  font-family: FKGroteskNeueMedium;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/FKGroteskNeue-Medium.woff2') format('woff2');
+}
+
 @font-face {
   font-family: roboto-condensed;
   font-style: normal;

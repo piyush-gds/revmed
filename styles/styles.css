@@ -39,6 +39,7 @@
   --color-black: #000;
   --color-white: oklch(1 0 0);
   --spacing: .25rem;
+  --fkdisplay-regular-alt: "FKDisplayALT", "FKDisplayALT Fallback";
   --breakpoint-xl: 80rem;
   --container-xl: 36rem;
   --container-4xl: 56rem;
