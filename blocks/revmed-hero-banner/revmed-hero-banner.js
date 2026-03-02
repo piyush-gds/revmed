@@ -149,20 +149,14 @@ export default function decorate(block) {
     const imageContainer = document.createElement("div");
     imageContainer.className = "hero-overlay-image-container";
 
+    /* Use the authored image as background on the wrapper */
     const img = assetPicked?.querySelector("img") || assetPicked;
 
     if (img && img.tagName === "IMG") {
       const imgSrc = img.src || "";
-      const isImage = IMAGE_EXTENSIONS.some((ext) =>
-        imgSrc.toLowerCase().includes(ext)
-      );
-
-      if (isImage) {
-        imageContainer.appendChild(img);
-      } else {
-        console.error(
-          "Invalid image file. Please upload an image file (.jpg, .png, .gif, .webp, .svg, etc.)"
-        );
+      const wrapper = block.closest('.revmed-hero-banner-wrapper');
+      if (wrapper && imgSrc) {
+        wrapper.style.backgroundImage = `url('${imgSrc}')`;
       }
     }
 
