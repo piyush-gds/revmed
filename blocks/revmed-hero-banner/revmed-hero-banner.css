@@ -58,7 +58,7 @@
 
 .revmed-hero-banner .hero-image-wrapper .hero-text-container * {
     padding: 0 2rem;
-    max-width: 1200px;
+    max-width: 1280px;
     margin: auto;
     font-family: "FKDisplayALT", "FKDisplayALT Fallback";
     font-size: 2.5rem;
@@ -103,7 +103,7 @@
   .revmed-hero-banner .hero-overlay-content {
     position: relative;
     z-index: 2;
-    width: min(100%, 1200px);
+    width: min(100%, 1280px);
     padding: 12rem 2rem 6rem;
     color: #fff;
     text-align: start;
@@ -196,7 +196,7 @@
     .hero-text-container {
     position: relative;
     z-index: 2;
-    width: min(100%, 1200px);
+    width: min(100%, 1280px);
     padding: 12rem 2rem 6rem;
     text-align: start;
     color: #fff;
