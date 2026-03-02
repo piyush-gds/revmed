@@ -1,28 +1,28 @@
 @font-face {
-    font-family: FKDisplayALT Fallback;
-    src: local("Arial");
-    ascent-override: 86.21%;
-    descent-override: 28.74%;
-    line-gap-override: 0.00%;
-    size-adjust: 111.35%
+  font-family: FKDisplayALT Fallback;
+  src: local("Arial");
+  ascent-override: 86.21%;
+  descent-override: 28.74%;
+  line-gap-override: 0.00%;
+  size-adjust: 111.35%
 }
 
 @font-face {
-    font-family: FKGroteskNeueMedium Fallback;
-    src: local("Arial");
-    ascent-override: 88.04%;
-    descent-override: 29.35%;
-    line-gap-override: 0.00%;
-    size-adjust: 109.05%
+  font-family: FKGroteskNeueMedium Fallback;
+  src: local("Arial");
+  ascent-override: 88.04%;
+  descent-override: 29.35%;
+  line-gap-override: 0.00%;
+  size-adjust: 109.05%
 }
 
 @font-face {
-    font-family: FKGroteskNeueRegular Fallback;
-    src: local("Arial");
-    ascent-override: 90.24%;
-    descent-override: 30.08%;
-    line-gap-override: 0.00%;
-    size-adjust: 106.38%
+  font-family: FKGroteskNeueRegular Fallback;
+  src: local("Arial");
+  ascent-override: 90.24%;
+  descent-override: 30.08%;
+  line-gap-override: 0.00%;
+  size-adjust: 106.38%
 }
 
 :root {
@@ -135,43 +135,13 @@
   --sidebar-border: var(--color-concrete-gray);
   --sidebar-ring: var(--color-eden-green);
   --menu-button-color: var(--color-mine-shaft-gray);
-}
 
-/* To remove below ROOT */
-
-:root {
-  /* colors */
-  --background-color: white;
+  /* Legacy AEM variables (mapped from removed root) */
   --light-color: #f8f8f8;
-  --dark-color: #505050;
   --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
-  --dark-green: #0E4343;
-  --light-grey: #efebec;
-  --primary: #0e4343;
-  --primary-hover: rgba(14, 67, 67, 0.9);
-  --ring: #3a9b54;
 
   /* fonts */
   --body-font-family: "FKDisplayALT", "FKDisplayALT Fallback", roboto, roboto-fallback, sans-serif;
-  --heading-font-family: "FKDisplayALT", "FKDisplayALT Fallback", roboto-condensed, roboto-condensed-fallback, sans-serif;
-
-  /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
-
-  /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
-
-  /* nav height */
-  --nav-height: 64px;
 }
 
 *,
@@ -519,6 +489,7 @@ ul>li>ul>li::before {
 [id] {
   scroll-margin-top: 4rem
 }
+
 /*  */
 
 body.appear {
@@ -557,7 +528,7 @@ main .section.revmed-hero-banner-container {
   padding-top: 0;
 }
 
-main > .section > div {
+main>.section>div {
   max-width: 1280px;
   margin: auto;
   padding: 0 24px;
@@ -595,7 +566,7 @@ a.revmed {
 
 /* Hover state */
 a.revmed:hover {
-  background-color: var(--primary-hover);
+  background-color: var(--color-eden-green);
 }
 
 /* Focus state */
@@ -621,26 +592,26 @@ main .section.highlight {
 
 /* Dark Green style */
 main .section.dark-green {
-  background-color: var(--dark-green);
-  color:#fff;
+  background-color: var(--color-eden-green);
+  color: #fff;
 }
 
 /* Light Green style */
 main .section.light-green {
   background-color: #d3eae5;
-  color: var(--dark-green); 
+  color: var(--color-eden-green);
 }
 
 /* Green style */
 main .section.green {
   background-color: #059669;
-  color: var(--dark-green); 
+  color: var(--color-eden-green);
 }
 
 /* Light Grey style */
 main .section.light-grey {
   background-color: #f5f8f9;
-  color: var(--dark-green); 
+  color: var(--color-eden-green);
 }
 
 main .section.top-left-round {
@@ -671,22 +642,23 @@ main .section.padding-lg {
   padding: 6.5rem 0;
 }
 
-@media (width >= 900px) {
-  main > .section > div {
+@media (width >=900px) {
+  main>.section>div {
     padding: 0 32px;
   }
 }
 
 [data-expandable="true"] .columns-wrapper .columns.collapse {
-    max-height: 30rem;
-    mask-image: linear-gradient(black, transparent);
-    overflow-y: hidden;
+  max-height: 30rem;
+  mask-image: linear-gradient(black, transparent);
+  overflow-y: hidden;
 }
 
 [data-expandable="true"] .default-content-wrapper {
   position: relative;
   border-bottom: 1px solid #0E4343;
-  padding-right: 10rem; /* Reserve space for button */
+  padding-right: 10rem;
+  /* Reserve space for button */
 }
 
 [data-expandable="true"] .default-content-wrapper button {
@@ -713,14 +685,14 @@ main .section.padding-lg {
   margin: 0;
 }
 
-[data-expandable="true"] .default-content-wrapper > *:not(button) {
+[data-expandable="true"] .default-content-wrapper>*:not(button) {
   margin-bottom: 0.5rem;
 }
 
-[data-expandable="true"] .default-content-wrapper > *:last-of-type:not(button) {
+[data-expandable="true"] .default-content-wrapper>*:last-of-type:not(button) {
   margin-bottom: 2.5rem;
 }
 
 [data-expandable="true"] .columns-wrapper {
-    color: #0E4343;
+  color: #0E4343;
 }

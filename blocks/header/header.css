@@ -84,7 +84,7 @@ header nav .nav-hamburger button {
   border: 0;
   border-radius: 0;
   padding: 0;
-  background-color: var(--background-color);
+  background-color: var(--color-white);
   color: inherit;
   overflow: initial;
   text-overflow: initial;
@@ -155,7 +155,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
 header .nav-brand {
   grid-area: brand;
   flex-basis: 128px;
-  font-size: var(--heading-font-size-s);
+  font-size: var(--text-2xl);
   font-weight: 700;
   line-height: 1;
 }
@@ -176,7 +176,7 @@ header nav .nav-sections {
 header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
-  font-size: var(--body-font-size-s);
+  font-size: var(--text-xl);
 }
 
 header nav .nav-sections ul > li {
