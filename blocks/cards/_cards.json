@@ -55,6 +55,24 @@
           "name": "image",
           "label": "Image",
           "multi": false
+        },
+        {
+          "component": "select",
+          "name": "layout",
+          "value": "text-top",
+          "label": "Layout Variation",
+          "description": "Choose the card layout: image on top of text, or text on top of image",
+          "valueType": "string",
+          "options": [
+            {
+              "name": "Text on Top of Image",
+              "value": "text-top"
+            },
+            {
+              "name": "Image on Top of Text",
+              "value": "image-top"
+            }
+          ]
         }
       ]
     }
