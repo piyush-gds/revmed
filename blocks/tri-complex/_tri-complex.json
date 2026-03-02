@@ -25,13 +25,13 @@
           "component": "reference",
           "valueType": "string",
           "name": "icon",
-          "label": "Icon (SVG)",
+          "label": "Headline Icon",
           "multi": false
         },
         {
-          "component": "text",
+          "component": "richtext",
           "name": "title",
-          "label": "Title",
+          "label": "Headline Text",
           "valueType": "string"
         },
         {
