@@ -57,6 +57,14 @@
           "multi": false
         },
         {
+          "component": "boolean",
+          "name": "showAccentBar",
+          "value": false,
+          "label": "Show Accent Bar",
+          "description": "Toggle to show an accent bar below the title",
+          "valueType": "boolean"
+        },
+        {
           "component": "select",
           "name": "layout",
           "value": "text-top",
