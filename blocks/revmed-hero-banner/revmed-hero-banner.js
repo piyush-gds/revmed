@@ -147,7 +147,7 @@ export default function decorate(block) {
     imageWrapper.className = "hero-overlay-image-wrapper";
 
     const imageContainer = document.createElement("div");
-    imageContainer.className = "hero-overlay-image-container";
+    imageContainer.className = "hero-overlay-image-container no-overlay";
 
     /* Use the authored image as background on the wrapper */
     const img = assetPicked?.querySelector("img") || assetPicked;

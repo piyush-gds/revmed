@@ -91,6 +91,11 @@
     z-index: 1;
   }
 
+  /* Remove dark overlay for image-text-buttons variation */
+  .revmed-hero-banner .hero-overlay-image-container.no-overlay::before {
+    display: none;
+  }
+
   .revmed-hero-banner .hero-overlay-image-container img {
     position: absolute;
     inset: 0;
@@ -110,7 +115,6 @@
   }
 
   .revmed-hero-banner .hero-overlay-text :is(h1, h2, h3, h4, h5, h6) {
-    margin: 0 0 1rem;
     color: #fff;
     font-family: var(--heading-font-family);
   }
