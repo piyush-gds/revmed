@@ -1,3 +1,30 @@
+.tri-complex-container .default-content-wrapper p {
+  margin-bottom: calc(var(--spacing) * 0) !important;
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  color: oklch(1 0 0);
+}
+
+.tri-complex-container .default-content-wrapper h2 {
+  margin-bottom: calc(var(--spacing) * 10);
+  color: oklch(1 0 0);
+}
+
+.tri-complex-container .separator-accent-bar {
+  margin-bottom: calc(var(--spacing) * 20) !important;
+}
+
+.tri-complex-container div:nth-of-type(4) {
+  padding: 1rem 0;
+  padding-block: calc(var(--spacing) * 4);
+  text-align: center;
+  font-size: var(--text-2xl);
+  line-height: var(--tw-leading, var(--text-2xl--line-height));
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  color: oklch(1 0 0);
+}
+
 .tri-complex {
   color: #fff;
 }

@@ -1,3 +1,7 @@
+.video-timed-text-container .default-content-wrapper {
+  margin-bottom: 5rem;
+}
+
 .video-timed-text {
   max-width: 1280px;
   margin: 24px auto;
@@ -12,7 +16,7 @@
 .video-timed-text__video-column {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1rem;
   overflow: hidden;
 }
 
@@ -72,15 +76,18 @@
   display: none;
 }
 
-.video-timed-text__disclaimer {
+/* .video-timed-text__disclaimer {
   margin: 0;
   font-size: 14px;
   line-height: 1.35;
   text-align: center;
-}
+} */
 
 .video-timed-text__disclaimer p {
   margin: 0;
+  font-size: 14px;
+  line-height: 1rem;
+  text-align: center;
 }
 
 .video-timed-text__panel {
