@@ -1,5 +1,4 @@
 import { fetchGraphQL } from '../../scripts/graphql.js';
-import { readBlockConfig } from '../../scripts/aem.js';
 
 /**
  * Fetch items from an AEM persisted query.
@@ -320,36 +319,20 @@ function createChip(filterId, value, onRemove) {
 
 /**
  * Parse block properties from authored content.
- * Maps config keys (lowercased with hyphens) to camelCase property names.
  * @param {HTMLElement} block
  * @returns {Object} Parsed labels object
  */
 function parseBlockProperties(block) {
-  const config = readBlockConfig(block);
-
-  // Map hyphenated keys from readBlockConfig to camelCase property names
-  const keyMap = {
-    'filterlabelregion': 'filterLabelRegion',
-    'filterlabelcountry': 'filterLabelCountry',
-    'filterlabelstate': 'filterLabelState',
-    'filterlabeltumor': 'filterLabelTumor',
-    'filterlabelintervention': 'filterLabelIntervention',
-    'tableheadingcancer': 'tableHeadingCancer',
-    'tableheadingdescription': 'tableHeadingDescription',
-    'tableheadingcriteria': 'tableHeadingCriteria',
-    'tableheadingstatus': 'tableHeadingStatus',
-    'tableheadinginfo': 'tableHeadingInfo',
-    'clearalltext': 'clearAllText',
-    'showingalltext': 'showingAllText',
-  };
-
+  const rows = [...block.querySelectorAll(':scope > div')];
   const labels = {};
-  Object.entries(config).forEach(([key, value]) => {
-    const normalizedKey = key.replace(/-/g, '').toLowerCase();
-    const propName = keyMap[normalizedKey] || key;
-    labels[propName] = value;
+  rows.forEach((row) => {
+    const cells = [...row.querySelectorAll(':scope > div')];
+    if (cells.length >= 2) {
+      const key = cells[0].textContent.trim();
+      const value = cells[1].textContent.trim();
+      if (key && value) labels[key] = value;
+    }
   });
-
   return labels;
 }
 
@@ -650,6 +633,13 @@ function buildRow(item, options = {}) {
   // Status
   const tdStatus = document.createElement('td');
   tdStatus.className = 'trials-table-cell trials-table-cell--status';
+
+  // Add status note for mobile view
+  const statusNote = document.createElement('span');
+  statusNote.className = 'trials-table-status-note';
+  statusNote.textContent = '(Recruitment status may vary by trial site)';
+  tdStatus.appendChild(statusNote);
+
   tdStatus.appendChild(createStatusBadge(item.status || ''));
   row.appendChild(tdStatus);
 
