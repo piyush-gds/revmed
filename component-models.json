@@ -810,6 +810,41 @@
         "name": "statusText",
         "label": "Default Status Text",
         "description": "Status text shown when no filters are applied"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "typeOfCancerHeading",
+        "label": "Type of Cancer Column Heading",
+        "description": "Heading for the Type of Cancer column"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "trialDescriptionHeading",
+        "label": "Trial Description Column Heading",
+        "description": "Heading for the Trial Description column"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "eligibilityCriteriaHeading",
+        "label": "Eligibility Criteria Column Heading",
+        "description": "Heading for the Select Eligibility Criteria column"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "statusHeading",
+        "label": "Status Column Heading",
+        "description": "Heading and subtitle for the Status column (supports rich text)"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "moreInformationHeading",
+        "label": "For More Information Column Heading",
+        "description": "Heading for the For More Information column"
       }
     ]
   },

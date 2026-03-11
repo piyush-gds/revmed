@@ -201,10 +201,6 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.trials-filter-chips-row:last-child {
-  border-bottom: none;
-}
-
 .trials-filter-chips-label {
   min-width: 96px;
   font-size: 14px;
@@ -218,6 +214,7 @@
 .trials-filter-chips-wrap {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
 }
 
@@ -232,6 +229,7 @@
   font-weight: 500;
   border-radius: 999px;
   white-space: nowrap;
+  width: fit-content;
 }
 
 .trials-filter-chip-text {
@@ -247,7 +245,7 @@
   padding: 0;
   border: none;
   background: #fff;
-  color: #000;
+  color: #bf3e3e; /* Red X on white background */
   cursor: pointer;
   border-radius: 50%;
   transition: background-color 0.15s;
@@ -255,13 +253,15 @@
 }
 
 .trials-filter-chip-remove:hover {
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .trials-filter-chip-remove svg {
   display: block;
   width: 10px;
   height: 10px;
+  stroke: #bf3e3e;
+  stroke-width: 2.5;
 }
 
 /* --- Clear All button --- */

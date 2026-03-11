@@ -403,6 +403,8 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems) {
   const tumorDd = dd('filter-tumor');
   const interventionDd = dd('filter-intervention');
   const allDds = [regionDd, countryDd, stateDd, tumorDd, interventionDd];
+  // Order for chip display: Country first (matches legacy site)
+  const chipOrderDds = [countryDd, regionDd, stateDd, tumorDd, interventionDd];
   const clearBtn = filterBar.querySelector('.trials-filter-clear');
   const statusEl = filterBar.querySelector('.trials-filter-status');
   const chipsContainer = filterBar.querySelector('.trials-filter-chips');
@@ -483,8 +485,8 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems) {
     const interventionVals = getSelectedValues(interventionDd).map((v) => v.toLowerCase());
     const hasAnyFilter = allDds.some((d) => getSelectedValues(d).length > 0);
 
-    // Render chips
-    renderChips(chipsContainer, allDds, removeChip);
+    // Render chips (Country first, matches legacy site)
+    renderChips(chipsContainer, chipOrderDds, removeChip);
     chipsContainer.style.display = hasAnyFilter ? '' : 'none';
 
     let visible = 0;
@@ -656,48 +658,46 @@ function buildRow(item, options = {}) {
 
 /**
  * Build the full table header row.
+ * @param {Object} labels - Authored labels for table headings
  * @returns {HTMLTableSectionElement}
  */
-function buildTableHead() {
+function buildTableHead(labels = {}) {
   const thead = document.createElement('thead');
   const row = document.createElement('tr');
 
   const headers = [
-    { text: 'Type of Cancer', className: 'trials-table-th--tumour' },
-    { text: 'Trial Description', className: 'trials-table-th--description' },
+    { text: labels.typeOfCancerHeading || '', className: 'trials-table-th--tumour' },
+    { text: labels.trialDescriptionHeading || '', className: 'trials-table-th--description' },
     {
-      text: 'Select Eligibility Criteria',
+      text: labels.eligibilityCriteriaHeading || '',
       className: 'trials-table-th--criteria',
       superscript: 'a',
     },
     {
-      text: 'Status',
+      html: labels.statusHeading || '',
       className: 'trials-table-th--status',
-      subtitle: 'Recruitment status may vary by trial site',
-      superscript: 'b',
+      isRichText: true,
     },
-    { text: 'For More Information', className: 'trials-table-th--nct' },
+    { text: labels.moreInformationHeading || '', className: 'trials-table-th--nct' },
   ];
 
-  headers.forEach(({ text, className, subtitle, superscript }) => {
+  headers.forEach(({ text, html, className, superscript, isRichText }) => {
     const th = document.createElement('th');
     th.className = `trials-table-th ${className}`;
     th.scope = 'col';
 
-    const span = document.createElement('span');
-    span.textContent = text;
-    if (superscript) {
-      const sup = document.createElement('sup');
-      sup.textContent = superscript;
-      span.appendChild(sup);
-    }
-    th.appendChild(span);
-
-    if (subtitle) {
-      const sub = document.createElement('div');
-      sub.className = 'trials-table-th-subtitle';
-      sub.innerHTML = `${subtitle}<sup>${superscript || ''}</sup>`;
-      th.appendChild(sub);
+    if (isRichText && html) {
+      // Rich text content - render as HTML directly
+      th.innerHTML = html;
+    } else {
+      const span = document.createElement('span');
+      span.textContent = text;
+      if (superscript) {
+        const sup = document.createElement('sup');
+        sup.textContent = superscript;
+        span.appendChild(sup);
+      }
+      th.appendChild(span);
     }
 
     row.appendChild(th);
@@ -710,24 +710,38 @@ function buildTableHead() {
 /**
  * Capture authored labels from block content.
  * Each row contains a single field value in order:
- * Row 0: Region label, Row 1: Country label, Row 2: State label,
- * Row 3: Tumor label, Row 4: Intervention label,
- * Row 5: Clear All text, Row 6: Status text
+ * Row 0-6: Filter labels (region, country, state, tumor, intervention, clearAll, status)
+ * Row 7-11: Table headings (typeOfCancerHeading, trialDescriptionHeading, eligibilityCriteriaHeading, statusHeading, moreInformationHeading)
  * @param {HTMLElement} block
  * @returns {Object} labels object
  */
 function captureAuthoredLabels(block) {
   const labels = {};
   const rows = [...block.children];
-  const labelKeys = ['region', 'country', 'state', 'tumor', 'intervention', 'clearAll', 'status'];
+  const labelKeys = [
+    'region', 'country', 'state', 'tumor', 'intervention', 'clearAll', 'status',
+    'typeOfCancerHeading', 'trialDescriptionHeading', 'eligibilityCriteriaHeading',
+    'statusHeading', 'moreInformationHeading',
+  ];
+
+  // Fields that should capture HTML content (rich text)
+  const richTextFields = ['statusHeading'];
 
   rows.forEach((row, index) => {
     if (labelKeys[index]) {
-      // Get text from first cell of the row
       const cell = row.children[0];
-      const text = cell?.textContent?.trim();
-      if (text) {
-        labels[labelKeys[index]] = text;
+      if (richTextFields.includes(labelKeys[index])) {
+        // Get HTML content for rich text fields
+        const html = cell?.innerHTML?.trim();
+        if (html) {
+          labels[labelKeys[index]] = html;
+        }
+      } else {
+        // Get text content for plain text fields
+        const text = cell?.textContent?.trim();
+        if (text) {
+          labels[labelKeys[index]] = text;
+        }
       }
     }
   });
@@ -783,7 +797,7 @@ export default async function decorate(block) {
   const table = document.createElement('table');
   table.className = 'trials-table-grid';
 
-  table.appendChild(buildTableHead());
+  table.appendChild(buildTableHead(authoredLabels));
 
   const tbody = document.createElement('tbody');
 
