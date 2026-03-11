@@ -826,11 +826,11 @@
         "description": "Heading for the Trial Description column"
       },
       {
-        "component": "text",
+        "component": "richtext",
         "valueType": "string",
         "name": "eligibilityCriteriaHeading",
         "label": "Eligibility Criteria Column Heading",
-        "description": "Heading for the Select Eligibility Criteria column"
+        "description": "Heading for the Select Eligibility Criteria column (supports rich text with superscript)"
       },
       {
         "component": "richtext",

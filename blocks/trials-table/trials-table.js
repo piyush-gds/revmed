@@ -669,9 +669,9 @@ function buildTableHead(labels = {}) {
     { text: labels.typeOfCancerHeading || '', className: 'trials-table-th--tumour' },
     { text: labels.trialDescriptionHeading || '', className: 'trials-table-th--description' },
     {
-      text: labels.eligibilityCriteriaHeading || '',
+      html: labels.eligibilityCriteriaHeading || '',
       className: 'trials-table-th--criteria',
-      superscript: 'a',
+      isRichText: true,
     },
     {
       html: labels.statusHeading || '',
@@ -687,8 +687,25 @@ function buildTableHead(labels = {}) {
     th.scope = 'col';
 
     if (isRichText && html) {
-      // Rich text content - render as HTML directly
-      th.innerHTML = html;
+      // Parse rich text: First <p> = heading, Second <p> = subtitle (may contain <sup>)
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      const paragraphs = tempDiv.querySelectorAll('p');
+
+      if (paragraphs.length >= 1) {
+        // First <p> is the heading
+        const span = document.createElement('span');
+        span.innerHTML = paragraphs[0].innerHTML;
+        th.appendChild(span);
+      }
+
+      if (paragraphs.length >= 2) {
+        // Second <p> is the subtitle (preserves <sup> inside)
+        const sub = document.createElement('div');
+        sub.className = 'trials-table-th-subtitle';
+        sub.innerHTML = paragraphs[1].innerHTML;
+        th.appendChild(sub);
+      }
     } else {
       const span = document.createElement('span');
       span.textContent = text;
@@ -725,7 +742,7 @@ function captureAuthoredLabels(block) {
   ];
 
   // Fields that should capture HTML content (rich text)
-  const richTextFields = ['statusHeading'];
+  const richTextFields = ['eligibilityCriteriaHeading', 'statusHeading'];
 
   rows.forEach((row, index) => {
     if (labelKeys[index]) {
