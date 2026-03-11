@@ -317,13 +317,13 @@ function createChip(filterId, value, onRemove) {
   return chip;
 }
 
-/** Filter ID to display label mapping. */
-const FILTER_LABELS = {
-  'filter-region': 'Region',
-  'filter-country': 'Country',
-  'filter-state': 'State',
-  'filter-tumor': 'Tumor',
-  'filter-intervention': 'Intervention',
+/** Filter ID to display label mapping (populated from authored content). */
+let FILTER_LABELS = {
+  'filter-region': '',
+  'filter-country': '',
+  'filter-state': '',
+  'filter-tumor': '',
+  'filter-intervention': '',
 };
 
 /** Render all selected filter chips into a container, grouped by filter. */
@@ -348,20 +348,36 @@ function renderChips(container, allDds, onRemove) {
 }
 
 /** Build the filter bar with all five dropdowns + Clear All + status. */
-function buildFilterBar(regionMap, trialItems) {
+function buildFilterBar(regionMap, trialItems, labels = {}) {
   const bar = document.createElement('div');
   bar.className = 'trials-filter-bar';
 
   const row = document.createElement('div');
   row.className = 'trials-filter-row';
 
+  // Use authored labels (no fallback)
+  const regionLabel = labels.region || '';
+  const countryLabel = labels.country || '';
+  const stateLabel = labels.state || '';
+  const tumorLabel = labels.tumor || '';
+  const interventionLabel = labels.intervention || '';
+  const clearAllText = labels.clearAll || '';
+  const statusText = labels.status || '';
+
+  // Update FILTER_LABELS with authored values
+  FILTER_LABELS['filter-region'] = regionLabel;
+  FILTER_LABELS['filter-country'] = countryLabel;
+  FILTER_LABELS['filter-state'] = stateLabel;
+  FILTER_LABELS['filter-tumor'] = tumorLabel;
+  FILTER_LABELS['filter-intervention'] = interventionLabel;
+
   // State starts disabled with no options
   [
-    ['filter-region', 'Region', Object.keys(regionMap).sort()],
-    ['filter-country', 'Country', countriesFor(regionMap, null)],
-    ['filter-state', 'State', [], 'disabled'],
-    ['filter-tumor', 'Tumor', uniqueValues(trialItems, 'tumour')],
-    ['filter-intervention', 'Intervention', uniqueValues(trialItems, 'intervention')],
+    ['filter-region', regionLabel, Object.keys(regionMap).sort()],
+    ['filter-country', countryLabel, countriesFor(regionMap, null)],
+    ['filter-state', stateLabel, [], 'disabled'],
+    ['filter-tumor', tumorLabel, uniqueValues(trialItems, 'tumour')],
+    ['filter-intervention', interventionLabel, uniqueValues(trialItems, 'intervention')],
   ].forEach(([id, label, opts, variant]) => {
     const dd = createDropdown(id, label, opts, variant);
     if (variant === 'disabled') {
@@ -371,9 +387,9 @@ function buildFilterBar(regionMap, trialItems) {
     row.appendChild(dd);
   });
 
-  row.insertAdjacentHTML('beforeend', `<button type="button" class="trials-filter-clear">Clear All ${ICONS.close}</button>`);
+  row.insertAdjacentHTML('beforeend', `<button type="button" class="trials-filter-clear">${clearAllText} ${ICONS.close}</button>`);
   bar.appendChild(row);
-  bar.insertAdjacentHTML('beforeend', '<div class="trials-filter-status">Showing all trials</div>');
+  bar.insertAdjacentHTML('beforeend', `<div class="trials-filter-status">${statusText}</div>`);
   bar.insertAdjacentHTML('beforeend', '<div class="trials-filter-chips"></div>');
   return bar;
 }
@@ -390,6 +406,9 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems) {
   const clearBtn = filterBar.querySelector('.trials-filter-clear');
   const statusEl = filterBar.querySelector('.trials-filter-status');
   const chipsContainer = filterBar.querySelector('.trials-filter-chips');
+
+  // Store initial status text (authored)
+  const initialStatusText = statusEl.textContent;
 
   /** Filter values to valid options and sync UI. */
   function filterAndSync(wrapper, validOptions) {
@@ -491,7 +510,7 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems) {
 
     statusEl.textContent = hasAnyFilter
       ? `Showing ${visible} trials with selected filters`
-      : 'Showing all trials';
+      : initialStatusText;
   }
 
   /**
@@ -689,10 +708,41 @@ function buildTableHead() {
 }
 
 /**
+ * Capture authored labels from block content.
+ * Each row contains a single field value in order:
+ * Row 0: Region label, Row 1: Country label, Row 2: State label,
+ * Row 3: Tumor label, Row 4: Intervention label,
+ * Row 5: Clear All text, Row 6: Status text
+ * @param {HTMLElement} block
+ * @returns {Object} labels object
+ */
+function captureAuthoredLabels(block) {
+  const labels = {};
+  const rows = [...block.children];
+  const labelKeys = ['region', 'country', 'state', 'tumor', 'intervention', 'clearAll', 'status'];
+
+  rows.forEach((row, index) => {
+    if (labelKeys[index]) {
+      // Get text from first cell of the row
+      const cell = row.children[0];
+      const text = cell?.textContent?.trim();
+      if (text) {
+        labels[labelKeys[index]] = text;
+      }
+    }
+  });
+
+  return labels;
+}
+
+/**
  * Main block decoration function — called automatically by EDS.
  * @param {HTMLElement} block
  */
 export default async function decorate(block) {
+  // Capture authored labels before clearing content
+  const authoredLabels = captureAuthoredLabels(block);
+
   // Clear authored placeholder content
   block.textContent = '';
 
@@ -722,8 +772,8 @@ export default async function decorate(block) {
   // Build region map from region fragment data (for dropdown options)
   const regionMap = buildRegionMap(regionItems);
 
-  // Build & insert filter bar
-  const filterBar = buildFilterBar(regionMap, items);
+  // Build & insert filter bar with authored labels
+  const filterBar = buildFilterBar(regionMap, items, authoredLabels);
   block.appendChild(filterBar);
 
   // Build table

@@ -765,9 +765,51 @@
       {
         "component": "text",
         "valueType": "string",
-        "name": "heading",
-        "label": "Table Heading",
-        "description": "Optional heading displayed above the trials table"
+        "name": "regionLabel",
+        "label": "Region Filter Label",
+        "description": "Label for the Region filter dropdown"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "countryLabel",
+        "label": "Country Filter Label",
+        "description": "Label for the Country filter dropdown"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "stateLabel",
+        "label": "State Filter Label",
+        "description": "Label for the State filter dropdown"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "tumorLabel",
+        "label": "Tumor Filter Label",
+        "description": "Label for the Tumor filter dropdown"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "interventionLabel",
+        "label": "Intervention Filter Label",
+        "description": "Label for the Intervention filter dropdown"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "clearAllText",
+        "label": "Clear All Button Text",
+        "description": "Text for the Clear All button"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "statusText",
+        "label": "Default Status Text",
+        "description": "Status text shown when no filters are applied"
       }
     ]
   },
