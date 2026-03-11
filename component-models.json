@@ -765,9 +765,74 @@
       {
         "component": "text",
         "valueType": "string",
-        "name": "heading",
-        "label": "Table Heading",
-        "description": "Optional heading displayed above the trials table"
+        "name": "filterLabelRegion",
+        "label": "Filter Label: Region"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "filterLabelCountry",
+        "label": "Filter Label: Country"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "filterLabelState",
+        "label": "Filter Label: State"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "filterLabelTumor",
+        "label": "Filter Label: Tumor"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "filterLabelIntervention",
+        "label": "Filter Label: Intervention"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "tableHeadingCancer",
+        "label": "Table Heading: Type of Cancer"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "tableHeadingDescription",
+        "label": "Table Heading: Trial Description"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "tableHeadingCriteria",
+        "label": "Table Heading: Eligibility Criteria"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "tableHeadingStatus",
+        "label": "Table Heading: Status"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "tableHeadingInfo",
+        "label": "Table Heading: For More Information"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "clearAllText",
+        "label": "Clear All Button Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "showingAllText",
+        "label": "Showing All Trials Text"
       }
     ]
   },

@@ -16,16 +16,137 @@ async function fetchItems(queryPath, dataPath) {
 /* ------------------------------------------------------------------ */
 
 /**
- * Parse region data into { regionName -> { countryName -> [states] } }.
+ * Normalize value to array (handles string, array, null/undefined).
+ */
+function toArray(value) {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
+
+/**
+ * Parse a trial's locations field.
+ * Handles: { locations: [...] } or string JSON.
+ */
+function parseTrialLocations(locations) {
+  if (!locations) return [];
+  let data = locations;
+  if (typeof data === 'string') {
+    try { data = JSON.parse(data); } catch { return []; }
+  }
+  // Handle nested { locations: [...] } or direct array
+  return toArray(data.locations || data);
+}
+
+/**
+ * Build region map from region fragment data.
+ * Returns { regionName -> { countryName -> [states] } }.
  */
 function buildRegionMap(regionItems) {
   const map = {};
   regionItems.forEach(({ regionName, countryStateDetails }) => {
-    if (!regionName || !countryStateDetails?.country?.name) return;
+    if (!regionName) return;
     if (!map[regionName]) map[regionName] = {};
-    map[regionName][countryStateDetails.country.name] = countryStateDetails.country.states || [];
+
+    // Parse countryStateDetails if it's a string (JSON scalar from GraphQL)
+    let details = countryStateDetails;
+    if (typeof details === 'string') {
+      try { details = JSON.parse(details); } catch { return; }
+    }
+    if (!details) return;
+
+    // Handle structure: { countries: [...] } or direct array [...]
+    const countries = toArray(details.countries || details);
+    countries.forEach((c) => {
+      const name = typeof c === 'object' ? c.name : c;
+      if (!name) return;
+      if (!map[regionName][name]) map[regionName][name] = [];
+      const states = toArray(typeof c === 'object' ? c.states : null);
+      states.forEach((s) => {
+        if (!map[regionName][name].includes(s)) map[regionName][name].push(s);
+      });
+    });
+  });
+  // Sort states
+  Object.values(map).forEach((countries) => {
+    Object.keys(countries).forEach((c) => countries[c].sort());
   });
   return map;
+}
+
+/**
+ * Check if a trial matches selected region/country/state filters.
+ * When regions are selected: country/state filters are scoped to those regions.
+ * When no region is selected: country/state filters apply globally.
+ */
+function trialMatchesLocation(item, selectedRegions, selectedCountries, selectedStates, regionMap) {
+  const locs = parseTrialLocations(item.locations);
+
+  // If no location filter is selected, show all trials
+  const hasLocationFilter = selectedRegions.length || selectedCountries.length || selectedStates.length;
+  if (!hasLocationFilter) return true;
+
+  // If location filter is selected but trial has no locations, don't show
+  if (!locs.length) return false;
+
+  // Normalize for case-insensitive comparison
+  const normRegions = selectedRegions.map((r) => r.toLowerCase());
+  const normCountries = selectedCountries.map((c) => c.toLowerCase());
+  const normStates = selectedStates.map((s) => s.toLowerCase());
+
+  // Build lookup: which countries belong to which region (lowercase)
+  const countriesByRegion = {};
+  Object.entries(regionMap).forEach(([region, countryObj]) => {
+    countriesByRegion[region.toLowerCase()] = Object.keys(countryObj).map((c) => c.toLowerCase());
+  });
+
+  // Build lookup: which states belong to which country (lowercase)
+  const statesByCountry = {};
+  Object.values(regionMap).forEach((countryObj) => {
+    Object.entries(countryObj).forEach(([country, states]) => {
+      statesByCountry[country.toLowerCase()] = states.map((s) => s.toLowerCase());
+    });
+  });
+
+  // Case 1: No region selected - apply country/state filters globally
+  if (!normRegions.length) {
+    return locs.some((loc) => {
+      const countries = toArray(loc.countries).map((c) => (typeof c === 'object' ? c.name : c).toLowerCase());
+      const states = toArray(loc.states).map((s) => s.toLowerCase());
+
+      const countryMatch = !normCountries.length || normCountries.some((c) => countries.includes(c));
+      if (!countryMatch) return false;
+
+      // State filter: only apply if selected states are valid for trial's countries
+      const trialCountryStates = countries.flatMap((c) => statesByCountry[c] || []);
+      const applicableStates = normStates.filter((s) => trialCountryStates.includes(s));
+      const stateMatch = applicableStates.length === 0 || applicableStates.some((s) => states.includes(s));
+
+      return stateMatch;
+    });
+  }
+
+  // Case 2: Regions selected - scope country/state filters to selected regions
+  return locs.some((loc) => {
+    const region = (loc.region || '').toLowerCase();
+    const countries = toArray(loc.countries).map((c) => (typeof c === 'object' ? c.name : c).toLowerCase());
+    const states = toArray(loc.states).map((s) => s.toLowerCase());
+
+    // Region must match
+    if (!normRegions.includes(region)) return false;
+
+    // Country filter: only apply if selected countries overlap with this region's countries
+    const regionCountries = countriesByRegion[region] || [];
+    const applicableCountries = normCountries.filter((c) => regionCountries.includes(c));
+    const countryMatch = applicableCountries.length === 0 || applicableCountries.some((c) => countries.includes(c));
+    if (!countryMatch) return false;
+
+    // State filter: only apply if selected states overlap with this trial's countries' states
+    const trialCountryStates = countries.flatMap((c) => statesByCountry[c] || []);
+    const applicableStates = normStates.filter((s) => trialCountryStates.includes(s));
+    const stateMatch = applicableStates.length === 0 || applicableStates.some((s) => states.includes(s));
+
+    return stateMatch;
+  });
 }
 
 /** Sorted unique string values of a field across items. */
@@ -33,39 +154,88 @@ const uniqueValues = (items, field) => [
   ...new Set(items.map((i) => i[field]?.trim()).filter(Boolean)),
 ].sort();
 
-/** All countries from every region. */
-const allCountries = (rm) => [...new Set(
-  Object.values(rm).flatMap((c) => Object.keys(c)),
-)].sort();
+/** Countries for a specific region or all regions. */
+const countriesFor = (rm, regions) => {
+  const sources = regions?.length ? regions.map((r) => rm[r] || {}) : Object.values(rm);
+  return [...new Set(sources.flatMap(Object.keys))].sort();
+};
 
-/** All states from every region. */
-const allStates = (rm) => [...new Set(
-  Object.values(rm).flatMap((c) => Object.values(c).flat()),
-)].sort();
-
-/** Countries for a specific region. */
-const countriesFor = (rm, region) => Object.keys(rm[region] || {}).sort();
-
-/** States for a specific region (all countries in it). */
-const statesForRegion = (rm, region) => Object.values(rm[region] || {}).flat().sort();
-
-/** States for a specific country across all or one region. */
-function statesForCountry(rm, region, country) {
-  if (region) return (rm[region]?.[country] || []).sort();
-  const found = Object.values(rm).find((c) => c[country]);
-  return (found?.[country] || []).sort();
+/** States for selected countries within optional region constraint. */
+function getStatesFor(rm, regions, countries) {
+  if (!countries?.length) return [];
+  return [...new Set(countries.flatMap((c) => {
+    const sources = regions?.length ? regions : Object.keys(rm);
+    return sources.flatMap((r) => rm[r]?.[c] || []);
+  }))].sort();
 }
 
-const CHEVRON_SVG = `<svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ICONS = {
+  chevron: `<svg width="14" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  checkbox: `<span class="trials-filter-checkbox"><svg class="trials-filter-check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`,
+  close: `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+};
 
-/** Build option <li> elements into a panel. */
+/** Build option <li> elements into a panel (multi-select with checkboxes). */
 function populateDropdown(wrapper, options) {
   const panel = wrapper.querySelector('.trials-filter-panel');
-  panel.innerHTML = options.map((o) => `<li class="trials-filter-option" role="option" aria-selected="false" data-value="${o}">${o}</li>`).join('');
+  const selected = getSelectedValues(wrapper);
+  panel.innerHTML = options.map((o) => {
+    const isSelected = selected.includes(o);
+    return `<li class="trials-filter-option${isSelected ? ' is-selected' : ''}" role="option" aria-selected="${isSelected}" data-value="${o}">
+      ${ICONS.checkbox}<span class="trials-filter-option-text">${o}</span>
+    </li>`;
+  }).join('');
 }
 
-/** Create a custom dropdown (pill button + flyout list). */
+/** Sync panel checkbox visual state with selected values. */
+function syncPanelState(wrapper, selected) {
+  wrapper.querySelectorAll('.trials-filter-option').forEach((opt) => {
+    const isSelected = selected.includes(opt.dataset.value);
+    opt.classList.toggle('is-selected', isSelected);
+    opt.setAttribute('aria-selected', String(isSelected));
+  });
+}
+
+/** Get array of selected values from a dropdown. */
+function getSelectedValues(wrapper) {
+  try { return JSON.parse(wrapper.dataset.values || '[]'); } catch { return []; }
+}
+
+/** Set selected values for a dropdown. */
+function setSelectedValues(wrapper, values) {
+  if (values.length > 0) {
+    wrapper.dataset.values = JSON.stringify(values);
+    wrapper.classList.add('has-value');
+  } else {
+    delete wrapper.dataset.values;
+    wrapper.classList.remove('has-value');
+  }
+  updateDropdownLabel(wrapper);
+}
+
+/** Update the dropdown button label to show count. */
+function updateDropdownLabel(wrapper) {
+  const label = wrapper.dataset.label;
+  const values = getSelectedValues(wrapper);
+  const btnLabel = wrapper.querySelector('.trials-filter-btn-label');
+  btnLabel.textContent = values.length > 0 ? `${label} (${values.length})` : label;
+}
+
+/** Enable a dropdown. */
+function enableDropdown(wrapper) {
+  wrapper.classList.remove('is-disabled');
+  wrapper.querySelector('.trials-filter-btn').disabled = false;
+}
+
+/** Disable a dropdown and reset it. */
+function disableDropdown(wrapper) {
+  resetDropdown(wrapper);
+  wrapper.classList.add('is-disabled');
+  wrapper.querySelector('.trials-filter-btn').disabled = true;
+  populateDropdown(wrapper, []);
+}
+
+/** Create a custom multi-select dropdown (pill button + flyout list). */
 function createDropdown(id, label, options, variant) {
   const wrapper = document.createElement('div');
   wrapper.className = `trials-filter-dropdown${variant ? ` trials-filter-dropdown--${variant}` : ''}`;
@@ -74,9 +244,9 @@ function createDropdown(id, label, options, variant) {
   wrapper.innerHTML = `
     <button type="button" class="trials-filter-btn" id="${id}-btn" aria-haspopup="listbox" aria-expanded="false">
       <span class="trials-filter-btn-label">${label}</span>
-      <span class="trials-filter-chevron">${CHEVRON_SVG}</span>
+      <span class="trials-filter-chevron">${ICONS.chevron}</span>
     </button>
-    <ul class="trials-filter-panel" role="listbox" id="${id}-panel" aria-labelledby="${id}-btn"></ul>`;
+    <ul class="trials-filter-panel" role="listbox" aria-multiselectable="true" id="${id}-panel" aria-labelledby="${id}-btn"></ul>`;
 
   populateDropdown(wrapper, options);
 
@@ -96,17 +266,27 @@ function createDropdown(id, label, options, variant) {
     }
   });
 
-  // Option selection (delegated)
+  // Multi-select option toggle (delegated)
   wrapper.querySelector('.trials-filter-panel').addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent closing dropdown when clicking inside panel
     const li = e.target.closest('.trials-filter-option');
     if (!li) return;
-    wrapper.querySelectorAll('.trials-filter-option').forEach((o) => o.setAttribute('aria-selected', 'false'));
-    li.setAttribute('aria-selected', 'true');
-    wrapper.querySelector('.trials-filter-btn-label').textContent = li.dataset.value;
-    wrapper.dataset.value = li.dataset.value;
-    wrapper.classList.add('has-value');
-    wrapper.classList.remove('is-open');
-    btn.setAttribute('aria-expanded', 'false');
+
+    const value = li.dataset.value;
+    const selected = getSelectedValues(wrapper);
+    const idx = selected.indexOf(value);
+
+    if (idx >= 0) {
+      selected.splice(idx, 1);
+      li.classList.remove('is-selected');
+      li.setAttribute('aria-selected', 'false');
+    } else {
+      selected.push(value);
+      li.classList.add('is-selected');
+      li.setAttribute('aria-selected', 'true');
+    }
+
+    setSelectedValues(wrapper, selected);
     wrapper.dispatchEvent(new CustomEvent('filter-change', { bubbles: true }));
   });
 
@@ -114,42 +294,102 @@ function createDropdown(id, label, options, variant) {
 }
 
 /**
- * Reset a custom dropdown to its default label.
+ * Reset a custom dropdown to its default label (multi-select).
  */
 function resetDropdown(wrapper) {
-  const btnLabel = wrapper.querySelector('.trials-filter-btn-label');
-  btnLabel.textContent = wrapper.dataset.label;
-  delete wrapper.dataset.value;
+  delete wrapper.dataset.values;
   wrapper.classList.remove('has-value');
-  wrapper.querySelector('.trials-filter-panel')
-    .querySelectorAll('.trials-filter-option')
-    .forEach((o) => o.setAttribute('aria-selected', 'false'));
+  updateDropdownLabel(wrapper);
+  syncPanelState(wrapper, []);
+}
+
+/** Create a removable chip for a selected filter. */
+function createChip(filterId, value, onRemove) {
+  const chip = document.createElement('span');
+  chip.className = 'trials-filter-chip';
+  chip.dataset.filterId = filterId;
+  chip.dataset.value = value;
+  chip.innerHTML = `<span class="trials-filter-chip-text">${value}</span><button type="button" class="trials-filter-chip-remove" aria-label="Remove ${value}">${ICONS.close}</button>`;
+  chip.querySelector('.trials-filter-chip-remove').addEventListener('click', (e) => {
+    e.stopPropagation();
+    onRemove(filterId, value);
+  });
+  return chip;
+}
+
+/**
+ * Parse block properties from authored content.
+ * @param {HTMLElement} block
+ * @returns {Object} Parsed labels object
+ */
+function parseBlockProperties(block) {
+  const rows = [...block.querySelectorAll(':scope > div')];
+  const labels = {};
+  rows.forEach((row) => {
+    const cells = [...row.querySelectorAll(':scope > div')];
+    if (cells.length >= 2) {
+      const key = cells[0].textContent.trim();
+      const value = cells[1].textContent.trim();
+      if (key && value) labels[key] = value;
+    }
+  });
+  return labels;
+}
+
+/** Render all selected filter chips into a container, grouped by filter. */
+function renderChips(container, allDds, onRemove, filterLabels) {
+  container.innerHTML = '';
+  allDds.forEach((dd) => {
+    const filterId = dd.dataset.filterId;
+    const values = getSelectedValues(dd);
+    if (values.length === 0) return;
+    const row = document.createElement('div');
+    row.className = 'trials-filter-chips-row';
+    const label = document.createElement('span');
+    label.className = 'trials-filter-chips-label';
+    label.textContent = filterLabels[filterId] || dd.dataset.label;
+    row.appendChild(label);
+    const chipsWrap = document.createElement('div');
+    chipsWrap.className = 'trials-filter-chips-wrap';
+    values.forEach((v) => chipsWrap.appendChild(createChip(filterId, v, onRemove)));
+    row.appendChild(chipsWrap);
+    container.appendChild(row);
+  });
 }
 
 /** Build the filter bar with all five dropdowns + Clear All + status. */
-function buildFilterBar(regionMap, trialItems) {
+function buildFilterBar(regionMap, trialItems, labels) {
   const bar = document.createElement('div');
   bar.className = 'trials-filter-bar';
 
   const row = document.createElement('div');
   row.className = 'trials-filter-row';
 
+  // State starts disabled with no options
   [
-    ['filter-region', 'Region', Object.keys(regionMap).sort()],
-    ['filter-country', 'Country', allCountries(regionMap)],
-    ['filter-state', 'State', allStates(regionMap), 'muted'],
-    ['filter-tumor', 'Tumor', uniqueValues(trialItems, 'tumour')],
-    ['filter-intervention', 'Intervention', uniqueValues(trialItems, 'intervention')],
-  ].forEach(([id, label, opts, variant]) => row.appendChild(createDropdown(id, label, opts, variant)));
+    ['filter-region', labels.filterLabelRegion, Object.keys(regionMap).sort()],
+    ['filter-country', labels.filterLabelCountry, countriesFor(regionMap, null)],
+    ['filter-state', labels.filterLabelState, [], 'disabled'],
+    ['filter-tumor', labels.filterLabelTumor, uniqueValues(trialItems, 'tumour')],
+    ['filter-intervention', labels.filterLabelIntervention, uniqueValues(trialItems, 'intervention')],
+  ].forEach(([id, label, opts, variant]) => {
+    const dd = createDropdown(id, label, opts, variant);
+    if (variant === 'disabled') {
+      dd.classList.add('is-disabled');
+      dd.querySelector('.trials-filter-btn').disabled = true;
+    }
+    row.appendChild(dd);
+  });
 
-  row.insertAdjacentHTML('beforeend', `<button type="button" class="trials-filter-clear">Clear All <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>`);
+  row.insertAdjacentHTML('beforeend', `<button type="button" class="trials-filter-clear">${labels.clearAllText} ${ICONS.close}</button>`);
   bar.appendChild(row);
-  bar.insertAdjacentHTML('beforeend', '<div class="trials-filter-status">Showing all trials</div>');
+  bar.insertAdjacentHTML('beforeend', `<div class="trials-filter-status">${labels.showingAllText}</div>`);
+  bar.insertAdjacentHTML('beforeend', '<div class="trials-filter-chips"></div>');
   return bar;
 }
 
 /** Wire cascading filter logic and row filtering. */
-function wireFilters(filterBar, regionMap, tableBody, trialItems) {
+function wireFilters(filterBar, regionMap, tableBody, trialItems, labels) {
   const dd = (id) => filterBar.querySelector(`[data-filter-id="${id}"]`);
   const regionDd = dd('filter-region');
   const countryDd = dd('filter-country');
@@ -159,11 +399,46 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems) {
   const allDds = [regionDd, countryDd, stateDd, tumorDd, interventionDd];
   const clearBtn = filterBar.querySelector('.trials-filter-clear');
   const statusEl = filterBar.querySelector('.trials-filter-status');
+  const chipsContainer = filterBar.querySelector('.trials-filter-chips');
 
-  const resetGeoOptions = () => {
-    populateDropdown(countryDd, allCountries(regionMap));
-    populateDropdown(stateDd, allStates(regionMap));
+  // Build filter ID to label mapping from block properties
+  const filterLabels = {
+    'filter-region': labels.filterLabelRegion,
+    'filter-country': labels.filterLabelCountry,
+    'filter-state': labels.filterLabelState,
+    'filter-tumor': labels.filterLabelTumor,
+    'filter-intervention': labels.filterLabelIntervention,
   };
+
+  /** Filter values to valid options and sync UI. */
+  function filterAndSync(wrapper, validOptions) {
+    const current = getSelectedValues(wrapper);
+    const filtered = current.filter((v) => validOptions.includes(v));
+    populateDropdown(wrapper, validOptions);
+    setSelectedValues(wrapper, filtered);
+    syncPanelState(wrapper, filtered);
+    return filtered;
+  }
+
+  /** Update state dropdown based on current selections. */
+  function updateStateDropdown(regions, countries) {
+    const states = getStatesFor(regionMap, regions, countries);
+    if (states.length) {
+      filterAndSync(stateDd, states);
+      enableDropdown(stateDd);
+    } else {
+      disableDropdown(stateDd);
+    }
+  }
+
+  /** Remove a single value from a dropdown and refresh. */
+  function removeChip(filterId, value) {
+    const dropdown = dd(filterId);
+    const selected = getSelectedValues(dropdown).filter((v) => v !== value);
+    setSelectedValues(dropdown, selected);
+    syncPanelState(dropdown, selected);
+    dropdown.dispatchEvent(new CustomEvent('filter-change', { bubbles: true }));
+  }
 
   // Close dropdowns on outside click
   document.addEventListener('click', () => {
@@ -174,32 +449,19 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems) {
   });
   filterBar.addEventListener('click', (e) => e.stopPropagation());
 
-  // Cascading: Region → Country + State
+  // Cascading: Region → Country → State
   regionDd.addEventListener('filter-change', () => {
-    const region = regionDd.dataset.value;
-    if (region && regionMap[region]) {
-      populateDropdown(countryDd, countriesFor(regionMap, region));
-      populateDropdown(stateDd, statesForRegion(regionMap, region));
-    } else {
-      resetGeoOptions();
-    }
-    resetDropdown(countryDd);
-    resetDropdown(stateDd);
+    const regions = getSelectedValues(regionDd);
+    const validCountries = countriesFor(regionMap, regions.length ? regions : null);
+    const filteredCountries = filterAndSync(countryDd, validCountries);
+    updateStateDropdown(regions.length ? regions : null, filteredCountries);
     applyFilters();
   });
 
-  // Cascading: Country → State
   countryDd.addEventListener('filter-change', () => {
-    const { value: region } = regionDd.dataset;
-    const { value: country } = countryDd.dataset;
-    if (country) {
-      populateDropdown(stateDd, statesForCountry(regionMap, region, country));
-    } else {
-      populateDropdown(stateDd, region
-        ? statesForRegion(regionMap, region)
-        : allStates(regionMap));
-    }
-    resetDropdown(stateDd);
+    const regions = getSelectedValues(regionDd);
+    const countries = getSelectedValues(countryDd);
+    updateStateDropdown(regions.length ? regions : null, countries);
     applyFilters();
   });
 
@@ -208,58 +470,121 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems) {
   // Clear All
   clearBtn.addEventListener('click', () => {
     allDds.forEach(resetDropdown);
-    resetGeoOptions();
+    populateDropdown(countryDd, countriesFor(regionMap, null));
+    disableDropdown(stateDd);
     applyFilters();
   });
 
   function applyFilters() {
-    const tumorVal = (tumorDd.dataset.value || '').toLowerCase();
-    const interventionVal = (interventionDd.dataset.value || '').toLowerCase();
-    const hasAnyFilter = allDds.some((d) => d.dataset.value);
+    const regionVals = getSelectedValues(regionDd);
+    const countryVals = getSelectedValues(countryDd);
+    const stateVals = getSelectedValues(stateDd);
+    const tumorVals = getSelectedValues(tumorDd).map((v) => v.toLowerCase());
+    const interventionVals = getSelectedValues(interventionDd).map((v) => v.toLowerCase());
+    const hasAnyFilter = allDds.some((d) => getSelectedValues(d).length > 0);
+
+    // Render chips
+    renderChips(chipsContainer, allDds, removeChip, filterLabels);
+    chipsContainer.style.display = hasAnyFilter ? '' : 'none';
 
     let visible = 0;
     const rows = tableBody.querySelectorAll('tr');
     rows.forEach((row, idx) => {
       const item = trialItems[idx];
       if (!item) { return; }
-      const show = (!tumorVal || (item.tumour || '').toLowerCase() === tumorVal)
-        && (!interventionVal || (item.intervention || '').toLowerCase() === interventionVal);
+
+      // Location filter (handles empty filter case internally)
+      const locationMatch = trialMatchesLocation(item, regionVals, countryVals, stateVals, regionMap);
+
+      // Other filters
+      const tumorMatch = tumorVals.length === 0 || tumorVals.includes((item.tumour || '').toLowerCase());
+      const interventionMatch = interventionVals.length === 0 || interventionVals.includes((item.intervention || '').toLowerCase());
+
+      const show = locationMatch && tumorMatch && interventionMatch;
       row.style.display = show ? '' : 'none';
       if (show) visible += 1;
     });
 
+    // Update tumour text visibility based on visible rows
+    updateTumourGrouping(rows);
+
     statusEl.textContent = hasAnyFilter
-      ? `Showing ${visible} of ${rows.length} trials`
-      : 'Showing all trials';
-    clearBtn.style.display = hasAnyFilter ? '' : 'none';
+      ? `Showing ${visible} trials with selected filters`
+      : labels.showingAllText;
   }
 
-  clearBtn.style.display = 'none';
+  /**
+   * Update tumour text and group borders based on visible rows.
+   * Only show tumour text on first visible row of each group.
+   * @param {NodeListOf<HTMLTableRowElement>} rows
+   */
+  function updateTumourGrouping(rows) {
+    let previousVisibleTumour = null;
+    rows.forEach((row) => {
+      if (row.style.display === 'none') return;
+
+      const currentTumour = (row.dataset.tumour || '').toLowerCase();
+      const tumourCell = row.querySelector('.trials-table-cell--tumour');
+      const isNewGroup = currentTumour !== previousVisibleTumour;
+
+      // Show/hide tumour text
+      if (tumourCell) {
+        if (isNewGroup) {
+          tumourCell.innerHTML = `<strong>${row.dataset.tumour || ''}</strong>`;
+        } else {
+          tumourCell.innerHTML = '';
+        }
+      }
+
+      // Toggle group start border
+      if (isNewGroup && previousVisibleTumour !== null) {
+        row.classList.add('trials-table-row--group-start');
+      } else {
+        row.classList.remove('trials-table-row--group-start');
+      }
+
+      previousVisibleTumour = currentTumour;
+    });
+  }
+
+  chipsContainer.style.display = 'none';
 }
 
 /**
- * Build the NCT link pointing to clinicaltrials.gov.
+ * Build the NCT link pointing to the clinical trial detail page.
  * @param {string} nctId
  * @returns {HTMLAnchorElement}
  */
 function createNctLink(nctId) {
   const link = document.createElement('a');
-  link.href = `https://clinicaltrials.gov/study/${nctId}`;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
+  // Use current page path as base
+  const currentPath = window.location.pathname.replace(/\/$/, '');
+  link.href = `${currentPath}/${nctId.toLowerCase()}`;
   link.textContent = nctId;
   link.className = 'trials-table-nct-link';
   return link;
 }
 
 /**
- * Build the status badge element.
+ * Build the status badge element with variant styling.
  * @param {string} status
  * @returns {HTMLSpanElement}
  */
 function createStatusBadge(status) {
   const badge = document.createElement('span');
-  badge.className = 'trials-table-status-badge';
+  const statusLower = (status || '').toLowerCase();
+
+  // Determine variant class based on status
+  let variantClass = '';
+  if (statusLower.includes('recruiting') && !statusLower.includes('not')) {
+    variantClass = 'trials-table-status-badge--recruiting';
+  } else if (statusLower.includes('not recruiting') || statusLower.includes('active, not')) {
+    variantClass = 'trials-table-status-badge--not-recruiting';
+  } else if (statusLower.includes('completed')) {
+    variantClass = 'trials-table-status-badge--completed';
+  }
+
+  badge.className = `trials-table-status-badge ${variantClass}`.trim();
   badge.textContent = status;
   return badge;
 }
@@ -267,15 +592,26 @@ function createStatusBadge(status) {
 /**
  * Build a single table row from a trial item.
  * @param {Object} item - GraphQL trial item
+ * @param {Object} options - Row options
+ * @param {boolean} options.showTumour - Whether to show tumour text (for grouping)
+ * @param {boolean} options.isGroupStart - Whether this is the first row of a new group
  * @returns {HTMLTableRowElement}
  */
-function buildRow(item) {
+function buildRow(item, options = {}) {
+  const { showTumour = true, isGroupStart = false } = options;
   const row = document.createElement('tr');
 
-  // Type of Cancer
+  // Add group start class for border-top styling
+  if (isGroupStart) {
+    row.classList.add('trials-table-row--group-start');
+  }
+
+  // Type of Cancer (only show text if showTumour is true)
   const tdTumour = document.createElement('td');
   tdTumour.className = 'trials-table-cell trials-table-cell--tumour';
-  tdTumour.innerHTML = `<strong>${item.tumour || ''}</strong>`;
+  if (showTumour) {
+    tdTumour.innerHTML = `<strong>${item.tumour || ''}</strong>`;
+  }
   row.appendChild(tdTumour);
 
   // Trial Description
@@ -297,6 +633,13 @@ function buildRow(item) {
   // Status
   const tdStatus = document.createElement('td');
   tdStatus.className = 'trials-table-cell trials-table-cell--status';
+
+  // Add status note for mobile view
+  const statusNote = document.createElement('span');
+  statusNote.className = 'trials-table-status-note';
+  statusNote.textContent = '(Recruitment status may vary by trial site)';
+  tdStatus.appendChild(statusNote);
+
   tdStatus.appendChild(createStatusBadge(item.status || ''));
   row.appendChild(tdStatus);
 
@@ -313,50 +656,26 @@ function buildRow(item) {
 
 /**
  * Build the full table header row.
+ * @param {Object} labels - Block property labels
  * @returns {HTMLTableSectionElement}
  */
-function buildTableHead() {
+function buildTableHead(labels) {
   const thead = document.createElement('thead');
   const row = document.createElement('tr');
 
   const headers = [
-    { text: 'Type of Cancer', className: 'trials-table-th--tumour' },
-    { text: 'Trial Description', className: 'trials-table-th--description' },
-    {
-      text: 'Select Eligibility Criteria',
-      className: 'trials-table-th--criteria',
-      superscript: 'a',
-    },
-    {
-      text: 'Status',
-      className: 'trials-table-th--status',
-      subtitle: 'Recruitment status may vary by trial site',
-      superscript: 'b',
-    },
-    { text: 'For More Information', className: 'trials-table-th--nct' },
+    { text: labels.tableHeadingCancer, className: 'trials-table-th--tumour' },
+    { text: labels.tableHeadingDescription, className: 'trials-table-th--description' },
+    { text: labels.tableHeadingCriteria, className: 'trials-table-th--criteria' },
+    { text: labels.tableHeadingStatus, className: 'trials-table-th--status' },
+    { text: labels.tableHeadingInfo, className: 'trials-table-th--nct' },
   ];
 
-  headers.forEach(({ text, className, subtitle, superscript }) => {
+  headers.forEach(({ text, className }) => {
     const th = document.createElement('th');
     th.className = `trials-table-th ${className}`;
     th.scope = 'col';
-
-    const span = document.createElement('span');
-    span.textContent = text;
-    if (superscript) {
-      const sup = document.createElement('sup');
-      sup.textContent = superscript;
-      span.appendChild(sup);
-    }
-    th.appendChild(span);
-
-    if (subtitle) {
-      const sub = document.createElement('div');
-      sub.className = 'trials-table-th-subtitle';
-      sub.innerHTML = `${subtitle}<sup>${superscript || ''}</sup>`;
-      th.appendChild(sub);
-    }
-
+    th.textContent = text;
     row.appendChild(th);
   });
 
@@ -369,6 +688,9 @@ function buildTableHead() {
  * @param {HTMLElement} block
  */
 export default async function decorate(block) {
+  // Parse block properties before clearing content
+  const labels = parseBlockProperties(block);
+
   // Clear authored placeholder content
   block.textContent = '';
 
@@ -395,11 +717,11 @@ export default async function decorate(block) {
     return;
   }
 
-  // Build region map for cascading dropdowns
+  // Build region map from region fragment data (for dropdown options)
   const regionMap = buildRegionMap(regionItems);
 
   // Build & insert filter bar
-  const filterBar = buildFilterBar(regionMap, items);
+  const filterBar = buildFilterBar(regionMap, items, labels);
   block.appendChild(filterBar);
 
   // Build table
@@ -409,17 +731,36 @@ export default async function decorate(block) {
   const table = document.createElement('table');
   table.className = 'trials-table-grid';
 
-  table.appendChild(buildTableHead());
+  table.appendChild(buildTableHead(labels));
 
   const tbody = document.createElement('tbody');
-  items.forEach((item) => {
-    tbody.appendChild(buildRow(item));
+
+  // Sort items by tumour type to group them together
+  const sortedItems = [...items].sort((a, b) => {
+    const tumourA = (a.tumour || '').toLowerCase();
+    const tumourB = (b.tumour || '').toLowerCase();
+    return tumourA.localeCompare(tumourB);
+  });
+
+  // Build rows with grouping - only show tumour text on first row of each group
+  let previousTumour = null;
+  sortedItems.forEach((item) => {
+    const currentTumour = (item.tumour || '').toLowerCase();
+    const isNewGroup = currentTumour !== previousTumour;
+    const row = buildRow(item, {
+      showTumour: isNewGroup,
+      isGroupStart: isNewGroup && previousTumour !== null,
+    });
+    // Store tumour value on row for filtering purposes
+    row.dataset.tumour = item.tumour || '';
+    tbody.appendChild(row);
+    previousTumour = currentTumour;
   });
   table.appendChild(tbody);
 
   wrapper.appendChild(table);
   block.appendChild(wrapper);
 
-  // Wire filter interactions
-  wireFilters(filterBar, regionMap, tbody, items);
+  // Wire filter interactions (pass sortedItems to match row order)
+  wireFilters(filterBar, regionMap, tbody, sortedItems, labels);
 }
