@@ -47,12 +47,13 @@
 /* --- Custom dropdown --- */
 .trials-filter-dropdown {
   position: relative;
-  min-width: 140px;
 }
 
 .trials-filter-btn {
   justify-content: space-between;
-  width: 100%;
+  width: fit-content;
+  min-width: 12rem;
+  padding: 0.5rem 1rem 0.5rem 2rem;
   background-color: #234b43; /* matches legacy dropdown */
   color: #fff;
   filter: drop-shadow(3px 4px 1px rgba(0, 0, 0, 0.1));
@@ -105,7 +106,6 @@
   box-shadow:
     0px 10px 38px -10px rgba(22, 23, 24, 0.35),
     0px 10px 20px -15px rgba(22, 23, 24, 0.2);
-  z-index: 100;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -271,6 +271,7 @@
   color: #fff;
   flex-shrink: 0;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+  margin-left: auto;
 }
 
 .trials-filter-clear svg {
@@ -468,7 +469,7 @@
 
 .trials-table-status-badge {
   display: inline-block;
-  background-color: #3a7268; /* secondary/pea-green - default */
+  background-color: oklch(34.98% 0.0532 195);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -477,21 +478,6 @@
   border-radius: 999px;
   white-space: nowrap;
   text-transform: capitalize;
-}
-
-/* Status badge variants based on status */
-.trials-table-status-badge--recruiting {
-  background-color: #4a9e7b; /* accent/haze-green */
-}
-
-.trials-table-status-badge--not-recruiting {
-  background-color: #edeff1; /* muted/concrete-gray */
-  color: #0e4343; /* muted-foreground/eden-green */
-}
-
-.trials-table-status-badge--completed {
-  background-color: #6b7280; /* tertiary gray */
-  color: #fff;
 }
 
 /* NCT link */
@@ -607,6 +593,7 @@
   .trials-filter-clear {
     width: 100%;
     justify-content: center;
+    margin-left: 0;
   }
 
   .trials-filter-chips-row {
@@ -627,7 +614,6 @@
     flex-wrap: wrap;
     gap: 16px;
     position: relative;
-    z-index: 99;
   }
 }
 

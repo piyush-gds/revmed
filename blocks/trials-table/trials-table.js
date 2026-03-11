@@ -568,25 +568,13 @@ function createNctLink(nctId) {
 }
 
 /**
- * Build the status badge element with variant styling.
+ * Build the status badge element.
  * @param {string} status
  * @returns {HTMLSpanElement}
  */
 function createStatusBadge(status) {
   const badge = document.createElement('span');
-  const statusLower = (status || '').toLowerCase();
-
-  // Determine variant class based on status
-  let variantClass = '';
-  if (statusLower.includes('recruiting') && !statusLower.includes('not')) {
-    variantClass = 'trials-table-status-badge--recruiting';
-  } else if (statusLower.includes('not recruiting') || statusLower.includes('active, not')) {
-    variantClass = 'trials-table-status-badge--not-recruiting';
-  } else if (statusLower.includes('completed')) {
-    variantClass = 'trials-table-status-badge--completed';
-  }
-
-  badge.className = `trials-table-status-badge ${variantClass}`.trim();
+  badge.className = 'trials-table-status-badge';
   badge.textContent = status;
   return badge;
 }
