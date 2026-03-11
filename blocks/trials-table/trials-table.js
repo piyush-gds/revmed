@@ -317,27 +317,17 @@ function createChip(filterId, value, onRemove) {
   return chip;
 }
 
-/**
- * Parse block properties from authored content.
- * @param {HTMLElement} block
- * @returns {Object} Parsed labels object
- */
-function parseBlockProperties(block) {
-  const rows = [...block.querySelectorAll(':scope > div')];
-  const labels = {};
-  rows.forEach((row) => {
-    const cells = [...row.querySelectorAll(':scope > div')];
-    if (cells.length >= 2) {
-      const key = cells[0].textContent.trim();
-      const value = cells[1].textContent.trim();
-      if (key && value) labels[key] = value;
-    }
-  });
-  return labels;
-}
+/** Filter ID to display label mapping. */
+const FILTER_LABELS = {
+  'filter-region': 'Region',
+  'filter-country': 'Country',
+  'filter-state': 'State',
+  'filter-tumor': 'Tumor',
+  'filter-intervention': 'Intervention',
+};
 
 /** Render all selected filter chips into a container, grouped by filter. */
-function renderChips(container, allDds, onRemove, filterLabels) {
+function renderChips(container, allDds, onRemove) {
   container.innerHTML = '';
   allDds.forEach((dd) => {
     const filterId = dd.dataset.filterId;
@@ -347,7 +337,7 @@ function renderChips(container, allDds, onRemove, filterLabels) {
     row.className = 'trials-filter-chips-row';
     const label = document.createElement('span');
     label.className = 'trials-filter-chips-label';
-    label.textContent = filterLabels[filterId] || dd.dataset.label;
+    label.textContent = FILTER_LABELS[filterId] || dd.dataset.label;
     row.appendChild(label);
     const chipsWrap = document.createElement('div');
     chipsWrap.className = 'trials-filter-chips-wrap';
@@ -358,7 +348,7 @@ function renderChips(container, allDds, onRemove, filterLabels) {
 }
 
 /** Build the filter bar with all five dropdowns + Clear All + status. */
-function buildFilterBar(regionMap, trialItems, labels) {
+function buildFilterBar(regionMap, trialItems) {
   const bar = document.createElement('div');
   bar.className = 'trials-filter-bar';
 
@@ -367,11 +357,11 @@ function buildFilterBar(regionMap, trialItems, labels) {
 
   // State starts disabled with no options
   [
-    ['filter-region', labels.filterLabelRegion, Object.keys(regionMap).sort()],
-    ['filter-country', labels.filterLabelCountry, countriesFor(regionMap, null)],
-    ['filter-state', labels.filterLabelState, [], 'disabled'],
-    ['filter-tumor', labels.filterLabelTumor, uniqueValues(trialItems, 'tumour')],
-    ['filter-intervention', labels.filterLabelIntervention, uniqueValues(trialItems, 'intervention')],
+    ['filter-region', 'Region', Object.keys(regionMap).sort()],
+    ['filter-country', 'Country', countriesFor(regionMap, null)],
+    ['filter-state', 'State', [], 'disabled'],
+    ['filter-tumor', 'Tumor', uniqueValues(trialItems, 'tumour')],
+    ['filter-intervention', 'Intervention', uniqueValues(trialItems, 'intervention')],
   ].forEach(([id, label, opts, variant]) => {
     const dd = createDropdown(id, label, opts, variant);
     if (variant === 'disabled') {
@@ -381,15 +371,15 @@ function buildFilterBar(regionMap, trialItems, labels) {
     row.appendChild(dd);
   });
 
-  row.insertAdjacentHTML('beforeend', `<button type="button" class="trials-filter-clear">${labels.clearAllText} ${ICONS.close}</button>`);
+  row.insertAdjacentHTML('beforeend', `<button type="button" class="trials-filter-clear">Clear All ${ICONS.close}</button>`);
   bar.appendChild(row);
-  bar.insertAdjacentHTML('beforeend', `<div class="trials-filter-status">${labels.showingAllText}</div>`);
+  bar.insertAdjacentHTML('beforeend', '<div class="trials-filter-status">Showing all trials</div>');
   bar.insertAdjacentHTML('beforeend', '<div class="trials-filter-chips"></div>');
   return bar;
 }
 
 /** Wire cascading filter logic and row filtering. */
-function wireFilters(filterBar, regionMap, tableBody, trialItems, labels) {
+function wireFilters(filterBar, regionMap, tableBody, trialItems) {
   const dd = (id) => filterBar.querySelector(`[data-filter-id="${id}"]`);
   const regionDd = dd('filter-region');
   const countryDd = dd('filter-country');
@@ -400,15 +390,6 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems, labels) {
   const clearBtn = filterBar.querySelector('.trials-filter-clear');
   const statusEl = filterBar.querySelector('.trials-filter-status');
   const chipsContainer = filterBar.querySelector('.trials-filter-chips');
-
-  // Build filter ID to label mapping from block properties
-  const filterLabels = {
-    'filter-region': labels.filterLabelRegion,
-    'filter-country': labels.filterLabelCountry,
-    'filter-state': labels.filterLabelState,
-    'filter-tumor': labels.filterLabelTumor,
-    'filter-intervention': labels.filterLabelIntervention,
-  };
 
   /** Filter values to valid options and sync UI. */
   function filterAndSync(wrapper, validOptions) {
@@ -484,7 +465,7 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems, labels) {
     const hasAnyFilter = allDds.some((d) => getSelectedValues(d).length > 0);
 
     // Render chips
-    renderChips(chipsContainer, allDds, removeChip, filterLabels);
+    renderChips(chipsContainer, allDds, removeChip);
     chipsContainer.style.display = hasAnyFilter ? '' : 'none';
 
     let visible = 0;
@@ -510,7 +491,7 @@ function wireFilters(filterBar, regionMap, tableBody, trialItems, labels) {
 
     statusEl.textContent = hasAnyFilter
       ? `Showing ${visible} trials with selected filters`
-      : labels.showingAllText;
+      : 'Showing all trials';
   }
 
   /**
@@ -656,26 +637,50 @@ function buildRow(item, options = {}) {
 
 /**
  * Build the full table header row.
- * @param {Object} labels - Block property labels
  * @returns {HTMLTableSectionElement}
  */
-function buildTableHead(labels) {
+function buildTableHead() {
   const thead = document.createElement('thead');
   const row = document.createElement('tr');
 
   const headers = [
-    { text: labels.tableHeadingCancer, className: 'trials-table-th--tumour' },
-    { text: labels.tableHeadingDescription, className: 'trials-table-th--description' },
-    { text: labels.tableHeadingCriteria, className: 'trials-table-th--criteria' },
-    { text: labels.tableHeadingStatus, className: 'trials-table-th--status' },
-    { text: labels.tableHeadingInfo, className: 'trials-table-th--nct' },
+    { text: 'Type of Cancer', className: 'trials-table-th--tumour' },
+    { text: 'Trial Description', className: 'trials-table-th--description' },
+    {
+      text: 'Select Eligibility Criteria',
+      className: 'trials-table-th--criteria',
+      superscript: 'a',
+    },
+    {
+      text: 'Status',
+      className: 'trials-table-th--status',
+      subtitle: 'Recruitment status may vary by trial site',
+      superscript: 'b',
+    },
+    { text: 'For More Information', className: 'trials-table-th--nct' },
   ];
 
-  headers.forEach(({ text, className }) => {
+  headers.forEach(({ text, className, subtitle, superscript }) => {
     const th = document.createElement('th');
     th.className = `trials-table-th ${className}`;
     th.scope = 'col';
-    th.textContent = text;
+
+    const span = document.createElement('span');
+    span.textContent = text;
+    if (superscript) {
+      const sup = document.createElement('sup');
+      sup.textContent = superscript;
+      span.appendChild(sup);
+    }
+    th.appendChild(span);
+
+    if (subtitle) {
+      const sub = document.createElement('div');
+      sub.className = 'trials-table-th-subtitle';
+      sub.innerHTML = `${subtitle}<sup>${superscript || ''}</sup>`;
+      th.appendChild(sub);
+    }
+
     row.appendChild(th);
   });
 
@@ -688,9 +693,6 @@ function buildTableHead(labels) {
  * @param {HTMLElement} block
  */
 export default async function decorate(block) {
-  // Parse block properties before clearing content
-  const labels = parseBlockProperties(block);
-
   // Clear authored placeholder content
   block.textContent = '';
 
@@ -721,7 +723,7 @@ export default async function decorate(block) {
   const regionMap = buildRegionMap(regionItems);
 
   // Build & insert filter bar
-  const filterBar = buildFilterBar(regionMap, items, labels);
+  const filterBar = buildFilterBar(regionMap, items);
   block.appendChild(filterBar);
 
   // Build table
@@ -731,7 +733,7 @@ export default async function decorate(block) {
   const table = document.createElement('table');
   table.className = 'trials-table-grid';
 
-  table.appendChild(buildTableHead(labels));
+  table.appendChild(buildTableHead());
 
   const tbody = document.createElement('tbody');
 
@@ -762,5 +764,5 @@ export default async function decorate(block) {
   block.appendChild(wrapper);
 
   // Wire filter interactions (pass sortedItems to match row order)
-  wireFilters(filterBar, regionMap, tbody, sortedItems, labels);
+  wireFilters(filterBar, regionMap, tbody, sortedItems);
 }
