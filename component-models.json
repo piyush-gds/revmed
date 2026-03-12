@@ -814,6 +814,13 @@
       {
         "component": "text",
         "valueType": "string",
+        "name": "filteredStatusText",
+        "label": "Filtered Status Text",
+        "description": "Status text when filters are applied. Use [[trial_count]] as placeholder for the number of visible trials."
+      },
+      {
+        "component": "text",
+        "valueType": "string",
         "name": "typeOfCancerHeading",
         "label": "Type of Cancer Column Heading",
         "description": "Heading for the Type of Cancer column"

@@ -1,14 +1,31 @@
 /* ===== TRIALS TABLE BLOCK ===== */
 
+/* --- CSS Custom Properties --- */
+.trials-table {
+  --tt-eden-green: #0e4343;
+  --tt-pea-green: #3a7268;
+  --tt-haze-green: #4a9e7b;
+  --tt-dropdown-bg: #234b43;
+  --tt-danger: #bf3e3e;
+  --tt-gray-dark: #1f2937;
+  --tt-gray-medium: #374151;
+  --tt-gray-light: #6b7280;
+  --tt-white: #fff;
+  --tt-bg-hover: #edeff1;
+  --tt-status-bg: oklch(34.98% 0.0532 195);
+  --tt-border-light: rgba(0, 0, 0, 0.1);
+  --tt-radius-pill: 999px;
+  --tt-radius-panel: 6px;
+  --tt-transition: 0.15s ease;
+
+  display: block;
+  width: 100%;
+}
+
 /* Wrapper overrides */
 .trials-table-wrapper-outer {
   max-width: unset !important;
   padding: unset !important;
-}
-
-.trials-table {
-  display: block;
-  width: 100%;
 }
 
 /* ===== FILTER BAR ===== */
@@ -24,27 +41,24 @@
   align-items: center;
 }
 
-/* --- Shared pill-button base --- */
+/* --- Shared button base --- */
 .trials-filter-btn,
 .trials-filter-clear {
   display: inline-flex;
   align-items: center;
   gap: 16px;
-  font-size: 18px;
-  font-weight: 400;
-  padding: 8px 16px 8px 24px;
+  font: 400 18px/1.4 inherit;
+  padding: 0.5rem 1rem 0.5rem 2rem;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--tt-radius-pill);
   cursor: pointer;
   outline: none;
-  line-height: 1.4;
-  font-family: inherit;
   white-space: nowrap;
-  transition: background-color 0.15s;
+  transition: background-color var(--tt-transition);
   text-transform: capitalize;
 }
 
-/* --- Custom dropdown --- */
+/* --- Dropdown --- */
 .trials-filter-dropdown {
   position: relative;
 }
@@ -53,44 +67,27 @@
   justify-content: space-between;
   width: fit-content;
   min-width: 12rem;
-  padding: 0.5rem 1rem 0.5rem 2rem;
-  background-color: #234b43; /* matches legacy dropdown */
-  color: #fff;
+  background-color: var(--tt-dropdown-bg);
+  color: var(--tt-white);
   filter: drop-shadow(3px 4px 1px rgba(0, 0, 0, 0.1));
 }
 
-.trials-filter-btn:hover {
-  background-color: #1a3d36;
-}
-
-.trials-filter-btn:focus-visible {
-  box-shadow: 0 0 0 3px rgba(14, 67, 67, 0.35);
-}
-
-/* Disabled state for dropdown */
-.trials-filter-dropdown.is-disabled .trials-filter-btn {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
+.trials-filter-btn:hover { background-color: #1a3d36; }
+.trials-filter-btn:focus-visible { box-shadow: 0 0 0 3px rgba(14, 67, 67, 0.35); }
+.trials-filter-dropdown.is-disabled .trials-filter-btn { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
 /* Chevron */
 .trials-filter-chevron {
   display: flex;
   align-items: center;
-  color: #fff;
+  color: var(--tt-white);
   transition: transform 0.2s ease;
   flex-shrink: 0;
 }
 
 .trials-filter-chevron svg,
-.trials-filter-clear svg {
-  display: block;
-}
-
-.trials-filter-dropdown.is-open .trials-filter-chevron {
-  transform: rotate(180deg);
-}
+.trials-filter-clear svg { display: block; }
+.trials-filter-dropdown.is-open .trials-filter-chevron { transform: rotate(180deg); }
 
 /* --- Dropdown panel --- */
 .trials-filter-panel {
@@ -101,31 +98,21 @@
   min-width: 220px;
   max-height: 40vh;
   overflow-y: auto;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow:
-    0px 10px 38px -10px rgba(22, 23, 24, 0.35),
-    0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+  background: var(--tt-white);
+  border-radius: var(--tt-radius-panel);
+  box-shadow: 0 10px 38px -10px rgba(22, 23, 24, 0.35), 0 10px 20px -15px rgba(22, 23, 24, 0.2);
   list-style: none;
   margin: 0;
   padding: 0;
-  animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUpFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes slideUpAndFade {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.trials-filter-dropdown.is-open .trials-filter-panel {
-  display: block;
-}
+.trials-filter-dropdown.is-open .trials-filter-panel { display: block; }
 
 .trials-filter-option {
   display: flex;
@@ -134,29 +121,17 @@
   padding: 12px 16px;
   font-size: 16px;
   line-height: 1.5;
-  color: #234b43;
+  color: var(--tt-dropdown-bg);
   cursor: pointer;
   transition: background-color 0.1s;
   white-space: nowrap;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--tt-border-light);
 }
 
-.trials-filter-option:last-child {
-  border-bottom: none;
-}
+.trials-filter-option:last-child { border-bottom: none; }
+.trials-filter-option:hover { background-color: #f3f4f6; }
 
-.trials-filter-option:hover {
-  background-color: #f3f4f6;
-}
-
-.trials-filter-option[aria-selected="true"],
-.trials-filter-option.is-selected {
-  background-color: transparent;
-  font-weight: 400;
-  color: #234b43;
-}
-
-/* Checkmark icon in multi-select */
+/* Checkbox */
 .trials-filter-checkbox {
   flex-shrink: 0;
   width: 20px;
@@ -168,19 +143,14 @@
 
 .trials-filter-check {
   opacity: 0;
-  color: #234b43;
-  transition: opacity 0.15s;
+  color: var(--tt-dropdown-bg);
+  transition: opacity var(--tt-transition);
 }
 
-.trials-filter-option.is-selected .trials-filter-check {
-  opacity: 1;
-}
+.trials-filter-option.is-selected .trials-filter-check { opacity: 1; }
+.trials-filter-option-text { flex: 1; }
 
-.trials-filter-option-text {
-  flex: 1;
-}
-
-/* --- Selected Filter Chips --- */
+/* --- Chips --- */
 .trials-filter-chips {
   display: flex;
   flex-direction: column;
@@ -189,23 +159,20 @@
 }
 
 .trials-filter-chips:empty,
-.trials-filter-chips[style*="display: none"] {
-  margin-top: 0;
-}
+.trials-filter-chips[style*="display: none"] { margin-top: 0; }
 
 .trials-filter-chips-row {
   display: flex;
   align-items: flex-start;
   gap: 8px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--tt-border-light);
 }
 
 .trials-filter-chips-label {
   min-width: 96px;
   font-size: 14px;
-  font-weight: 400;
-  color: #1f2937;
+  color: var(--tt-gray-dark);
   flex-shrink: 0;
   text-transform: capitalize;
   padding-top: 6px;
@@ -223,18 +190,16 @@
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  background-color: #3a7268; /* secondary/pea-green - matches legacy */
-  color: #fff;
+  background-color: var(--tt-pea-green);
+  color: var(--tt-white);
   font-size: 14px;
   font-weight: 500;
-  border-radius: 999px;
+  border-radius: var(--tt-radius-pill);
   white-space: nowrap;
   width: fit-content;
 }
 
-.trials-filter-chip-text {
-  line-height: 1.4;
-}
+.trials-filter-chip-text { line-height: 1.4; }
 
 .trials-filter-chip-remove {
   display: flex;
@@ -244,59 +209,37 @@
   height: 20px;
   padding: 0;
   border: none;
-  background: #fff;
-  color: #bf3e3e; /* Red X on white background */
+  background: var(--tt-white);
+  color: var(--tt-danger);
   cursor: pointer;
   border-radius: 50%;
-  transition: background-color 0.15s;
+  transition: background-color var(--tt-transition);
   margin-left: 4px;
 }
 
-.trials-filter-chip-remove:hover {
-  background-color: rgba(255, 255, 255, 0.9);
-}
+.trials-filter-chip-remove:hover { background-color: rgba(255, 255, 255, 0.9); }
+.trials-filter-chip-remove svg { display: block; width: 10px; height: 10px; stroke: var(--tt-danger); stroke-width: 2.5; }
 
-.trials-filter-chip-remove svg {
-  display: block;
-  width: 10px;
-  height: 10px;
-  stroke: #bf3e3e;
-  stroke-width: 2.5;
-}
-
-/* --- Clear All button --- */
+/* --- Clear All --- */
 .trials-filter-clear {
-  gap: 16px;
-  background-color: #bf3e3e;
-  color: #fff;
+  background-color: var(--tt-danger);
+  color: var(--tt-white);
   flex-shrink: 0;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
   margin-left: auto;
 }
 
-.trials-filter-clear svg {
-  width: 16px;
-  height: 16px;
-}
-
-.trials-filter-clear:hover {
-  background-color: #a33535;
-}
-
-.trials-filter-clear:focus-visible {
-  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.35);
-}
+.trials-filter-clear svg { width: 16px; height: 16px; }
+.trials-filter-clear:hover { background-color: #a33535; }
+.trials-filter-clear:focus-visible { box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.35); }
 
 /* --- Status text --- */
 .trials-filter-status {
   margin-top: 32px;
-  margin-bottom: 0;
   padding-top: 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid var(--tt-border-light);
   font-size: 16px;
-  font-weight: 400;
-  font-style: normal;
-  color: #1f2937;
+  color: var(--tt-gray-dark);
 }
 
 /* Loading & empty states */
@@ -305,20 +248,14 @@
   text-align: center;
   padding: 48px 24px;
   font-size: 18px;
-  color: #6b7280;
+  color: var(--tt-gray-light);
 }
 
-/* Table wrapper for horizontal scroll on small screens */
+/* Table wrapper */
 .trials-table-wrapper {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-}
-
-@media (max-width: 719px) {
-  .trials-table-wrapper {
-    overflow-x: visible;
-  }
 }
 
 /* ===== TABLE GRID ===== */
@@ -329,13 +266,11 @@
   min-width: 960px;
 }
 
-/* ===== HEADER ===== */
-.trials-table-grid thead {
-  background-color: #0e4343;
-}
+/* Header */
+.trials-table-grid thead { background-color: var(--tt-eden-green); }
 
 .trials-table-th {
-  color: #fff;
+  color: var(--tt-white);
   font-weight: 600;
   font-size: 18px;
   line-height: 1.4;
@@ -345,11 +280,7 @@
   border: none;
 }
 
-.trials-table-th sup {
-  font-size: 11px;
-  vertical-align: super;
-  line-height: 0;
-}
+.trials-table-th sup { font-size: 11px; vertical-align: super; line-height: 0; }
 
 .trials-table-th-subtitle {
   font-weight: 400;
@@ -359,9 +290,7 @@
   color: rgba(255 255 255 / 85%);
 }
 
-.trials-table-th-subtitle sup {
-  font-size: 9px;
-}
+.trials-table-th-subtitle sup { font-size: 9px; }
 
 /* Column widths */
 .trials-table-th--tumour { width: 18%; }
@@ -369,81 +298,39 @@
 .trials-table-th--criteria { width: 28%; }
 .trials-table-th--status { width: 14%; }
 .trials-table-th--nct { width: 15%; }
-
 .trials-table-th--status,
-.trials-table-th--nct {
-  text-align: center;
-}
+.trials-table-th--nct { text-align: center; }
 
-/* ===== BODY ROWS ===== */
+/* Body rows */
 .trials-table-grid tbody tr {
-  border-bottom: 1px solid #4a9e7b; /* accent/haze-green */
+  border-bottom: 1px solid var(--tt-haze-green);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Group start row - top border to separate cancer type groups */
-.trials-table-grid tbody tr.trials-table-row--group-start {
-  border-top: 1px solid #4a9e7b; /* accent/haze-green */
-}
-
-.trials-table-grid tbody tr:hover {
-  background-color: #edeff1; /* muted/concrete-gray */
-}
-
-.trials-table-grid tbody tr:hover .trials-table-cell {
-  color: #0e4343; /* muted-foreground/eden-green */
-}
-
-.trials-table-grid tbody tr:last-child {
-  border-bottom: 2px solid #0e4343;
-}
+.trials-table-grid tbody tr.trials-table-row--group-start { border-top: 1px solid var(--tt-haze-green); }
+.trials-table-grid tbody tr:hover { background-color: var(--tt-bg-hover); }
+.trials-table-grid tbody tr:hover .trials-table-cell { color: var(--tt-eden-green); }
+.trials-table-grid tbody tr:last-child { border-bottom: 2px solid var(--tt-eden-green); }
 
 .trials-table-cell {
   padding: 24px;
   font-size: 16px;
   line-height: 1.55;
-  color: #1f2937;
+  color: var(--tt-gray-dark);
   vertical-align: top;
 }
 
 /* Tumour column */
-.trials-table-cell--tumour {
-  font-size: 17px;
-  color: #0e4343;
-}
+.trials-table-cell--tumour { font-size: 17px; color: var(--tt-eden-green); }
+.trials-table-cell--tumour strong { font-weight: 700; }
 
-.trials-table-cell--tumour strong {
-  font-weight: 700;
-}
-
-/* Description & Criteria columns */
+/* Description & Criteria */
 .trials-table-cell--description,
-.trials-table-cell--criteria {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #374151;
-}
-
-.trials-table-cell--description p {
-  margin: 0;
-}
-
-.trials-table-cell--criteria ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.trials-table-cell--criteria li {
-  position: relative;
-  padding-left: 20px;
-  margin-bottom: 12px;
-}
-
-.trials-table-cell--criteria li:last-child {
-  margin-bottom: 0;
-}
-
+.trials-table-cell--criteria { font-size: 15px; line-height: 1.6; color: var(--tt-gray-medium); }
+.trials-table-cell--description p { margin: 0; }
+.trials-table-cell--criteria ul { margin: 0; padding: 0; list-style: none; }
+.trials-table-cell--criteria li { position: relative; padding-left: 20px; margin-bottom: 12px; }
+.trials-table-cell--criteria li:last-child { margin-bottom: 0; }
 .trials-table-cell--criteria li::before {
   content: '';
   position: absolute;
@@ -452,73 +339,47 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #0e4343;
+  background-color: var(--tt-eden-green);
 }
 
-/* Status & NCT columns */
+/* Status & NCT */
 .trials-table-cell--status,
-.trials-table-cell--nct {
-  text-align: center;
-  vertical-align: middle;
-}
-
-/* Hide status note on desktop - only shown on mobile */
-.trials-table-status-note {
-  display: none;
-}
+.trials-table-cell--nct { text-align: center; vertical-align: middle; }
+.trials-table-status-note { display: none; }
 
 .trials-table-status-badge {
   display: inline-block;
-  background-color: oklch(34.98% 0.0532 195);
-  color: #fff;
+  background-color: var(--tt-status-bg);
+  color: var(--tt-white);
   font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
   padding: 10px 20px;
-  border-radius: 999px;
+  border-radius: var(--tt-radius-pill);
   white-space: nowrap;
   text-transform: capitalize;
 }
 
-/* NCT link */
 .trials-table-nct-link {
-  color: #4a9e7b; /* haze-green */
+  color: var(--tt-haze-green);
   font-size: 16px;
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-.trials-table-nct-link:hover {
-  color: #3a7268; /* secondary/pea-green */
-}
+.trials-table-nct-link:hover { color: var(--tt-pea-green); }
 
 /* ===== RESPONSIVE ===== */
 
-/* Mobile-first: Card layout on small screens */
+/* Mobile: Card layout */
 @media (max-width: 719px) {
-  .trials-table-grid {
-    min-width: unset;
-    display: block;
-  }
-
-  .trials-table-grid thead {
-    display: none;
-  }
-
-  .trials-table-grid tbody {
-    display: block;
-  }
-
-  .trials-table-grid tbody tr {
-    display: block;
-    padding: 12px 12px 24px;
-    margin-bottom: 0;
-  }
-
-  .trials-table-grid tbody tr.trials-table-row--group-start {
-    border-top: 1px solid #4a9e7b;
-  }
+  .trials-table-wrapper { overflow-x: visible; }
+  .trials-table-grid { min-width: unset; display: block; }
+  .trials-table-grid thead { display: none; }
+  .trials-table-grid tbody { display: block; }
+  .trials-table-grid tbody tr { display: block; padding: 12px 12px 24px; margin-bottom: 0; }
+  .trials-table-grid tbody tr.trials-table-row--group-start { border-top: 1px solid var(--tt-haze-green); }
 
   .trials-table-cell {
     display: block;
@@ -531,105 +392,42 @@
     content: attr(data-label);
     display: block;
     font-weight: 700;
-    color: #1f2937;
+    color: var(--tt-gray-dark);
     margin-bottom: 8px;
     font-size: 14px;
   }
 
-  .trials-table-cell--tumour::before {
-    content: "Type of cancer";
-    margin-top: 32px;
-  }
-
-  .trials-table-grid tbody tr:first-child .trials-table-cell--tumour::before {
-    margin-top: 0;
-  }
-
-  .trials-table-cell--description::before {
-    content: "Trial Description";
-  }
-
-  .trials-table-cell--criteria::before {
-    content: "Select Eligibility Criteria:";
-  }
-
-  .trials-table-cell--status::before {
-    content: "Status:";
-  }
+  .trials-table-cell--tumour::before { content: "Type of cancer"; margin-top: 32px; }
+  .trials-table-grid tbody tr:first-child .trials-table-cell--tumour::before { margin-top: 0; }
+  .trials-table-cell--description::before { content: "Trial Description"; }
+  .trials-table-cell--criteria::before { content: "Select Eligibility Criteria:"; }
+  .trials-table-cell--status::before { content: "Status:"; }
+  .trials-table-cell--nct::before { content: "For more information:"; margin-top: 32px; }
 
   .trials-table-cell--status .trials-table-status-note {
     display: block;
     font-size: 12px;
-    font-weight: 400;
-    color: #6b7280;
+    color: var(--tt-gray-light);
     margin-bottom: 12px;
   }
 
-  .trials-table-cell--status .trials-table-status-badge {
-    display: inline-block;
-  }
-
-  .trials-table-cell--nct::before {
-    content: "For more information:";
-    margin-top: 32px;
-  }
-
-  .trials-filter-row {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
-  }
-
-  .trials-filter-dropdown {
-    min-width: unset;
-    width: 100%;
-  }
-
-  .trials-filter-btn {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .trials-filter-clear {
-    width: 100%;
-    justify-content: center;
-    margin-left: 0;
-  }
-
-  .trials-filter-chips-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .trials-filter-chips-label {
-    min-width: unset;
-    margin-bottom: 4px;
-  }
+  .trials-filter-row { flex-direction: column; gap: 12px; align-items: stretch; }
+  .trials-filter-dropdown { min-width: unset; width: 100%; }
+  .trials-filter-btn { width: 100%; justify-content: space-between; }
+  .trials-filter-clear { width: 100%; justify-content: center; margin-left: 0; }
+  .trials-filter-chips-row { flex-direction: column; align-items: flex-start; }
+  .trials-filter-chips-label { min-width: unset; margin-bottom: 4px; }
 }
 
-/* Tablet: Horizontal filter layout */
+/* Tablet: Horizontal filters */
 @media (min-width: 720px) {
-  .trials-filter-row {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 16px;
-    position: relative;
-  }
+  .trials-filter-row { flex-direction: row; flex-wrap: wrap; gap: 16px; position: relative; }
 }
 
 /* Tablet table adjustments */
 @media (min-width: 720px) and (max-width: 1024px) {
-  .trials-table-grid {
-    min-width: 860px;
-  }
-
+  .trials-table-grid { min-width: 860px; }
   .trials-table-th,
-  .trials-table-cell {
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  .trials-table-th {
-    font-size: 15px;
-  }
+  .trials-table-cell { padding: 12px; font-size: 14px; }
+  .trials-table-th { font-size: 15px; }
 }
