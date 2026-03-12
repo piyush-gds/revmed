@@ -259,6 +259,10 @@ const wireFilters = (filterBar, regionMap, tbody, items, authoredLabels = {}) =>
   const clearBtn = filterBar.querySelector('.trials-filter-clear');
   const statusEl = filterBar.querySelector('.trials-filter-status');
   const chipsEl = filterBar.querySelector('.trials-filter-chips');
+  const tableWrapper = tbody.closest('.trials-table-wrapper');
+  const noResultsEl = el('p', { className: 'trials-table-no-results' }, authoredLabels.noResults || 'No clinical trials found.');
+  noResultsEl.style.display = 'none';
+  tableWrapper.parentNode.insertBefore(noResultsEl, tableWrapper.nextSibling);
   const initialStatus = statusEl.textContent;
   const filteredStatusTemplate = authoredLabels.filteredStatus || 'Showing [[trial_count]] trials with selected filters';
 
@@ -312,6 +316,9 @@ const wireFilters = (filterBar, regionMap, tbody, items, authoredLabels = {}) =>
       if (match) visible++;
     });
     updateTumourGrouping(rows);
+    const showNoResults = hasFilter && visible === 0;
+    tableWrapper.style.display = showNoResults ? 'none' : '';
+    noResultsEl.style.display = showNoResults ? '' : 'none';
     statusEl.textContent = hasFilter ? filteredStatusTemplate.replace('[[trial_count]]', visible) : initialStatus;
   };
 
@@ -414,7 +421,7 @@ const buildTableHead = (labels = {}) => {
 /* ------------------------------------------------------------------ */
 
 const captureAuthoredLabels = (block) => {
-  const keys = ['region', 'country', 'state', 'tumor', 'intervention', 'clearAll', 'status', 'filteredStatus',
+  const keys = ['region', 'country', 'state', 'tumor', 'intervention', 'clearAll', 'status', 'filteredStatus', 'noResults',
     'typeOfCancerHeading', 'trialDescriptionHeading', 'eligibilityCriteriaHeading', 'statusHeading', 'moreInformationHeading'];
   const richFields = ['eligibilityCriteriaHeading', 'statusHeading'];
   const labels = {};

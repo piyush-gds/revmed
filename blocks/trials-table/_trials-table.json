@@ -79,6 +79,13 @@
         {
           "component": "text",
           "valueType": "string",
+          "name": "noResultsText",
+          "label": "No Results Text",
+          "description": "Text shown when no clinical trials match the selected filters."
+        },
+        {
+          "component": "text",
+          "valueType": "string",
           "name": "typeOfCancerHeading",
           "label": "Type of Cancer Column Heading",
           "description": "Heading for the Type of Cancer column"

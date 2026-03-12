@@ -244,7 +244,8 @@
 
 /* Loading & empty states */
 .trials-table-loader,
-.trials-table-empty {
+.trials-table-empty,
+.trials-table-no-results {
   text-align: center;
   padding: 48px 24px;
   font-size: 18px;
